@@ -1,4 +1,4 @@
-class UrlMappings {
+class DownloadsPluginUrlMappings {
 
 	static mappings = {
         "/$controller/$action?/$id?(.$format)?"{
@@ -7,7 +7,7 @@ class UrlMappings {
             }
         }
 
-        "/"(view:"/index")
+        "/occurrences/download"(view:"/occurrence/download1")
         "500"(view:'/error')
 	}
 }

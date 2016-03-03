@@ -1,0 +1,182 @@
+/*
+ * Copyright (C) 2016 Atlas of Living Australia
+ * All Rights Reserved.
+ * The contents of this file are subject to the Mozilla Public
+ * License Version 1.1 (the "License"); you may not use this file
+ * except in compliance with the License. You may obtain a copy of
+ * the License at http://www.mozilla.org/MPL/
+ * Software distributed under the License is distributed on an "AS
+ * IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+ * implied. See the License for the specific language governing
+ * rights and limitations under the License.
+ */
+
+
+
+.font-xxsmall{font-size:13px;line-height:1.5;text-transform:uppercase;font-weight: 400;}
+.heading-medium-alt{
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.25;
+    margin-top: 0;
+    color: #333;
+}
+body p, body li, body ul {
+    color: #637073;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.6em;
+}
+body h1, body h2, body h3, body h4, body h5 { font-weight:bold; color:#5f5d60;}
+
+.download-select {display: inline-block;font-size: 14px; padding-right: 10px;}
+.no-of-questions {vertical-align: top;margin-right: 10px;}
+.survey-details {display: inline-block;font-size: 11px;color: #777;}
+.survey-counter {display: inline-block;font-size: 64px;}
+.text-uppercase { text-transform: uppercase; }
+.heading-large{font-size:36px;font-weight:700;line-height:1.1111111111;margin-bottom:.55556em;margin-top:1.25em;text-transform:none;}
+.heading-medium{border-bottom:inherit;font-size:24px;font-weight:700;line-height:1.25;margin-bottom:.83333em;margin-top:1.875em;text-transform:none;}
+.heading-medium-alt{
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.25;
+    margin-top: 0;
+    color: #333;
+}
+.heading-small{border-bottom:inherit;font-size:19px;font-weight:700;line-height:1.3157894737;margin-bottom:.3125em;text-transform:none;}
+.heading-xlarge{font-size:48px;font-weight:700;line-height:1.0416666667;margin-bottom:.6em;margin-top:.625em;text-transform:none;}
+.heading-underlined{border:0 solid #cdcdcd;border-bottom-width:1px;padding-bottom:10px;}
+
+.help-block{font-size: 14px;font-weight: 400;}
+
+
+/*.btn-white {*/
+    /*color: #333333;*/
+    /*text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);*/
+    /*background-color: #ffffff;*/
+    /*!*background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6);*!*/
+    /*!*background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#e6e6e6));*!*/
+    /*!*background-image: -webkit-linear-gradient(top, #ffffff, #e6e6e6);*!*/
+    /*!*background-image: -o-linear-gradient(top, #ffffff, #e6e6e6);*!*/
+    /*!*background-image: linear-gradient(to bottom, #ffffff, #e6e6e6);*!*/
+    /*!*background-repeat: repeat-x;*!*/
+    /*!*filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#ffe6e6e6', GradientType=0);*!*/
+    /*border-color: #e6e6e6 #e6e6e6 #bfbfbf;*/
+    /*border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);*/
+    /**background-color: #ffffff;*/
+    /*!* Darken IE7 buttons by default so they stand out more given they won't have borders *!*/
+    /*!*filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);*!*/
+    /*border: 1px solid #cccccc;*/
+    /**border: 0;*/
+    /*border-bottom-color: #b3b3b3;*/
+    /*-webkit-border-radius: 0px;*/
+    /*-moz-border-radius: 0px;*/
+    /*border-radius: 0px;*/
+    /**margin-left: .3em;*/
+    /*!*-webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,.2), 0 1px 2px rgba(0,0,0,.05);*!*/
+    /*!*-moz-box-shadow: inset 0 1px 0 rgba(255,255,255,.2), 0 1px 2px rgba(0,0,0,.05);*!*/
+    /*!*box-shadow: inset 0 1px 0 rgba(255,255,255,.2), 0 1px 2px rgba(0,0,0,.05);*!*/
+/*}*/
+/*.btn-white:hover,*/
+/*.btn-white:focus,*/
+/*.btn-white:active,*/
+/*.btn-white.active,*/
+/*.btn-white.disabled,*/
+/*.btn-white[disabled] {*/
+    /*color: #333333;*/
+    /*background-color: #ffffff;*/
+    /**background-color: #ffffff;*/
+/*}*/
+/*.btn-white:active,*/
+/*.btn-white.active {*/
+    /*background-color: #ffffff \9;*/
+/*}*/
+
+
+.btn-bs3 {
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    /*border-radius: 4px;*/
+    text-decoration: none;
+}
+.btn-bs3.btn-lg {
+    padding: 10px 16px;
+}
+.btn-white {
+    color: #333;
+    background-color: #fff;
+    border-color: #cdcdcd;
+}
+.btn-bs3:focus,
+.btn-bs3.focus {
+    color: #333;
+    background-color: #e6e6e6;
+    border-color: #8c8c8c;
+    text-decoration: none;
+}
+.btn-bs3:hover {
+    color: #333;
+    background-color: #e6e6e6;
+    border-color: #adadad;
+    text-decoration: none;
+}
+.btn-bs3:active,
+.btn-bs3.active,
+.open > .dropdown-toggle.btn-bs3 {
+    color: #333;
+    background-color: #e6e6e6;
+    border-color: #adadad;
+    text-decoration: none;
+}
+
+/* Colours and Swatchs
+================================= */
+
+.swatch-colour{height:70px;width:100%;display:block;border-bottom:1px solid #ccc;}
+.color--dark-grey{color: #9d9d9d;} .backgroundcolor--dark-grey{background-color: #9d9d9d;}
+.color--dark-red{color: #C44D34;} .backgroundcolor--dark-red{background-color: #C44D34;}
+.color--green{color: #006435;} .backgroundcolor--green{background-color: #006435;}
+.color--medium-blue{color: #2475A4;} .backgroundcolor--medium-blue{background-color: #2475A4;}
+.color--medium-grey{color: #637073;} .backgroundcolor--medium-grey{background-color: #637073;}
+.color--mellow-red{color: #DF3034;} .backgroundcolor--mellow-red{background-color: #DF3034;}
+.color--off-black{color: #212121;} .backgroundcolor--off-black{background-color: #212121;}
+.color--off-white{color: #F2F2F2;} .backgroundcolor--off-white{background-color: #F2F2F2;}
+.color--pink{color: #D0367D;} .backgroundcolor--pink{background-color: #D0367D;}
+.color--primary-red{color: #F26649;} .backgroundcolor--primary-red{background-color: #F26649;}
+.color--purple{color: #2E358B;} .backgroundcolor--purple{background-color: #2E358B;}
+.color--red{color: #B10E1E;} .backgroundcolor--red{background-color: #B10E1E;}
+.color--white{color: #fff !important;} .backgroundcolor--white{background-color: #fff;}
+.color--yellow{color: #FFBF47;} .backgroundcolor--yellow{background-color: #FFBF47;}
+.color--apple{color: #65B044;} .backgroundcolor--apple{background-color: #65B044;}
+.color-lochmara {color: #0087BE;} .background-lochmara {background-color: #0087BE;}
+.color-facebook {color: #507CBE;} .background-facebook {background-color: #507CBE;}
+
+/* Social Icons
+================================= */
+
+.social li > a{border-radius:50%;color:#fff;display:inline-block;height:35px;text-align:center;width:35px;}
+.social li a .fa{font-size:15px;padding-top:0.65em;color:#fff;}
+.login-social li > a {border-radius: 50%;color: #fff;display: inline-block;height: 50px;text-align: center;width: 50px;}
+.login-social li a .fa{font-size:15px;padding-top:1.20em;color:white;}
+.form-signin.separator {margin: 24px 0;font-size: 14px;font-weight: 300;}
+.separator {position: relative;text-transform: uppercase;font-size: 12px;font-weight: 700;margin: 16px 0;}
+.separator span {padding: 5px 20px;background: #f5f5f5;color: #8f989d;position: relative;}
+.separator:before {content: '';display: block;width: 100%;height: 1px;background: #e3e6e7;position: absolute;top: 50%;}
+.t-center {text-align: center;}
+

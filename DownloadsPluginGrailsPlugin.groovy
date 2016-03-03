@@ -39,6 +39,8 @@ ALA Biocache system.
 
     def dependsOn = [biocacheHubs: "0.1 > *"]
 
+    def loadBefore = ['alaBootstrap3']
+
     def doWithWebDescriptor = { xml ->
         // TODO Implement additions to web.xml (optional), this event occurs before
     }
