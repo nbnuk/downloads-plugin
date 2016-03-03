@@ -93,7 +93,7 @@
 
                                 </div>
                                 <div class="span3">
-                                    <a href="#" id="select-basic-dwc" class="select-download-type btn-bs3 btn-white btn-large btn-white btn-block margin-top-1 margin-bottom-1 font-xxsmall" type="button">
+                                    <a href="#" id="select-basic-dwc" class="select-download-type btn-bs3 btn-white btn-large btn-block margin-top-1 margin-bottom-1 font-xxsmall" type="button">
                                         Select
                                     </a>
                                     <!-- <a href="#" class="btn btn-large btn-success btn-block margin-bottom-1 font-xxsmall" type="button">Customise</a> -->
@@ -118,7 +118,7 @@
                                 </div>
                                 <div class="span3">
 
-                                    <a href="#" id="select-checklist" class="select-download-type btn btn-large btn-success btn-block margin-top-1 margin-bottom-1 font-xxsmall" type="button">
+                                    <a href="#" id="select-checklist" class="select-download-type btn-bs3 btn-white btn-large btn-block margin-top-1 margin-bottom-1 font-xxsmall" type="button">
                                         Select
                                     </a>
                                     <!-- <a href="#" class="btn btn-large btn-success btn-block margin-bottom-1 font-xxsmall" type="button">Customise</a> -->
@@ -143,7 +143,7 @@
                                 </div>
                                 <div class="span3">
 
-                                    <a href="#" id="select-basic-fieldguide" class="select-download-type btn btn-large btn-success btn-block margin-top-1 margin-bottom-1 font-xxsmall" type="button">
+                                    <a href="#" id="select-basic-fieldguide" class="select-download-type btn-bs3 btn-white btn-large btn-block margin-top-1 margin-bottom-1 font-xxsmall" type="button">
                                         Select
                                     </a>
                                     <!-- <a href="#" class="btn btn-large btn-success btn-block margin-bottom-1 font-xxsmall" type="button">Customise</a> -->
@@ -225,7 +225,29 @@
     </div>
 </div>
 <g:javascript>
+    $( document ).ready(function() {
+        $('a.select-download-type').click(function(e) {
+            e.preventDefault(); // its link so stop any regular link stuff hapenning
+            var link = this;
+            if ($(link).hasClass('btn-primary')) {
+                // already selected
+                $(link).text('Select');
+                $(link).removeClass('btn-primary');
+                $(link).addClass('btn-white');
+                $(link).blur(); // prevent BS focus
+            } else {
+                // not selected
+                $('a.select-download-type').text('Select'); // reset any other selcted buttons
+                $('a.select-download-type').removeClass('btn-primary'); // reset any other selcted buttons
+                $('a.select-download-type').addClass('btn-white'); // reset any other selcted buttons
+                $(link).text('Selected');
+                $(link).removeClass('btn-white');
+                $(link).addClass('btn-primary');
+                $(link).blur(); // prevent BS focus
+            }
+        });
 
+    });
 </g:javascript>
 </body>
 </html>

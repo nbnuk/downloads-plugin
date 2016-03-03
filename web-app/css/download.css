@@ -95,11 +95,11 @@ body h1, body h2, body h3, body h4, body h5 { font-weight:bold; color:#5f5d60;}
 
 .btn-bs3 {
     display: inline-block;
-    padding: 6px 12px;
+    padding: 11px 19px;
     margin-bottom: 0;
     font-size: 14px;
     font-weight: 400;
-    line-height: 1.42857143;
+    line-height: 1.5;
     text-align: center;
     white-space: nowrap;
     vertical-align: middle;
@@ -123,26 +123,30 @@ body h1, body h2, body h3, body h4, body h5 { font-weight:bold; color:#5f5d60;}
     background-color: #fff;
     border-color: #cdcdcd;
 }
-.btn-bs3:focus,
-.btn-bs3.focus {
+.btn-bs3:focu:not(.btn-primary)s,
+.btn-bs3.focus:not(.btn-primary) {
     color: #333;
     background-color: #e6e6e6;
     border-color: #8c8c8c;
     text-decoration: none;
 }
 .btn-bs3:hover {
+    text-decoration: none;
+}
+.btn-bs3:hover:not(.btn-primary) {
     color: #333;
     background-color: #e6e6e6;
     border-color: #adadad;
+}
+.btn-bs3:active {
     text-decoration: none;
 }
-.btn-bs3:active,
-.btn-bs3.active,
+
+.btn-bs3:active:not(.btn-primary),
 .open > .dropdown-toggle.btn-bs3 {
     color: #333;
     background-color: #e6e6e6;
     border-color: #adadad;
-    text-decoration: none;
 }
 
 /* Colours and Swatchs
