@@ -25,7 +25,7 @@ class DownloadController {
     def download2() {
         render (view:'/occurrence/download2', model: [
                 customSections: grailsApplication.config.customSections,
-                mandatoryFields: grailsApplication.config.mandatoryField,
+                mandatoryFields: grailsApplication.config.mandatoryFields,
                 userSavedFields: customiseService.getUserSavedFields()
         ])
     }

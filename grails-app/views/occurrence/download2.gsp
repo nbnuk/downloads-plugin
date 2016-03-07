@@ -111,26 +111,25 @@
 </div>
 <g:javascript>
     $( document ).ready(function() {
-        $('a.select-download-type').click(function(e) {
+        $('a.list-group-item').not('.disabled').click(function(e) {
             e.preventDefault(); // its link so stop any regular link stuff hapenning
             var link = this;
-            if ($(link).hasClass('btn-primary')) {
+            if ($(link).hasClass('list-group-item-success')) {
                 // already selected
-                $(link).find('span').text('Select');
-                $(link).removeClass('btn-primary');
-                $(link).addClass('btn-white');
+                //$(link).find('span').text('Select');
+                $(link).removeClass('disabled').removeClass('list-group-item-success');
+                //$(link).addClass('btn-white');
                 $(link).find('.fa').addClass('hide');
                 $(link).blur(); // prevent BS focus
             } else {
                 // not selected
-                $('a.select-download-type').find('span').text('Select'); // reset any other selcted buttons
-                $('a.select-download-type').removeClass('btn-primary'); // reset any other selcted buttons
-                $('a.select-download-type').addClass('btn-white'); // reset any other selcted buttons
-                $('a.select-download-type').find('.fa').addClass('hide'); // reset any other selcted buttons
-                $(link).find('span').text('Selected');
-                $(link).removeClass('btn-white');
-                $(link).addClass('btn-primary');
-                $(link).find('.fa').removeClass('hide');
+                //$('a.select-download-type').find('span').text('Select'); // reset any other selcted buttons
+                //$('a.select-download-type').removeClass('btn-primary'); // reset any other selcted buttons
+                //$('a.select-download-type').addClass('btn-white'); // reset any other selcted buttons
+                //$('a.select-download-type').find('.fa').addClass('hide'); // reset any other selcted buttons
+                $(link).find('i.fa').removeClass('hide');
+                $(link).addClass('list-group-item-success');
+                //$(link).addClass('disabled');
                 $(link).blur(); // prevent BS focus
             }
         });
