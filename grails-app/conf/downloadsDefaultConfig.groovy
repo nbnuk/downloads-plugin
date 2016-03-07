@@ -11,7 +11,11 @@
  * rights and limitations under the License.
  */
 
-darwinCoreGroups = ["recordLevelTerms","occurrence","organism","materialSampleSpecimen","location","geologicalContext","identification","taxon","measurementOrFact","resourceRelationship"]
-speciesTraitsGroup = ["conservationStatus"]
-spatialIntersectionsGroup = ["environmentalLayers","contextualLayers"]
-qualityGroup = ["qualityAssertions"]
+customSections = [
+    darwinCore: ["recordLevelTerms","occurrence","organism","materialSampleSpecimen","location","geologicalContext","identification","taxon","measurementOrFact","resourceRelationship"],
+    speciesTraits: ["conservationStatus"],
+    spatialIntersections: ["environmentalLayers","contextualLayers"],
+    quality: ["qualityAssertions"]
+]
+
+mandatoryFields = ["recordLevelTerms","occurrence"]

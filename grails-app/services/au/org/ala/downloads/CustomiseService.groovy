@@ -13,24 +13,13 @@
 
 package au.org.ala.downloads
 
-class DownloadController {
-    def customiseService
+class CustomiseService {
 
-    static defaultAction = "download1"
-
-    def download1() {
-        render (view:'/occurrence/download1', model: [])
+    def getUserSavedFields() {
+        []
     }
 
-    def download2() {
-        render (view:'/occurrence/download2', model: [
-                customSections: grailsApplication.config.customSections,
-                mandatoryFields: grailsApplication.config.mandatoryField,
-                userSavedFields: customiseService.getUserSavedFields()
-        ])
-    }
+    def setUserSavedFields(List fields) {
 
-    def download3() {
-        render (view:'/occurrence/download3', model: [])
     }
 }
