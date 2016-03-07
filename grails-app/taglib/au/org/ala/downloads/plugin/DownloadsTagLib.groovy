@@ -18,7 +18,7 @@ class DownloadsTagLib {
     def webServicesService
     //static defaultEncodeAs = [taglib:'html']
     //static encodeAsForTags = [tagName: [taglib:'html'], otherTagName: [taglib:'none']]
-    static returnObjectForTags = ['getAllLoggerReasons','testListOutput']
+    static returnObjectForTags = ['getAllLoggerReasons','testListOutput','getLoggerReasons']
     static namespace = 'downloads'
 
     /**
@@ -70,6 +70,19 @@ class DownloadsTagLib {
                 out << it.id
             }
         }
+    }
+
+    /**
+     * Get the list of available reason codes and labels from the Logger app
+     *
+     * Note: outputs an Object and thus needs:
+     *
+     *   static returnObjectForTags = ['getLoggerReasons']
+     *
+     * at top of taglib
+     */
+    def getLoggerReasons = { attrs ->
+        webServicesService.getLoggerReasons()
     }
 
 }

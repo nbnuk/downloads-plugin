@@ -184,3 +184,12 @@ body h1, body h2, body h3, body h4, body h5 { font-weight:bold; color:#5f5d60;}
 .separator:before {content: '';display: block;width: 100%;height: 1px;background: #e3e6e7;position: absolute;top: 50%;}
 .t-center {text-align: center;}
 
+.select-download-type .fa {
+    margin-right: 10px;
+    font-size: 16px;
+}
+
+.well hr {
+    border-top: none;
+    border-bottom: 1px solid #ababab;
+}

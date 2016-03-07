@@ -32,13 +32,11 @@
     <div class="span10">
         <h1 class="hidden">Welcome to the Atlas of Living Australia website</h1><!-- Show the H1 on each page -->
 
-    <!-- Breadcrumb -->
+        <!-- Breadcrumb -->
         <ol class="breadcrumb hidden-print">
             <li><a class="font-xxsmall" href="${grailsApplication.config.organisation.baseUrl}">Home</a><span class="divider">/</span></li>
             <li><a class="font-xxsmall" href="${g.createLink(uri:'/')}">Occurrence Records</a><span class="divider">/</span></li>
-            <!-- <li><a class="font-xxsmall" href="#">Long page title example</a></li> -->
-            <!-- <li><a class="font-xxsmall" href="#">What a great redesign</a></li> -->
-            <li class="font-xxsmall active">Downloads</li>
+            <li class="font-xxsmall active">Download</li>
         </ol>
         <!-- End Breadcrumb -->
         <h2 class="heading-medium">Download</h2>
@@ -80,10 +78,11 @@
                                         <div class="form-group">
                                             <label for="inputEmail3" class="span3 control-label heading-small"><span class="color--mellow-red">*</span>Select type</label>
                                             <div class="span8">
-                                                <select class="form-control input-lg" required="" autofocus="">
-                                                    <option>Full Darwin Core</option>
-                                                    <option>Legacy Format Occurrence</option>
-                                                    <option>Customise Your Download</option>
+                                                <select class="form-control input-lg" name="downloadType" required="" autofocus="">
+                                                    <option value="">-- choose a download type --</option>
+                                                    <option value="dwc">Full Darwin Core</option>
+                                                    <option value="legacy">Legacy Format Occurrence</option>
+                                                    <option value="custom">Customise Your Download</option>
                                                     <!-- <option>Problem logging and feedback</option> -->
                                                 </select>
                                                 <p class="help-block"><strong>This field is mandatory.</strong> Use the dropdown to select the relevant download type.</p>
@@ -94,12 +93,12 @@
                                 </div>
                                 <div class="span3">
                                     <a href="#" id="select-basic-dwc" class="select-download-type btn-bs3 btn-white btn-large btn-block margin-top-1 margin-bottom-1 font-xxsmall" type="button">
-                                        Select
+                                        <i class="fa fa-check hide"></i><span>Select</span>
                                     </a>
                                     <!-- <a href="#" class="btn btn-large btn-success btn-block margin-bottom-1 font-xxsmall" type="button">Customise</a> -->
                                 </div><!-- End span3 -->
+                                <hr class="visible-phone"/>
                             </div><!-- End row -->
-
                             <div class="row-fluid">
                                 <div class="span2">
                                     <div class="contrib-stats">
@@ -119,10 +118,11 @@
                                 <div class="span3">
 
                                     <a href="#" id="select-checklist" class="select-download-type btn-bs3 btn-white btn-large btn-block margin-top-1 margin-bottom-1 font-xxsmall" type="button">
-                                        Select
+                                        <i class="fa fa-check hide"></i><span>Select</span>
                                     </a>
                                     <!-- <a href="#" class="btn btn-large btn-success btn-block margin-bottom-1 font-xxsmall" type="button">Customise</a> -->
                                 </div><!-- End span3 -->
+                                <hr class="visible-phone"/>
                             </div><!-- End row -->
 
                             <div class="row-fluid">
@@ -144,7 +144,7 @@
                                 <div class="span3">
 
                                     <a href="#" id="select-basic-fieldguide" class="select-download-type btn-bs3 btn-white btn-large btn-block margin-top-1 margin-bottom-1 font-xxsmall" type="button">
-                                        Select
+                                        <i class="fa fa-check hide"></i><span>Select</span>
                                     </a>
                                     <!-- <a href="#" class="btn btn-large btn-success btn-block margin-bottom-1 font-xxsmall" type="button">Customise</a> -->
                                 </div><!-- End span3 -->
@@ -192,9 +192,9 @@
                                             <div class="span8">
                                                 <select class="form-control input-lg" required="true" autofocus>
                                                     <option>Select a reason ...</option>
-                                                    <option>Option 1</option>
-                                                    <option>Option 2</option>
-                                                    <option>Option 3</option>
+                                                    <g:each var="it" in="${downloads.getLoggerReasons()}">
+                                                        <option value="${it.id}">${it.name}</option>
+                                                    </g:each>
                                                 </select>
                                                 <p class="help-block"><strong>This field is mandatory.</strong> To queue your download, tell us why you are downloading this file.</p>
                                             </div>
@@ -203,7 +203,7 @@
                                 </div>
                                 <div class="span3">
 
-                                    <a href="#" class="btn btn-large btn-primary btn-block margin-top-1 margin-bottom-1 font-xxsmall" type="button">Queue Download</a>
+                                    <a href="#" class="btn btn-large btn-primary btn-block margin-top-1 margin-bottom-1 font-xxsmall" type="button">Start Download</a>
 
                                 </div><!-- End span3 -->
                             </div>
@@ -231,18 +231,21 @@
             var link = this;
             if ($(link).hasClass('btn-primary')) {
                 // already selected
-                $(link).text('Select');
+                $(link).find('span').text('Select');
                 $(link).removeClass('btn-primary');
                 $(link).addClass('btn-white');
+                $(link).find('.fa').addClass('hide');
                 $(link).blur(); // prevent BS focus
             } else {
                 // not selected
-                $('a.select-download-type').text('Select'); // reset any other selcted buttons
+                $('a.select-download-type').find('span').text('Select'); // reset any other selcted buttons
                 $('a.select-download-type').removeClass('btn-primary'); // reset any other selcted buttons
                 $('a.select-download-type').addClass('btn-white'); // reset any other selcted buttons
-                $(link).text('Selected');
+                $('a.select-download-type').find('.fa').addClass('hide'); // reset any other selcted buttons
+                $(link).find('span').text('Selected');
                 $(link).removeClass('btn-white');
                 $(link).addClass('btn-primary');
+                $(link).find('.fa').removeClass('hide');
                 $(link).blur(); // prevent BS focus
             }
         });
