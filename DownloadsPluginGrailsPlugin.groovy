@@ -1,3 +1,5 @@
+import grails.util.Environment
+
 class DownloadsPluginGrailsPlugin {
     // the plugin version
     def version = "1.0-SNAPSHOT"
@@ -46,7 +48,10 @@ ALA Biocache system.
     }
 
     def doWithSpring = {
-        // TODO Implement runtime spring config (optional)
+        def config = application.config
+        // Load the "sensible defaults"
+        def loadConfig = new ConfigSlurper(Environment.current.name).parse(application.classLoader.loadClass("downloadsDefaultConfig"))
+        application.config = loadConfig.merge(config) // client app will now override the defaultConfig version
     }
 
     def doWithDynamicMethods = { ctx ->

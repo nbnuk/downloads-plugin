@@ -203,7 +203,7 @@
                                 </div>
                                 <div class="span3">
 
-                                    <a href="#" class="btn btn-large btn-primary btn-block margin-top-1 margin-bottom-1 font-xxsmall" type="button">Start Download</a>
+                                    <a href="#" class="btn btn-large btn-primary btn-block margin-top-1 margin-bottom-1 font-xxsmall" type="button">Next <i class="fa fa-chevron-right"></i></a>
 
                                 </div><!-- End span3 -->
                             </div>
@@ -229,22 +229,22 @@
         $('a.select-download-type').click(function(e) {
             e.preventDefault(); // its link so stop any regular link stuff hapenning
             var link = this;
-            if ($(link).hasClass('btn-primary')) {
+            if ($(link).hasClass('btn-success')) {
                 // already selected
                 $(link).find('span').text('Select');
-                $(link).removeClass('btn-primary');
+                $(link).removeClass('btn-success');
                 $(link).addClass('btn-white');
                 $(link).find('.fa').addClass('hide');
                 $(link).blur(); // prevent BS focus
             } else {
                 // not selected
                 $('a.select-download-type').find('span').text('Select'); // reset any other selcted buttons
-                $('a.select-download-type').removeClass('btn-primary'); // reset any other selcted buttons
+                $('a.select-download-type').removeClass('btn-success'); // reset any other selcted buttons
                 $('a.select-download-type').addClass('btn-white'); // reset any other selcted buttons
                 $('a.select-download-type').find('.fa').addClass('hide'); // reset any other selcted buttons
                 $(link).find('span').text('Selected');
                 $(link).removeClass('btn-white');
-                $(link).addClass('btn-primary');
+                $(link).addClass('btn-success');
                 $(link).find('.fa').removeClass('hide');
                 $(link).blur(); // prevent BS focus
             }
