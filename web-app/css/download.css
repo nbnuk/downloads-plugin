@@ -49,8 +49,8 @@ body h1, body h2, body h3, body h4, body h5 { font-weight:bold; color:#5f5d60;}
 
 .help-block{font-size: 14px;font-weight: 400;}
 .button-toolbar{margin:20px 0;}
-a > i.fa{color:#9A9A9A;}
-a > i.fa:hover{color:#DA644E;}
+a i.fa{color:#9A9A9A;}
+a i.fa:hover{color:#DA644E;}
 
 /*.btn-white {*/
     /*color: #333333;*/

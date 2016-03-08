@@ -26,6 +26,16 @@
     <meta name="fluidLayout" content="false"/>
     <title>ALA Data Download</title>
     <r:require module="download"/>
+    <style type="text/css">
+        a .fa {
+            width: 18px;
+            margin-right: 5px;
+        }
+        .list-group-item {
+            padding:8px 12px;
+        }
+
+</style>
 </head>
 <body>
 <div class="row">
@@ -44,15 +54,17 @@
             <div class="button-toolbar row-fluid">
                 <div class="btn-group">
                     <!-- <a class="btn btn-default" disabled="disabled" href="#"><span class="glyphicon glyphicon-th" aria-hidden="true"></span> <span class="hidden-xs hidden-sm">Toggle grid view</span></a> -->
-                    <a class="btn btn-default" href="#"><i class="fa fa-check"></i> <span class="hidden-xs hidden-sm">Select all</span></a>
-                    <a class="btn btn-default" href="#"><i class="fa fa-times"></i> <span class="hidden-xs hidden-sm">Unselect all</span></a>
+                    <a class="btn btn-default select-all-btn" href="#"><i class="fa fa-check"></i> <span class="hidden-xs hidden-sm">Select all</span></a>
+                    <a class="btn btn-default select-none-btn" href="#"><i class="fa fa-times"></i> <span class="hidden-xs hidden-sm">Unselect all</span></a>
                 </div>
                 <div class="btn-group pull-right">
-                    <a class="btn btn-default"><i class="fa fa-cog"></i> <span class="hidden-xs">Save preferences</span></a>
-                    <a class="btn btn-primary" href="#"><span class="hidden-xs">Next <i class="fa fa-chevron-right"></i></span></a>
+                    <a class="btn btn-default save-btn"><i class="fa fa-cog"></i> <span class="hidden-xs">Save preferences</span></a>
+                    <a class="btn btn-primary next-btn" href="#"><span class="hidden-xs">Next <i class="fa fa-chevron-right"></i></span></a>
                 </div>
             </div>
         </g:set>
+        <g:set var="selectedItem" value="fa-toggle-on"/>
+        <g:set var="unselectedItem" value="fa-toggle-off"/>
 
         ${raw(toolbar)}
 
@@ -80,14 +92,15 @@
 
                                         <div class="list-group">
                                             <g:each in="${section.value}" var="group" status="i">
-                                                <g:set var="disabled" value="${(mandatoryFields.contains(group) || userSavedFields.contains(group)) ? true : false }"/>
-                                                <a href="#" class="list-group-item ${(disabled)?"list-group-item-success disabled":""} ">
+                                                <g:set var="disabled" value="${(mandatoryFields.contains(group)) ? true : false }"/>
+                                                <g:set var="active" value="${(mandatoryFields.contains(group) || userSavedFields.contains(group)) ? true : false }"/>
+                                                <a href="#" class="list-group-item ${(disabled)?"disabled":""} ${(active)?"list-group-item-success":""}">
                                                     <div class="checkbox pull-left">
-                                                        <label><input type="checkbox" value="${group}" ${(disabled)?"checked='checked'":""}></label>
+                                                        <label><input type="checkbox" value="${group}" ${(disabled || active)?"checked='checked'":""}></label>
                                                     </div>
                                                     <div class="pull-left form-control-inline">
                                                         <h4 class="padding-left-1">
-                                                            <i class="fa fa-check ${(disabled)?"":"hide"}"></i>
+                                                            <i class="fa  ${(disabled || active)? selectedItem : unselectedItem}"></i>
                                                             <g:message code="customGroup.${group}" default="${group}"/>
                                                         </h4>
                                                     </div>
@@ -111,30 +124,51 @@
 </div>
 <g:javascript>
     $( document ).ready(function() {
+        // catch clicks on list group items
         $('a.list-group-item').not('.disabled').click(function(e) {
             e.preventDefault(); // its link so stop any regular link stuff hapenning
             var link = this;
             if ($(link).hasClass('list-group-item-success')) {
                 // already selected
-                //$(link).find('span').text('Select');
-                $(link).removeClass('disabled').removeClass('list-group-item-success');
-                //$(link).addClass('btn-white');
-                $(link).find('.fa').addClass('hide');
-                $(link).blur(); // prevent BS focus
+                deselectItem(link);
             } else {
                 // not selected
-                //$('a.select-download-type').find('span').text('Select'); // reset any other selcted buttons
-                //$('a.select-download-type').removeClass('btn-primary'); // reset any other selcted buttons
-                //$('a.select-download-type').addClass('btn-white'); // reset any other selcted buttons
-                //$('a.select-download-type').find('.fa').addClass('hide'); // reset any other selcted buttons
-                $(link).find('i.fa').removeClass('hide');
-                $(link).addClass('list-group-item-success');
-                //$(link).addClass('disabled');
-                $(link).blur(); // prevent BS focus
+                selectItem(link);
             }
         });
 
+        $('.select-all-btn').click(function(e) {
+            e.preventDefault();
+            $('a.list-group-item').not('.disabled').each(function(i) {
+                selectItem(this);
+            });
+        });
+
+        $('.select-none-btn').click(function(e) {
+            e.preventDefault();
+            $('a.list-group-item').not('.disabled').each(function(i) {
+                deselectItem(this);
+            });
+        });
+
     });
+
+    function selectItem(item) {
+        $(item).find('i.fa').removeClass('${unselectedItem}');
+        $(item).find('i.fa').addClass('${selectedItem}');
+        $(item).addClass('list-group-item-success');
+        $(item).find('input').attr('checked','checked');
+        $(item).blur(); // prevent BS focus
+    }
+
+    function deselectItem(item) {
+        $(item).removeClass('disabled').removeClass('list-group-item-success');
+        $(item).find('.fa').addClass('${unselectedItem}');
+        $(item).find('.fa').removeClass('${selectedItem}');
+        $(item).find('input').removeAttr('checked');
+        $(item).blur(); // prevent BS focus
+    }
+
 </g:javascript>
 </body>
 </html>
