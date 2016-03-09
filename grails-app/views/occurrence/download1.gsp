@@ -84,10 +84,10 @@
                                     %{--<p class="separator t-center margin-bottom-2"><span>Download type options</span></p>--}%
                                     <form id="downloadFormatForm" class="form-horizontal hide">
                                         <div class="control-group">
-                                            <label for="downloadType" class="control-label heading-small"><span class="color--mellow-red">*</span>Select format</label>
+                                            <label for="downloadFormat" class="control-label heading-small"><span class="color--mellow-red">*</span>Select format</label>
                                             <div class="controls">
-                                                <select class="form-control input-lg" id="downloadType"  autofocus="">
-                                                    <option disabled selected>Select a download format</option>
+                                                <select class="form-control input-lg" id="downloadFormat"  autofocus="">
+                                                    <option value="" disabled selected>Select a download format</option>
                                                     <option value="dwc">Full Darwin Core</option>
                                                     <option value="legacy">Legacy Format Occurrence</option>
                                                     <option value="custom">Customise Your Download</option>
@@ -192,7 +192,7 @@
                                             <label for="downloadReason" class="control-label heading-small"><span class="color--mellow-red">*</span>Tell us why</label>
                                             <div class="controls">
                                                 <select class="form-control input-lg" id="downloadReason" required="true" autofocus>
-                                                    <option disabled selected>Select a reason ...</option>
+                                                    <option value="" disabled selected>Select a reason ...</option>
                                                     <g:each var="it" in="${downloads.getLoggerReasons()}">
                                                         <option value="${it.id}">${it.name}</option>
                                                     </g:each>
@@ -209,9 +209,10 @@
                             <div class="row-fluid">
                                 <div class="span12">
                                     <!-- Alert Information -->
-                                    <div class="alert alert-danger alert-dismissible hide" role="alert">
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                        <strong>Error:</strong> Ensure that you 1) select your download type, 2) tell us why and 3) queue the download.
+                                    <div id="errorAlert" class="alert alert-danger alert-dismissible hide" role="alert">
+                                        <button type="button" class="close" onclick="$(this).parent().hide()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <strong>Error:</strong> Ensure that you 1) select your download <b>type</b><span id="errorFormat" class="hide"> and select a download <b>format</b></span>, 2) select a download <b>reason</b>
+
                                     </div>
                                     <!-- End Alert Information -->
                                 </div>
@@ -264,8 +265,45 @@
         $('#nextBtn').click(function(e) {
             e.preventDefault();
             // do form validation
+            var type = $('.select-download-type.btn-success').attr('id');
+            var format = $('#downloadFormat').find(":selected").val();
+            var reason = $('#downloadReason').find(":selected").val();
 
+            if (type) {
+                type = type.replace(/^select-/,''); // remove prefix
+                $('#errorAlert').hide();
+
+                if (type == "basic-dwc") {
+                    // check for format
+                    //console.log("format",format);
+                    if (!format) {
+                        $('#downloadType').focus();
+                        $('#errorAlert').show();
+                        $('#errorFormat').show();
+                    } else {
+                        $('#errorFormat').hide();
+                        $('#errorAlert').hide();
+                    }
+                }
+
+                if (!reason) {
+                    $('#errorAlert').show();
+                    $('#downloadReason').focus();
+                } else {
+                    // go to next screen
+                    $('#errorAlert').hide();
+                    window.location = "${g.createLink(action:'download2')}${searchParams}&downloadType=" + type + "&reasonCode=" + reason + "&format=" + format;
+                }
+            } else {
+                $('#errorAlert').show();
+            }
         });
+
+        var flashMessage = "${flash.message}";
+        if (flashMessage) {
+            $('#errorAlert').show();
+        }
+
     });
 </g:javascript>
 </body>

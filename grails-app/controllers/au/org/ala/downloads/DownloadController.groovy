@@ -29,15 +29,27 @@ class DownloadController {
     }
 
     def download2() {
-        render (view:'/occurrence/download2', model: [
-                customSections: grailsApplication.config.customSections,
-                mandatoryFields: grailsApplication.config.mandatoryFields,
-                userSavedFields: customiseService.getUserSavedFields()
-        ])
+        cleanupParams(params)
+        def downloadType = params.downloadType
+        def downloadFormat = params.format
+        def downloadReason = params.reasonCode
+
+        if (!downloadType || !downloadReason) {
+            flash.message = "No type or reason selected. Please try again."
+            redirect(action: "download1", params: params)
+        } else if (downloadType == "basic-dwc" && downloadFormat == "custom") {
+            render (view:'/occurrence/download2', model: [
+                    customSections: grailsApplication.config.customSections,
+                    mandatoryFields: grailsApplication.config.mandatoryFields,
+                    userSavedFields: customiseService.getUserSavedFields()
+            ])
+        } else {
+            render (view:'/occurrence/download3', model: [])
+        }
     }
 
     def download3() {
-        render (view:'/occurrence/download3', model: [])
+        render (view:'/occurrence/download3')
     }
 
     private cleanupParams(params) {
