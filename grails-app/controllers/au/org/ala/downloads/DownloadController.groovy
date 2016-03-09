@@ -22,18 +22,31 @@ class DownloadController {
     static removeParams = ["action","controller"]
 
     def download1() {
-        cleanupParams(params)
-        render (view:'/occurrence/download1', model: [
-                searchParams: params.toQueryString()
-        ])
+        def searchParams = params.searchParams
+        def targetUri = params.targetUri
+        log.debug "searchParams = ${searchParams}"
+        log.debug "request.getHeader('referer') = ${request.getHeader('referer')}"
+
+        if (searchParams) {
+            render (view:'/occurrence/download1', model: [
+                    searchParams: searchParams,
+                    targetUri: targetUri
+            ])
+        } else {
+            flash.message = "Download error - No search query parameters were provided."
+            def redirectUri = request.getHeader('referer') ?: "/"
+            redirect(uri: redirectUri)
+        }
     }
 
     def download2() {
         cleanupParams(params)
+        def searchParams = params.searchParams
+        def targetUri = params.targetUri
         def downloadType = params.downloadType
         def downloadFormat = params.format
         def downloadReason = params.reasonCode
-
+        log.debug "params = ${params}"
         if (!downloadType || !downloadReason) {
             flash.message = "No type or reason selected. Please try again."
             redirect(action: "download1", params: params)
@@ -41,19 +54,22 @@ class DownloadController {
             render (view:'/occurrence/download2', model: [
                     customSections: grailsApplication.config.customSections,
                     mandatoryFields: grailsApplication.config.mandatoryFields,
-                    userSavedFields: customiseService.getUserSavedFields()
+                    userSavedFields: customiseService.getUserSavedFields(),
+                    searchParams: searchParams,
+                    targetUri: targetUri
             ])
         } else {
-            render (view:'/occurrence/download3', model: [])
+            render (view:'/occurrence/download3', model: [searchParams: searchParams, targetUri: targetUri ])
         }
     }
 
     def download3() {
+        // testing only
         render (view:'/occurrence/download3')
     }
 
     private cleanupParams(params) {
-        GrailsParameterMap paramsCopy = params.clone()
+        GrailsParameterMap paramsCopy = params.clone() // to avoid concurrent access exception
         paramsCopy.each {
             if (removeParams.contains(it.key)) {
                 params.remove(it.key)

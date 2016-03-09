@@ -292,7 +292,7 @@
                 } else {
                     // go to next screen
                     $('#errorAlert').hide();
-                    window.location = "${g.createLink(action:'download2')}${searchParams}&downloadType=" + type + "&reasonCode=" + reason + "&format=" + format;
+                    window.location = "${g.createLink(action:'download2')}?searchParams=${searchParams.encodeAsURL()}&targetUri=${targetUri.encodeAsURL()}&downloadType=" + type + "&reasonCode=" + reason + "&format=" + format;
                 }
             } else {
                 $('#errorAlert').show();

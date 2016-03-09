@@ -76,7 +76,7 @@
                         %{--<p>Close this window at any time.</p>--}%
                     </div>
                     %{--<p class="separator t-center margin-bottom-2"><span>Or</span></p>--}%
-                    <a href="#" class="btn btn-lg btn-default btn-block margin-bottom-1 font-xxsmall" type="button">Return to your previous search</a>
+                    <a href="${targetUri}${searchParams}" class="btn btn-lg btn-default btn-block margin-bottom-1 font-xxsmall" type="button">Return to your previous search</a>
                 </div>
             </div>
         </div>
