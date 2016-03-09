@@ -13,13 +13,19 @@
 
 package au.org.ala.downloads
 
+import org.codehaus.groovy.grails.web.servlet.mvc.GrailsParameterMap
+
 class DownloadController {
     def customiseService
 
     static defaultAction = "download1"
+    static removeParams = ["action","controller"]
 
     def download1() {
-        render (view:'/occurrence/download1', model: [])
+        cleanupParams(params)
+        render (view:'/occurrence/download1', model: [
+                searchParams: params.toQueryString()
+        ])
     }
 
     def download2() {
@@ -32,5 +38,14 @@ class DownloadController {
 
     def download3() {
         render (view:'/occurrence/download3', model: [])
+    }
+
+    private cleanupParams(params) {
+        GrailsParameterMap paramsCopy = params.clone()
+        paramsCopy.each {
+            if (removeParams.contains(it.key)) {
+                params.remove(it.key)
+            }
+        }
     }
 }

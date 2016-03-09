@@ -29,7 +29,7 @@
 </head>
 <body>
 <div class="row">
-    <div class="span10">
+    <div class="span10 offset1">
         <h1 class="hidden">Welcome to the Atlas of Living Australia website</h1><!-- Show the H1 on each page -->
 
         <!-- Breadcrumb -->
@@ -41,6 +41,13 @@
         <!-- End Breadcrumb -->
         <h2 class="heading-medium">Download</h2>
 
+        <div class="alert alert-info alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+            By downloading this content you are agreeing to use it in accordance with the Atlas of Living
+            Australia <a href="http://www.ala.org.au/about-the-atlas/terms-of-use/#TOUusingcontent">Terms of Use</a>
+            and any Data Provider Terms associated with the data download.
+        </div>
+
         <div class="well">
             <div id="grid-view" class="row-fluid">
                 <div class="span12">
@@ -49,7 +56,7 @@
                     <div class="panel panel-default">
                         <div class="comment-wrapper push">
 
-                            <div class="row-fluid">
+                            <div class="row-fluid ">
                                 <div class="span12">
                                     <h4 class="heading-medium-alt">Step 1</h4>
                                     <p>
@@ -57,7 +64,7 @@
                                     </p>
                                 </div>
                             </div>
-                            <div class="row-fluid">
+                            <div class="row-fluid margin-top-1">
                                 <div class="span2">
                                     <div class="contrib-stats">
                                         <div class="no-of-questions">
@@ -68,24 +75,26 @@
                                     </div>
                                 </div>
                                 <div class="span7">
-                                    <h4 class="text-uppercase heading-underlined">Basic occurance download</h4>
+                                    <h4 class="text-uppercase heading-underlined">Occurence records download</h4>
                                     <p>
-                                        A basic Darwin Core Occurrence record including a subset of location, taxon and event information.
+                                        A ZIP archive containing a comma separated values (CSV) file which includes a
+                                        subset of location, taxon and event information.
                                     </p>
 
-                                    <p class="separator t-center margin-bottom-2"><span>Download type options</span></p>
-                                    <form class="form-horizontal">
-                                        <div class="form-group">
-                                            <label for="inputEmail3" class="span3 control-label heading-small"><span class="color--mellow-red">*</span>Select type</label>
-                                            <div class="span8">
-                                                <select class="form-control input-lg" name="downloadType" required="" autofocus="">
-                                                    <option value="">-- choose a download type --</option>
+                                    %{--<p class="separator t-center margin-bottom-2"><span>Download type options</span></p>--}%
+                                    <form id="downloadFormatForm" class="form-horizontal hide">
+                                        <div class="control-group">
+                                            <label for="downloadType" class="control-label heading-small"><span class="color--mellow-red">*</span>Select format</label>
+                                            <div class="controls">
+                                                <select class="form-control input-lg" id="downloadType"  autofocus="">
+                                                    <option disabled selected>Select a download format</option>
                                                     <option value="dwc">Full Darwin Core</option>
                                                     <option value="legacy">Legacy Format Occurrence</option>
                                                     <option value="custom">Customise Your Download</option>
                                                     <!-- <option>Problem logging and feedback</option> -->
                                                 </select>
-                                                <p class="help-block"><strong>This field is mandatory.</strong> Use the dropdown to select the relevant download type.</p>
+                                                <p class="help-block"><strong>This field is mandatory.</strong> Use the
+                                                dropdown to select the relevant download format - if in doubt choose "full darwin core".</p>
                                             </div>
                                         </div>
                                     </form>
@@ -93,13 +102,12 @@
                                 </div>
                                 <div class="span3">
                                     <a href="#" id="select-basic-dwc" class="select-download-type btn-bs3 btn-white btn-large btn-block margin-top-1 margin-bottom-1 font-xxsmall" type="button">
-                                        <i class="fa fa-check hide"></i><span>Select</span>
+                                        <i class="fa fa-check color--white hide"></i><span>Select</span>
                                     </a>
-                                    <!-- <a href="#" class="btn btn-large btn-success btn-block margin-bottom-1 font-xxsmall" type="button">Customise</a> -->
                                 </div><!-- End span3 -->
                                 <hr class="visible-phone"/>
                             </div><!-- End row -->
-                            <div class="row-fluid">
+                            <div class="row-fluid margin-top-1">
                                 <div class="span2">
                                     <div class="contrib-stats">
                                         <div class="no-of-questions">
@@ -112,20 +120,20 @@
                                 <div class="span7">
                                     <h4 class="text-uppercase heading-underlined">Species Checklist Download</h4>
                                     <p class="font-xsmall">
-                                        The list of taxa in the occurrence record record set. Each individual species is only listed once.
+                                        A comma separated values (CSV) file, listing species in the occurrence records
+                                        result set. Each individual species is only listed once.
                                     </p>
                                 </div>
                                 <div class="span3">
 
                                     <a href="#" id="select-checklist" class="select-download-type btn-bs3 btn-white btn-large btn-block margin-top-1 margin-bottom-1 font-xxsmall" type="button">
-                                        <i class="fa fa-check hide"></i><span>Select</span>
+                                        <i class="fa fa-check color--white hide"></i><span>Select</span>
                                     </a>
-                                    <!-- <a href="#" class="btn btn-large btn-success btn-block margin-bottom-1 font-xxsmall" type="button">Customise</a> -->
                                 </div><!-- End span3 -->
                                 <hr class="visible-phone"/>
                             </div><!-- End row -->
 
-                            <div class="row-fluid">
+                            <div class="row-fluid margin-top-1">
                                 <div class="span2">
                                     <div class="contrib-stats">
                                         <div class="no-of-questions">
@@ -138,15 +146,15 @@
                                 <div class="span7">
                                     <h4 class="text-uppercase heading-underlined">Species Field-Guide Download</h4>
                                     <p>
-                                        A document containing species profile information for the taxa in the occurrence record set.  Each individual species is only listed once.
+                                        A PDF document containing species profile information (including photos and maps) for the
+                                        species in the occurrence record set.  Each individual species is only listed once and is
+                                        limited to a maximum of 150 species.
                                     </p>
                                 </div>
                                 <div class="span3">
-
                                     <a href="#" id="select-basic-fieldguide" class="select-download-type btn-bs3 btn-white btn-large btn-block margin-top-1 margin-bottom-1 font-xxsmall" type="button">
-                                        <i class="fa fa-check hide"></i><span>Select</span>
+                                        <i class="fa fa-check color--white hide"></i><span>Select</span>
                                     </a>
-                                    <!-- <a href="#" class="btn btn-large btn-success btn-block margin-bottom-1 font-xxsmall" type="button">Customise</a> -->
                                 </div><!-- End span3 -->
                             </div><!-- End row -->
                         </div><!-- End comment-wrapper push -->
@@ -164,7 +172,7 @@
                                 <div class="span12">
                                     <h4 class="heading-medium-alt">Step 2</h4>
                                     <p>
-                                        Select your download reason and then select the Queue Download button to begin your download.
+                                        Select your download reason and then click the "Next" button.
                                     </p>
                                 </div>
                             </div>
@@ -173,44 +181,35 @@
                                     <div class="contrib-stats">
                                         <div class="no-of-questions">
                                             <div class="survey-details">
-                                                <div class="survey-counter"><strong><i class="fa fa-download color--apple"></i></strong></div>
+                                                <div class="survey-counter"><strong><i class="fa fa-tags color--apple"></i></strong></div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="span7">
-                                    <!-- <h4 class="text-uppercase heading-underlined">Species Checklist Download</h4>
-                        <p class="font-xsmall">
-                          The list of taxa in the occurrence record record set. Each individual species is only listed once.
-                        </p>
-
-                        <p class="separator t-center margin-bottom-2"><span>Download reason</span></p> -->
-
                                     <form class="form-horizontal margin-top-1">
                                         <div class="form-group">
-                                            <label for="inputEmail3" class="span3 control-label heading-medium"><span class="color--mellow-red">*</span>Tell us why</label>
-                                            <div class="span8">
-                                                <select class="form-control input-lg" required="true" autofocus>
-                                                    <option>Select a reason ...</option>
+                                            <label for="downloadReason" class="control-label heading-small"><span class="color--mellow-red">*</span>Tell us why</label>
+                                            <div class="controls">
+                                                <select class="form-control input-lg" id="downloadReason" required="true" autofocus>
+                                                    <option disabled selected>Select a reason ...</option>
                                                     <g:each var="it" in="${downloads.getLoggerReasons()}">
                                                         <option value="${it.id}">${it.name}</option>
                                                     </g:each>
                                                 </select>
-                                                <p class="help-block"><strong>This field is mandatory.</strong> To queue your download, tell us why you are downloading this file.</p>
+                                                <p class="help-block"><strong>This field is mandatory.</strong> Choose the best "use type" from the drop-down menu above.</p>
                                             </div>
                                         </div>
                                     </form>
                                 </div>
                                 <div class="span3">
-
-                                    <a href="#" class="btn btn-large btn-primary btn-block margin-top-1 margin-bottom-1 font-xxsmall" type="button">Next <i class="fa fa-chevron-right"></i></a>
-
+                                    <a href="#" id="nextBtn" class="btn btn-large btn-primary btn-block margin-top-1 margin-bottom-1 font-xxsmall" type="button">Next <i class="fa fa-chevron-right color--white"></i></a>
                                 </div><!-- End span3 -->
                             </div>
                             <div class="row-fluid">
                                 <div class="span12">
                                     <!-- Alert Information -->
-                                    <div class="alert alert-danger alert-dismissible" role="alert">
+                                    <div class="alert alert-danger alert-dismissible hide" role="alert">
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                         <strong>Error:</strong> Ensure that you 1) select your download type, 2) tell us why and 3) queue the download.
                                     </div>
@@ -227,15 +226,20 @@
 <g:javascript>
     $( document ).ready(function() {
         $('a.select-download-type').click(function(e) {
-            e.preventDefault(); // its link so stop any regular link stuff hapenning
+            e.preventDefault(); // its a link so stop any regular link stuff hapenning
             var link = this;
             if ($(link).hasClass('btn-success')) {
-                // already selected
+                // already selected so de-select it
                 $(link).find('span').text('Select');
                 $(link).removeClass('btn-success');
                 $(link).addClass('btn-white');
                 $(link).find('.fa').addClass('hide');
                 $(link).blur(); // prevent BS focus
+
+                if ($(link).attr('id') == "select-basic-dwc") {
+                    // show type options
+                    $('#downloadFormatForm').slideUp();
+                }
             } else {
                 // not selected
                 $('a.select-download-type').find('span').text('Select'); // reset any other selcted buttons
@@ -247,9 +251,21 @@
                 $(link).addClass('btn-success');
                 $(link).find('.fa').removeClass('hide');
                 $(link).blur(); // prevent BS focus
+
+                if ($(link).attr('id') == "select-basic-dwc") {
+                    // show type options
+                    $('#downloadFormatForm').slideDown();
+                } else {
+                    $('#downloadFormatForm').slideUp();
+                }
             }
         });
 
+        $('#nextBtn').click(function(e) {
+            e.preventDefault();
+            // do form validation
+
+        });
     });
 </g:javascript>
 </body>

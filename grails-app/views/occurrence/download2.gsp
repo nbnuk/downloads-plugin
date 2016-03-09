@@ -27,19 +27,26 @@
     <title>ALA Data Download</title>
     <r:require module="download"/>
     <style type="text/css">
-        a .fa {
+        a h4 > .fa {
             width: 18px;
             margin-right: 5px;
+            color:#9A9A9A;
+        }
+        a h4 {
+            font-size: 16px;
         }
         .list-group-item {
-            padding:8px 12px;
+            padding:5px 0px;
+        }
+        .margin-top-1 {
+            margin-top: 2em;
         }
 
 </style>
 </head>
 <body>
 <div class="row">
-    <div class="span10">
+    <div class="span10 offset1">
         <h1 class="hidden">Welcome to the Atlas of Living Australia website</h1><!-- Show the H1 on each page -->
 
         <!-- Breadcrumb -->
@@ -54,12 +61,12 @@
             <div class="button-toolbar row-fluid">
                 <div class="btn-group">
                     <!-- <a class="btn btn-default" disabled="disabled" href="#"><span class="glyphicon glyphicon-th" aria-hidden="true"></span> <span class="hidden-xs hidden-sm">Toggle grid view</span></a> -->
-                    <a class="btn btn-default select-all-btn" href="#"><i class="fa fa-check"></i> <span class="hidden-xs hidden-sm">Select all</span></a>
-                    <a class="btn btn-default select-none-btn" href="#"><i class="fa fa-times"></i> <span class="hidden-xs hidden-sm">Unselect all</span></a>
+                    <a class="btn btn-default select-all-btn" href="#"><i class="fa fa-check"></i> <span class="hidden-phone">Select all</span></a>
+                    <a class="btn btn-default select-none-btn" href="#"><i class="fa fa-times"></i> <span class="hidden-phone">Unselect all</span></a>
                 </div>
                 <div class="btn-group pull-right">
-                    <a class="btn btn-default save-btn"><i class="fa fa-cog"></i> <span class="hidden-xs">Save preferences</span></a>
-                    <a class="btn btn-primary next-btn" href="#"><span class="hidden-xs">Next <i class="fa fa-chevron-right"></i></span></a>
+                    <a class="btn btn-default save-btn"><i class="fa fa-cog"></i> <span class="hidden-phone">Save preferences</span></a>
+                    <a class="btn btn-primary next-btn" href="#"><span class="hidden-phone">Next</span> <i class="fa fa-chevron-right color--white"></i></a>
                 </div>
             </div>
         </g:set>
@@ -68,21 +75,23 @@
 
         ${raw(toolbar)}
 
-        <g:each in="${customSections}" var="section">
-            <div class="well">
-                <div class="row-fluid">
+        <div class="well">
+            <g:each in="${customSections}" var="section" status="s">
+                <div class="row-fluid ${(s > 0) ? "margin-top-1" : ""}">
                     <div class="span12">
                         <div class="panel panel-default">
                             <div class="comment-wrapper push">
                                 <div class="row-fluid">
-                                    <div class="span2  hidden-phone">
-                                        <div class="contrib-stats">
-                                            <div class="no-of-questions">
-                                                <div class="survey-details">
-                                                    <div class="survey-counter"><strong><i class="fa fa-cog color--yellow"></i></strong></div>
+                                    <div class="span2 hidden-phone">
+                                        <g:if test="${s == 0}">
+                                            <div class="contrib-stats">
+                                                <div class="no-of-questions">
+                                                    <div class="survey-details">
+                                                        <div class="survey-counter"><strong><i class="fa fa-cog color--yellow"></i></strong></div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </g:if>
                                     </div>
                                     <div class="span8">
                                         <h4 class="text-uppercase heading-underlined"><g:message code="section.${section.key}" default="${section.key}"/></h4>
@@ -94,7 +103,7 @@
                                             <g:each in="${section.value}" var="group" status="i">
                                                 <g:set var="disabled" value="${(mandatoryFields.contains(group)) ? true : false }"/>
                                                 <g:set var="active" value="${(mandatoryFields.contains(group) || userSavedFields.contains(group)) ? true : false }"/>
-                                                <a href="#" class="list-group-item ${(disabled)?"disabled":""} ${(active)?"list-group-item-success":""}">
+                                                <a href="#" class="list-group-item ${(disabled)?"disabled":""} ${(active)?"list-group-item-success":""}" title="${(disabled)?"required item (cannot be de-selected)":""}">
                                                     <div class="checkbox pull-left">
                                                         <label><input type="checkbox" value="${group}" ${(disabled || active)?"checked='checked'":""}></label>
                                                     </div>
@@ -115,8 +124,8 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </g:each>
+            </g:each>
+        </div>
 
         ${raw(toolbar)}
 
@@ -124,6 +133,10 @@
 </div>
 <g:javascript>
     $( document ).ready(function() {
+        $('.list-group-item.disabled').click(function(e) {
+            e.preventDefault(); // prevent page jump
+        }).tooltip();
+
         // catch clicks on list group items
         $('a.list-group-item').not('.disabled').click(function(e) {
             e.preventDefault(); // its link so stop any regular link stuff hapenning

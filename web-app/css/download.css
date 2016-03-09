@@ -35,7 +35,7 @@ body h1, body h2, body h3, body h4, body h5 { font-weight:bold; color:#5f5d60;}
 .survey-counter {display: inline-block;font-size: 64px;}
 .text-uppercase { text-transform: uppercase; }
 .heading-large{font-size:36px;font-weight:700;line-height:1.1111111111;margin-bottom:.55556em;margin-top:1.25em;text-transform:none;}
-.heading-medium{border-bottom:inherit;font-size:24px;font-weight:700;line-height:1.25;margin-bottom:.83333em;margin-top:1.875em;text-transform:none;}
+.heading-medium{border-bottom:inherit;font-size:24px;font-weight:700;line-height:1.25;margin-bottom:.83333em;margin-top:1.2em;text-transform:none;}
 .heading-medium-alt{
     font-size: 24px;
     font-weight: 700;
@@ -49,8 +49,8 @@ body h1, body h2, body h3, body h4, body h5 { font-weight:bold; color:#5f5d60;}
 
 .help-block{font-size: 14px;font-weight: 400;}
 .button-toolbar{margin:20px 0;}
-a i.fa{color:#9A9A9A;}
-a i.fa:hover{color:#DA644E;}
+a > i.fa{color:#9A9A9A;}
+a > i.fa:hover{color:#DA644E;}
 
 /*.btn-white {*/
     /*color: #333333;*/
@@ -211,6 +211,8 @@ input[type="checkbox"]:hover:not(:checked) ~ .funky-label {color: #888;}
 input[type="checkbox"]:checked ~ .funky-label:before {content:'\2714';text-indent: 1.3em;color: #9CE2AE;background-color: #4DCB6D;}
 input[type="checkbox"]:checked ~ .funky-label {color: #777;}
 input[type="checkbox"]:focus ~ .funky-label:before {box-shadow: 0 0 0 3px #999;}
+
+.margin-top-1 {margin-top: 1em;}
 
 .list-group-item{position:relative;display:block;padding:10px 15px;margin-bottom:-1px;background-color:#fff;border:1px solid #ddd}
 .list-group-item:first-child{border-top-left-radius:4px;border-top-right-radius:4px}
