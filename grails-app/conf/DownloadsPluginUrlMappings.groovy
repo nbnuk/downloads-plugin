@@ -7,9 +7,9 @@ class DownloadsPluginUrlMappings {
             }
         }
 
-        "/occurrences/download1"(controller: "download", action:"download1")
-        "/occurrences/download2"(controller: "download", action:"download2")
-        "/occurrences/download3"(controller: "download", action:"download3")
+        "/download/"(controller: "download")
+//        "/download/options2"(controller: "download", action:"options2")
+//        "/download/confirm"(controller: "download", action:"download3")
         "500"(view:'/error')
 	}
 }

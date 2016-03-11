@@ -11,6 +11,9 @@
  * rights and limitations under the License.
  */
 
+// These are sensible defaults that are copied into the application's config object and can be overridden
+// by the client application or its external config file
+
 customSections = [
     darwinCore: ["recordLevelTerms","occurrence","organism","materialSampleSpecimen","location","geologicalContext","identification","taxon","measurementOrFact","resourceRelationship"],
     speciesTraits: ["conservationStatus"],
@@ -19,3 +22,7 @@ customSections = [
 ]
 
 mandatoryFields = ["recordLevelTerms","occurrence"]
+
+extraFields = "dataResourceUid,dataResourceName.p,occurrenceStatus.p"
+
+indexedDownloadUrl = "http://biocache.ala.org.au/ws/occurrences/offline/download"

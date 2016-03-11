@@ -16,21 +16,19 @@ package au.org.ala.downloads
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsParameterMap
 
 class DownloadController {
-    def customiseService
+    def userPrefsService, authService, downloadService
 
-    static defaultAction = "download1"
+    static defaultAction = "options1"
     static removeParams = ["action","controller"]
 
-    def download1() {
-        def searchParams = params.searchParams
-        def targetUri = params.targetUri
-        log.debug "searchParams = ${searchParams}"
+    def options1(DownloadParams downloadParams) {
+        log.debug "downloadParams = ${downloadParams}"
         log.debug "request.getHeader('referer') = ${request.getHeader('referer')}"
 
-        if (searchParams) {
-            render (view:'/occurrence/download1', model: [
-                    searchParams: searchParams,
-                    targetUri: targetUri
+        if (downloadParams.searchParams) {
+            render (view:'options1', model: [
+                    searchParams: downloadParams.searchParams,
+                    targetUri: downloadParams.targetUri
             ])
         } else {
             flash.message = "Download error - No search query parameters were provided."
@@ -39,33 +37,35 @@ class DownloadController {
         }
     }
 
-    def download2() {
-        cleanupParams(params)
-        def searchParams = params.searchParams
-        def targetUri = params.targetUri
-        def downloadType = params.downloadType
-        def downloadFormat = params.format
-        def downloadReason = params.reasonCode
-        log.debug "params = ${params}"
-        if (!downloadType || !downloadReason) {
+    def options2(DownloadParams downloadParams) {
+        //cleanupParams(params)
+        def email = authService?.getEmail()
+        def userId = authService?.getUserId()
+        if (!downloadParams.downloadType || !downloadParams.reasonTypeId) {
             flash.message = "No type or reason selected. Please try again."
-            redirect(action: "download1", params: params)
-        } else if (downloadType == "basic-dwc" && downloadFormat == "custom") {
-            render (view:'/occurrence/download2', model: [
+            redirect(action: "options1", params: params)
+        } else if (downloadParams.downloadType == "basic-dwc" && downloadParams.downloadFormat == "custom") {
+            render (view:'options2', model: [
                     customSections: grailsApplication.config.customSections,
                     mandatoryFields: grailsApplication.config.mandatoryFields,
-                    userSavedFields: customiseService.getUserSavedFields(),
-                    searchParams: searchParams,
-                    targetUri: targetUri
+                    userSavedFields: userPrefsService.getUserSavedFields(userId),
+                    searchParams: downloadParams.searchParams,
+                    targetUri: downloadParams.targetUri
             ])
         } else {
-            render (view:'/occurrence/download3', model: [searchParams: searchParams, targetUri: targetUri ])
+            // trigger triggerDownload
+            log.debug "downloadService is a ${downloadService.class.getName()}"
+            log.debug "downloadParams is a ${downloadParams.class.getName()}"
+            downloadParams.extra = grailsApplication.config.extraFields ?: downloadParams.extra
+            downloadParams.email = email
+            def json = downloadService.triggerDownload(downloadParams)
+            render (view:'confirm', model: [searchParams: downloadParams.searchParams, targetUri: downloadParams.targetUri, json: json ])
         }
     }
 
-    def download3() {
+    def confirm () {
         // testing only
-        render (view:'/occurrence/download3')
+        //render (view:'/triggerDownload/options3')
     }
 
     private cleanupParams(params) {

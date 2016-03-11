@@ -15,7 +15,7 @@ class DownloadsPluginGrailsPlugin {
     def author = "Nick dos Remedios"
     def authorEmail = "nick.dosremedios@csiro.au"
     def description = '''\
-Grails plugin to provide common user interface for users to download occurrence records from
+Grails plugin to provide common user interface for users to triggerDownload occurrence records from
 ALA Biocache system.
 '''
 

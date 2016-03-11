@@ -86,7 +86,7 @@
                                         <div class="control-group">
                                             <label for="downloadFormat" class="control-label heading-small"><span class="color--mellow-red">*</span>Select format</label>
                                             <div class="controls">
-                                                <select class="form-control input-lg" id="downloadFormat"  autofocus="">
+                                                <select class="form-control input-lg" id="downloadFormat">
                                                     <option value="" disabled selected>Select a download format</option>
                                                     <option value="dwc">Full Darwin Core</option>
                                                     <option value="legacy">Legacy Format Occurrence</option>
@@ -191,7 +191,7 @@
                                         <div class="form-group">
                                             <label for="downloadReason" class="control-label heading-small"><span class="color--mellow-red">*</span>Tell us why</label>
                                             <div class="controls">
-                                                <select class="form-control input-lg" id="downloadReason" required="true" autofocus>
+                                                <select class="form-control input-lg" id="downloadReason">
                                                     <option value="" disabled selected>Select a reason ...</option>
                                                     <g:each var="it" in="${downloads.getLoggerReasons()}">
                                                         <option value="${it.id}">${it.name}</option>
@@ -226,6 +226,7 @@
 </div>
 <g:javascript>
     $( document ).ready(function() {
+        // click event on download type select buttons
         $('a.select-download-type').click(function(e) {
             e.preventDefault(); // its a link so stop any regular link stuff hapenning
             var link = this;
@@ -262,13 +263,14 @@
             }
         });
 
+        // click event on next button
         $('#nextBtn').click(function(e) {
             e.preventDefault();
             // do form validation
             var type = $('.select-download-type.btn-success').attr('id');
             var format = $('#downloadFormat').find(":selected").val();
             var reason = $('#downloadReason').find(":selected").val();
-
+            //alert("format = " + format);
             if (type) {
                 type = type.replace(/^select-/,''); // remove prefix
                 $('#errorAlert').hide();
@@ -280,6 +282,7 @@
                         $('#downloadType').focus();
                         $('#errorAlert').show();
                         $('#errorFormat').show();
+                        return false;
                     } else {
                         $('#errorFormat').hide();
                         $('#errorAlert').hide();
@@ -292,7 +295,7 @@
                 } else {
                     // go to next screen
                     $('#errorAlert').hide();
-                    window.location = "${g.createLink(action:'download2')}?searchParams=${searchParams.encodeAsURL()}&targetUri=${targetUri.encodeAsURL()}&downloadType=" + type + "&reasonCode=" + reason + "&format=" + format;
+                    window.location = "${g.createLink(action:'options2')}?searchParams=${searchParams.encodeAsURL()}&targetUri=${targetUri.encodeAsURL()}&downloadType=" + type + "&reasonTypeId=" + reason + "&downloadFormat=" + format;
                 }
             } else {
                 $('#errorAlert').show();
