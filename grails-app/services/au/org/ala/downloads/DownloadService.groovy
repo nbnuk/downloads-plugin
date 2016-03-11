@@ -13,6 +13,8 @@
 
 package au.org.ala.downloads
 
+import grails.util.Holders
+
 /**
  * Service to perform the triggerDownload (marshalls to appropriate web service)
  */
@@ -22,6 +24,9 @@ class DownloadService {
 
     def triggerDownload(DownloadParams downloadParams) throws Exception {
         if (downloadParams.downloadType == "basic-dwc") {
+            downloadParams.dwcHeaders = true
+            triggerOfflineDownload(downloadParams)
+        } else if (downloadParams.downloadType == "legacy") {
             triggerOfflineDownload(downloadParams)
         } else {
             log.warn "Other download types not yet implemented"
@@ -29,7 +34,7 @@ class DownloadService {
     }
 
     def triggerOfflineDownload(DownloadParams downloadParams) {
-        String url = grailsApplication.config.indexedDownloadUrl + downloadParams.toString()
+        String url = grailsApplication.config.indexedDownloadUrl + downloadParams.biocacheDownloadParamString()
         log.debug "Doing GET on ${url}"
         def json = get(url)
         json

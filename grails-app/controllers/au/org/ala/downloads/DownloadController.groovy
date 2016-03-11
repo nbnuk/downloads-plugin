@@ -19,10 +19,10 @@ class DownloadController {
     def userPrefsService, authService, downloadService
 
     static defaultAction = "options1"
-    static removeParams = ["action","controller"]
 
     def options1(DownloadParams downloadParams) {
-        log.debug "downloadParams = ${downloadParams}"
+        //log.debug "downloadParams = ${downloadParams}"
+        log.debug "biocacheDownloadParamString = ${downloadParams.biocacheDownloadParamString()}"
         log.debug "request.getHeader('referer') = ${request.getHeader('referer')}"
 
         if (downloadParams.searchParams) {
@@ -69,6 +69,7 @@ class DownloadController {
     }
 
     private cleanupParams(params) {
+        def removeParams = ["action","controller"]
         GrailsParameterMap paramsCopy = params.clone() // to avoid concurrent access exception
         paramsCopy.each {
             if (removeParams.contains(it.key)) {

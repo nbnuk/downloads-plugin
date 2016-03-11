@@ -14,6 +14,7 @@ package au.org.ala.downloads
 
 import grails.validation.Validateable
 import groovy.util.logging.Log4j
+import org.apache.commons.lang.StringUtils
 import org.codehaus.groovy.grails.web.util.WebUtils
 
 /**
@@ -28,22 +29,43 @@ class DownloadParams {
     String targetUri
     String downloadType
     String downloadFormat
+    // fields for download service
+    // see https://github.com/AtlasOfLivingAustralia/biocache-service/blob/master/src/main/java/au/org/ala/biocache/dto/DownloadRequestParams.java
     String reasonTypeId
+    String sourceTypeId
+    String fields
     String extra = "dataResourceUid,dataResourceName.p,occurrenceStatus.p"
     String file = "data"
     String email
+    Boolean dwcHeaders = false
+    Boolean includeMisc = false
 
     @Override
     public String toString() {
+        Map paramsMap = mapForPropsWithExcludeList()
+        WebUtils.toQueryString(paramsMap)
+    }
+
+    private Map mapForPropsWithExcludeList(List excludes = []) {
         Map paramsMap = [:]
-        List excludeParams = ["class","constraints","errors","ValidationErrors","action","controller"]
+        List excludeParams = ["mapForPropsWithExcludeList","class","constraints","errors","ValidationErrors","action","controller"]
+
+        if (excludes) {
+            excludeParams.addAll(excludes)
+        }
+
         this.properties.each { prop, val ->
             if (val && !excludeParams.contains(prop)) {
                 paramsMap.put(prop, val)
             }
         }
-        log.debug "paramsMap = ${paramsMap}"
+        log.warn "paramsMap = ${paramsMap}"
+        paramsMap
+    }
 
-        WebUtils.toQueryString(paramsMap)
+    public String biocacheDownloadParamString() {
+        Map paramsMap = mapForPropsWithExcludeList(["searchParams","targetUri","downloadType","downloadFormat"])
+        String queryString = WebUtils.toQueryString(paramsMap) + "&" + StringUtils.removeStart(searchParams,"?")
+        queryString
     }
 }
