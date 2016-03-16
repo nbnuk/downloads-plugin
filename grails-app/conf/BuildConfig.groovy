@@ -46,5 +46,7 @@ grails.project.dependency.resolution = {
             export = false
         }
         //compile ":ala-bootstrap3:1.5"
+        compile ':cache:1.1.1'
+        compile ":cache-ehcache:1.0.0"
     }
 }

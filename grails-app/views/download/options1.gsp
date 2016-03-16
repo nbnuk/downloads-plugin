@@ -88,10 +88,9 @@
                                             <div class="controls">
                                                 <select class="form-control input-lg" id="downloadFormat">
                                                     <option value="" disabled selected>Select a download format</option>
-                                                    <option value="dwc">Full Darwin Core</option>
-                                                    <option value="legacy">Legacy Format Occurrence</option>
-                                                    <option value="custom">Customise Your Download</option>
-                                                    <!-- <option>Problem logging and feedback</option> -->
+                                                    <g:each in="${au.org.ala.downloads.DownloadFormat.values()}" var="df">
+                                                        <option value="${df.format}"><g:message code="format.${df.format}" /></option>
+                                                    </g:each>
                                                 </select>
                                                 <p class="help-block"><strong>This field is mandatory.</strong> Use the
                                                 dropdown to select the relevant download format - if in doubt choose "full darwin core".</p>
@@ -101,7 +100,7 @@
 
                                 </div>
                                 <div class="span3">
-                                    <a href="#" id="select-basic-dwc" class="select-download-type btn-bs3 btn-white btn-large btn-block margin-top-1 margin-bottom-1 font-xxsmall" type="button">
+                                    <a href="#" id="select-${au.org.ala.downloads.DownloadType.RECORDS.type}" class="select-download-type btn-bs3 btn-white btn-large btn-block margin-top-1 margin-bottom-1 font-xxsmall" type="button">
                                         <i class="fa fa-check color--white hide"></i><span>Select</span>
                                     </a>
                                 </div><!-- End span3 -->
@@ -126,7 +125,7 @@
                                 </div>
                                 <div class="span3">
 
-                                    <a href="#" id="select-checklist" class="select-download-type btn-bs3 btn-white btn-large btn-block margin-top-1 margin-bottom-1 font-xxsmall" type="button">
+                                    <a href="#" id="select-${au.org.ala.downloads.DownloadType.CHECKLIST.type}" class="select-download-type btn-bs3 btn-white btn-large btn-block margin-top-1 margin-bottom-1 font-xxsmall" type="button">
                                         <i class="fa fa-check color--white hide"></i><span>Select</span>
                                     </a>
                                 </div><!-- End span3 -->
@@ -152,7 +151,7 @@
                                     </p>
                                 </div>
                                 <div class="span3">
-                                    <a href="#" id="select-basic-fieldguide" class="select-download-type btn-bs3 btn-white btn-large btn-block margin-top-1 margin-bottom-1 font-xxsmall" type="button">
+                                    <a href="#" id="select-${au.org.ala.downloads.DownloadType.FIELDGUIDE.type}" class="select-download-type btn-bs3 btn-white btn-large btn-block margin-top-1 margin-bottom-1 font-xxsmall" type="button">
                                         <i class="fa fa-check color--white hide"></i><span>Select</span>
                                     </a>
                                 </div><!-- End span3 -->
@@ -238,7 +237,7 @@
                 $(link).find('.fa').addClass('hide');
                 $(link).blur(); // prevent BS focus
 
-                if ($(link).attr('id') == "select-basic-dwc") {
+                if ($(link).attr('id') == "select-${au.org.ala.downloads.DownloadType.RECORDS.type}") {
                     // show type options
                     $('#downloadFormatForm').slideUp();
                 }
@@ -254,7 +253,7 @@
                 $(link).find('.fa').removeClass('hide');
                 $(link).blur(); // prevent BS focus
 
-                if ($(link).attr('id') == "select-basic-dwc") {
+                if ($(link).attr('id') == "select-${au.org.ala.downloads.DownloadType.RECORDS.type}") {
                     // show type options
                     $('#downloadFormatForm').slideDown();
                 } else {
@@ -275,7 +274,7 @@
                 type = type.replace(/^select-/,''); // remove prefix
                 $('#errorAlert').hide();
 
-                if (type == "basic-dwc") {
+                if (type == "${au.org.ala.downloads.DownloadType.RECORDS.type}") {
                     // check for format
                     //console.log("format",format);
                     if (!format) {

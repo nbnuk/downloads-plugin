@@ -15,7 +15,7 @@ package au.org.ala.downloads
 
 class CustomiseService {
 
-    def getUserSavedFields() {
+    def getUserSavedFields(userId) {
         []
     }
 

@@ -12,36 +12,48 @@
  */
 package au.org.ala.downloads
 
+import grails.converters.JSON
+import grails.util.Holders
 import grails.validation.Validateable
 import groovy.util.logging.Log4j
 import org.apache.commons.lang.StringUtils
 import org.codehaus.groovy.grails.web.util.WebUtils
 
 /**
- * Form backing bean for triggerDownload params
+ * DTO for the params in both the download form and the backend download service
  *
  * @author "Nick dos Remedios <Nick.dosRemedios@csiro.au>"
  */
 @Validateable
 @Log4j
 class DownloadParams {
-    String searchParams
-    String targetUri
-    String downloadType
-    String downloadFormat
-    // fields for download service
+    String searchParams // q, fq and qc params as query string, URI encoded when sent from browser
+    String targetUri // path to page calling the download form (so we can return to that page after download complete)
+    String downloadType // records, checklist or field guide TODO put in an Enum?
+    String downloadFormat // full-dwc, legacy, custom TODO put in an Enum?
+    List customClasses // custom download page - list of field classes
+    //
+    // Fields for download service
     // see https://github.com/AtlasOfLivingAustralia/biocache-service/blob/master/src/main/java/au/org/ala/biocache/dto/DownloadRequestParams.java
+    //
     String reasonTypeId
     String sourceTypeId
     String fields
-    String extra = "dataResourceUid,dataResourceName.p,occurrenceStatus.p"
-    String file = "data"
+    String extra // "dataResourceUid,dataResourceName.p,occurrenceStatus.p"
+    String file  // file name for download file
     String email
     Boolean dwcHeaders = false
-    Boolean includeMisc = false
+    Boolean includeMisc = false // Miscellaneous fields
+    String qa // can be empty, a comma separated fields or "all"
 
     @Override
     public String toString() {
+        Map paramsMap = mapForPropsWithExcludeList()
+        //WebUtils.toQueryString(paramsMap)
+        paramsMap as JSON
+    }
+
+    public String queryString() {
         Map paramsMap = mapForPropsWithExcludeList()
         WebUtils.toQueryString(paramsMap)
     }
@@ -59,12 +71,12 @@ class DownloadParams {
                 paramsMap.put(prop, val)
             }
         }
-        log.warn "paramsMap = ${paramsMap}"
+
         paramsMap
     }
 
     public String biocacheDownloadParamString() {
-        Map paramsMap = mapForPropsWithExcludeList(["searchParams","targetUri","downloadType","downloadFormat"])
+        Map paramsMap = mapForPropsWithExcludeList(["searchParams","targetUri","downloadType","downloadFormat","customClasses"])
         String queryString = WebUtils.toQueryString(paramsMap) + "&" + StringUtils.removeStart(searchParams,"?")
         queryString
     }

@@ -13,10 +13,11 @@
 
 package au.org.ala.downloads
 
+import grails.converters.JSON
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsParameterMap
 
 class DownloadController {
-    def userPrefsService, authService, downloadService
+    def customiseService, authService, downloadService
 
     static defaultAction = "options1"
 
@@ -39,27 +40,36 @@ class DownloadController {
 
     def options2(DownloadParams downloadParams) {
         //cleanupParams(params)
+        log.debug "downloadParams = ${downloadParams}"
+        log.debug "params = ${params}"
         def email = authService?.getEmail()
         def userId = authService?.getUserId()
         if (!downloadParams.downloadType || !downloadParams.reasonTypeId) {
             flash.message = "No type or reason selected. Please try again."
             redirect(action: "options1", params: params)
-        } else if (downloadParams.downloadType == "basic-dwc" && downloadParams.downloadFormat == "custom") {
+        } else if (downloadParams.downloadType == DownloadType.RECORDS.type && downloadParams.downloadFormat == DownloadFormat.CUSTOM.format && !downloadParams.customClasses) {
+            Map sectionsMap = downloadService.getFieldsMap()
+            log.debug "sectionsMap = ${sectionsMap as JSON}"
+            Map customSections = grailsApplication.config.customSections
+            // customSections.darwinCore = sectionsMap.keySet()
             render (view:'options2', model: [
-                    customSections: grailsApplication.config.customSections,
+                    customSections: customSections,
                     mandatoryFields: grailsApplication.config.mandatoryFields,
-                    userSavedFields: userPrefsService.getUserSavedFields(userId),
-                    searchParams: downloadParams.searchParams,
-                    targetUri: downloadParams.targetUri
+                    userSavedFields: customiseService.getUserSavedFields(userId),
+                    //searchParams: downloadParams.searchParams,
+                    downloadParams: downloadParams,
+                    //targetUri: downloadParams.targetUri
             ])
-        } else {
+        } else if (downloadParams.downloadType == DownloadType.RECORDS.type) {
             // trigger triggerDownload
-            log.debug "downloadService is a ${downloadService.class.getName()}"
-            log.debug "downloadParams is a ${downloadParams.class.getName()}"
-            downloadParams.extra = grailsApplication.config.extraFields ?: downloadParams.extra
+            //downloadParams.extra = grailsApplication.config.extraFields ?: downloadParams.extra
             downloadParams.email = email
             def json = downloadService.triggerDownload(downloadParams)
             render (view:'confirm', model: [searchParams: downloadParams.searchParams, targetUri: downloadParams.targetUri, json: json ])
+        } else if (downloadParams.downloadType == DownloadType.CHECKLIST.type) {
+
+        } else if (downloadParams.downloadType == DownloadType.FIELDGUIDE.type) {
+
         }
     }
 

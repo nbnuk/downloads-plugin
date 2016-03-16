@@ -13,65 +13,104 @@
 
 package au.org.ala.downloads
 
-import grails.util.Holders
+import grails.plugin.cache.Cacheable
+import org.codehaus.groovy.grails.web.json.JSONArray
+import org.codehaus.groovy.grails.web.json.JSONObject
 
 /**
- * Service to perform the triggerDownload (marshalls to appropriate web service)
+ * Service to perform the records downloads (marshalls to appropriate web service)
  */
 class DownloadService {
-    // http://biocache.ala.org.au/ws/occurrences/index/download?q=state%3A%22Australian+Capital+Territory%22&fq=-raw_taxon_name%3A*&fq=multimedia%3A%22Image%22&email=nick.dosremedios@csiro.au&sourceTypeId=0&reasonTypeId=10&file=legacy&extra=dataResourceUid,dataResourceName.p,occurrenceStatus.p
-    def grailsApplication
+    def grailsApplication, webService
 
     def triggerDownload(DownloadParams downloadParams) throws Exception {
-        if (downloadParams.downloadType == "basic-dwc") {
+
+        if (downloadParams.downloadType == DownloadType.RECORDS.type) {
+            // set some defaults
             downloadParams.dwcHeaders = true
-            triggerOfflineDownload(downloadParams)
-        } else if (downloadParams.downloadType == "legacy") {
-            triggerOfflineDownload(downloadParams)
+            downloadParams.file = downloadParams.downloadType + "-" + new Date().format("yyyy-MM-dd")
+            // catch different formats
+            if (downloadParams.downloadFormat == DownloadFormat.DWC.format) {
+                downloadParams.fields = grailsApplication.config.dwcFields\
+                triggerOfflineDownload(downloadParams)
+            } else if (downloadParams.downloadFormat == DownloadFormat.LEGACY.format) {
+                downloadParams.extra = (grailsApplication.config.flatten().containsKey("biocache.downloads.extra")) ? grailsApplication.config.biocache.downloads.extra : ""
+                downloadParams.dwcHeaders = false
+                triggerOfflineDownload(downloadParams)
+            } else if (downloadParams.downloadFormat == DownloadFormat.CUSTOM.format) {
+                List customFields = []
+                downloadParams.customClasses.each {
+                    log.debug "classs = ${it}"
+
+                    List dwcClasses = grailsApplication.config.flatten().containsKey("customSections.darwinCore") ? grailsApplication.config.customSections.darwinCore : []
+                    log.debug "dwcClasses = ${dwcClasses}"
+                    if (dwcClasses.contains(it)) {
+                        customFields.addAll(getFieldsForDwcClass(it))
+                    } else if (grailsApplication.config.containsKey(it)) {
+                        def fields = grailsApplication.config.get(it)
+                        customFields.addAll(fields)
+                    } else if (it == "qualityAssertions") {
+                        downloadParams.qa = true
+                    } else {
+                        throw new Exception("Custom field class not recognised: ${it}")
+                    }
+                }
+                downloadParams.fields = customFields.join(",")
+                triggerOfflineDownload(downloadParams)
+            } else {
+                def msg = "Download records format not recognised: ${downloadParams.downloadFormat}"
+                log.warn msg
+                throw new IllegalArgumentException(msg)
+            }
+
+        } else if (downloadParams.downloadType == DownloadType.CHECKLIST.type) {
+
+        } else if (downloadParams.downloadType == DownloadType.FIELDGUIDE.type) {
+
         } else {
-            log.warn "Other download types not yet implemented"
+            def msg = "Download type not recognised: ${downloadParams.downloadType}"
+            log.warn msg
+            throw new IllegalArgumentException(msg)
         }
     }
 
-    def triggerOfflineDownload(DownloadParams downloadParams) {
+    def triggerOfflineDownload(DownloadParams downloadParams)  throws Exception {
         String url = grailsApplication.config.indexedDownloadUrl + downloadParams.biocacheDownloadParamString()
         log.debug "Doing GET on ${url}"
-        def json = get(url)
+        def json = webService.get(url)
         json
     }
 
-    private  get(String url){
-        get(url,true)
+    @Cacheable('longTermCache')
+    List getFieldsForDwcClass(String classsName) {
+        List fields = []
+
+        if (classsName) {
+            def fieldsMap = getFieldsMap()
+            fields = fieldsMap.get(classsName)
+        } else {
+            throw new IllegalArgumentException("classsName argument not provided")
+        }
+
+        fields
     }
 
-    private String get(String url, boolean throwError) {
-        log.debug "GET on " + url
-        URLConnection conn = new URL(url).openConnection()
-        try {
-            conn.setConnectTimeout(10000)
-            conn.setReadTimeout(50000)
-            def content = conn.content
-            log.debug "content instanceof = ${content.class.getName()}"
-            if (content instanceof Object) {
+    Map getFieldsMap() {
+        JSONArray fields = webService.getBiocacheFields() // cached
+        Map fieldsByClassMap = [:]
+        Map classLookup = grailsApplication.config.classMappings
 
-            }
-            return conn.content.text
-        } catch (SocketTimeoutException e) {
-            if(throwError)
-                throw e
-            else{
-                def error = [error: "Timed out calling web service. URL= ${url}."]
-                println error.error
-                return new groovy.json.JsonBuilder( error ).toString()
-            }
-        } catch (Exception e) {
-            if(throwError)
-                throw e;
-            else{
-                def error = [error: "Failed calling web service. ${e.getClass()} ${e.getMessage()} URL= ${url}."]
-                println error.error
-                return new groovy.json.JsonBuilder( error ).toString()
+        fields.each { JSONObject field ->
+
+            if (field && field.containsKey("dwcTerm")) {
+                String classsName = (field.containsKey("classs")) ? field.get("classs") : "Misc"
+                String key = classLookup.get(classsName) ?: "Misc"
+                List fieldsList = fieldsByClassMap.get(key) ?: []
+                fieldsList.add(field.get("downloadName"))
+                fieldsByClassMap.put(key, fieldsList) // overwrites with new list
             }
         }
+
+        fieldsByClassMap
     }
 }

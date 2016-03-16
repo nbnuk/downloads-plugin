@@ -105,7 +105,7 @@
                                                 <g:set var="active" value="${(mandatoryFields.contains(group) || userSavedFields.contains(group)) ? true : false }"/>
                                                 <a href="#" class="list-group-item ${(disabled)?"disabled":""} ${(active)?"list-group-item-success":""}" title="${(disabled)?"required item (cannot be de-selected)":""}">
                                                     <div class="checkbox pull-left">
-                                                        <label><input type="checkbox" value="${group}" ${(disabled || active)?"checked='checked'":""}></label>
+                                                        <label><input type="checkbox" class="fieldClass" value="${group}" ${(disabled || active)?"checked='checked'":""}></label>
                                                     </div>
                                                     <div class="pull-left form-control-inline">
                                                         <h4 class="padding-left-1">
@@ -164,6 +164,22 @@
             });
         });
 
+        $('.next-btn').click(function(e) {
+            e.preventDefault();
+            var queryString = "${downloadParams.queryString()}";
+            var fields = [];
+            $('.fieldClass:checked').each(function(i) {
+                fields.push($(this).val());
+            });
+            queryString += '&customClasses=' +fields.join('&customClasses=');
+            alert("queryString: " + queryString);
+            window.location = "${g.createLink(action:'options2')}" + queryString;
+        });
+
+        $('.save-btn').click(function(e) {
+            e.preventDefault();
+            alert("Saving of preferences coming soon");
+        });
     });
 
     function selectItem(item) {
