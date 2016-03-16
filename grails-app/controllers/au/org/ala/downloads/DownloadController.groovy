@@ -65,7 +65,12 @@ class DownloadController {
             //downloadParams.extra = grailsApplication.config.extraFields ?: downloadParams.extra
             downloadParams.email = email
             def json = downloadService.triggerDownload(downloadParams)
-            render (view:'confirm', model: [searchParams: downloadParams.searchParams, targetUri: downloadParams.targetUri, json: json ])
+            log.debug "json = ${json}"
+            render (view:'confirm', model: [
+                    searchParams: downloadParams.searchParams,
+                    targetUri: downloadParams.targetUri,
+                    json: json // JSONObject
+            ])
         } else if (downloadParams.downloadType == DownloadType.CHECKLIST.type) {
 
         } else if (downloadParams.downloadType == DownloadType.FIELDGUIDE.type) {

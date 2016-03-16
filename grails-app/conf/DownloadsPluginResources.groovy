@@ -13,6 +13,9 @@
 
 modules = {
     download {
+        dependsOn 'jquery'
         resource url: [dir: 'css', file: 'download.css', plugin: 'downloads-plugin']
+        resource url: [dir: 'js', file: 'bootbox.min.js', plugin: 'downloads-plugin']
+        resource url: [dir: 'js', file: 'clipboard.min.js', plugin: 'downloads-plugin']
     }
 }

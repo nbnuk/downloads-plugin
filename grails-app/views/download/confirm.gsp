@@ -41,8 +41,11 @@
         .margin-top-1 {
             margin-top: 2em;
         }
+        textarea {
+            width: 100%;
+        }
 
-</style>
+    </style>
 </head>
 <body>
 <div class="row">
@@ -81,7 +84,9 @@
             </div>
         </div>
 
-        ${raw(toolbar)}
+        <div style="text-align: center;">
+            <button class="btn btn-small" id="downloadUrl">View the raw download URL</button>
+        </div>
 
     </div>
 </div>
@@ -118,6 +123,28 @@
             });
         });
 
+        $('#downloadUrl').click(function(e) {
+            //e.preventDefault();
+            var button = '<button class="btn" data-clipboard-action="copy" data-clipboard-target="#requestUrl">Copy to clipboard</button>';
+            bootbox.dialog("<h4>Raw download URL</h4><textarea id='requestUrl'>${json.requestUrl}</textarea>",
+                [{
+                    "label" : "Copy to clipboard",
+                    "class" : "btn-success",
+                    "callback" : function() {
+                        new Clipboard('.btn-success', {
+                            target: function(trigger) {
+                                return document.getElementById("requestUrl");
+                            }
+                        });
+                    }
+                },
+                {
+                    "label" : "Close",
+                    "class" : "btn",
+                }
+                ]
+            );
+        });
     });
 
     function selectItem(item) {

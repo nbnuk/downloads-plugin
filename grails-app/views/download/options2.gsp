@@ -172,13 +172,13 @@
                 fields.push($(this).val());
             });
             queryString += '&customClasses=' +fields.join('&customClasses=');
-            alert("queryString: " + queryString);
+            //alert("queryString: " + queryString);
             window.location = "${g.createLink(action:'options2')}" + queryString;
         });
 
         $('.save-btn').click(function(e) {
             e.preventDefault();
-            alert("Saving of preferences coming soon");
+            bootbox.alert("Saving of preferences coming soon.");
         });
     });
 

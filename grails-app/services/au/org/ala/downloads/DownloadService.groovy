@@ -74,10 +74,11 @@ class DownloadService {
         }
     }
 
-    def triggerOfflineDownload(DownloadParams downloadParams)  throws Exception {
+    JSONObject triggerOfflineDownload(DownloadParams downloadParams)  throws Exception {
         String url = grailsApplication.config.indexedDownloadUrl + downloadParams.biocacheDownloadParamString()
         log.debug "Doing GET on ${url}"
-        def json = webService.get(url)
+        JSONObject json = webService.getJsonElements(url)
+        json.put("requestUrl",url)
         json
     }
 
