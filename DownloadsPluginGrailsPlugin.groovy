@@ -39,7 +39,7 @@ ALA Biocache system.
     // Online location of the plugin's browseable source code.
     def scm = [ url: "git://github.com/AtlasOfLivingAustralia/downloads-plugin" ]
 
-    def dependsOn = [biocacheHubs: "0.1 > *"]
+    //def dependsOn = [biocacheHubs: "0.1 > *"]
 
     def loadBefore = ['alaBootstrap3']
 
