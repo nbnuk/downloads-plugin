@@ -60,7 +60,6 @@
         </ol>
         <!-- End Breadcrumb -->
 
-
         <div class="well">
             <div class="row-fluid">
                 <div class="span12">
@@ -68,65 +67,50 @@
                         <div class="font-awesome-icon-large">
                             <i class="fa fa-check-circle color--apple"></i>
                         </div>
-                        <h2 class="heading-medium-large">Thank you for your download</h2>
+                        <h2 class="heading-medium-large"> <g:message code="download.confirm.thanks" default="Thank you for your download"/></h2>
                         <p class="lead">
-                            Your download is now being queued.
+                            <g:if test="${isQueuedDownload}">
+                                <g:message code="download.confirm.queued" default="Your download is now being queued."/>
+                            </g:if>
+                            <g:elseif test="${isFieldGuide}">
+                                <g:message code="download.confirm.ready" default="Your field guide is ready"/>
+                            </g:elseif>
+                            <g:else>
+                                <g:message code="download.confirm.started" default="Your download has started."/>
+                            </g:else>
                         </p>
                         <p>
-                            It will be sent to your email address linked to your ALA account when it is completed.
+                            <g:if test="${isQueuedDownload}">
+                                <g:message code="download.confirm.emailed" default="An email containing a link to the download file will be sent to your email address (linked to your ALA account) when it is completed."/>
+                            </g:if>
+                            <g:elseif test="${isFieldGuide}">
+                                <button id="fieldguideBtn" class="btn btn-large btn-primary"><g:message code="download.confirm.browser" default="View the field guide (new window)"/></button>
+                            </g:elseif>
+                            <g:else>
+                                <g:message code="download.confirm.browser" default="Check your downloads folder or your browser's downloads window."/>
+                            </g:else>
                         </p>
                         <p>&nbsp;</p>
-                        %{--<p>Close this window at any time.</p>--}%
                     </div>
-                    %{--<p class="separator t-center margin-bottom-2"><span>Or</span></p>--}%
-                    <a href="${targetUri}${searchParams}" class="btn btn-lg btn-default btn-block margin-bottom-1 font-xxsmall" type="button">Return to your previous search</a>
+                    <a href="${downloadParams.targetUri}${downloadParams.searchParams}" class="btn btn-default btn-block margin-bottom-1"
+                           type="button"><g:message code="download.confirm.returnToSearch" default="Return to search results"/></a>
                 </div>
             </div>
         </div>
-
-        <div style="text-align: center;">
-            <button class="btn btn-small" id="downloadUrl">View the raw download URL</button>
-        </div>
-
+        <g:if test="${isQueuedDownload}">
+            <div style="text-align: center;">
+                <button class="btn btn-small" id="downloadUrl"><g:message code="download.confirm.rawUrlBtn" default="View the raw download URL"/></button>
+            </div>
+        </g:if>
     </div>
 </div>
 <g:javascript>
     $( document ).ready(function() {
-        $('.list-group-item.disabled').click(function(e) {
-            e.preventDefault(); // prevent page jump
-        }).tooltip();
-
-        // catch clicks on list group items
-        $('a.list-group-item').not('.disabled').click(function(e) {
-            e.preventDefault(); // its link so stop any regular link stuff hapenning
-            var link = this;
-            if ($(link).hasClass('list-group-item-success')) {
-                // already selected
-                deselectItem(link);
-            } else {
-                // not selected
-                selectItem(link);
-            }
-        });
-
-        $('.select-all-btn').click(function(e) {
-            e.preventDefault();
-            $('a.list-group-item').not('.disabled').each(function(i) {
-                selectItem(this);
-            });
-        });
-
-        $('.select-none-btn').click(function(e) {
-            e.preventDefault();
-            $('a.list-group-item').not('.disabled').each(function(i) {
-                deselectItem(this);
-            });
-        });
 
         $('#downloadUrl').click(function(e) {
             //e.preventDefault();
             var button = '<button class="btn" data-clipboard-action="copy" data-clipboard-target="#requestUrl">Copy to clipboard</button>';
-            bootbox.dialog("<h4>Raw download URL</h4><textarea id='requestUrl'>${json.requestUrl}</textarea>",
+            bootbox.dialog("<h4>Raw download URL</h4><textarea id='requestUrl'>${json?.requestUrl}</textarea>",
                 [{
                     "label" : "Copy to clipboard",
                     "class" : "btn-success",
@@ -141,27 +125,21 @@
                 {
                     "label" : "Close",
                     "class" : "btn",
-                }
-                ]
+                }]
             );
         });
+
+        $('#fieldguideBtn').click(function(e) {
+            e.preventDefault();
+            var url = "${downloadUrl}";
+            window.open(url);
+        });
+
+        var isChecklist  = "${isChecklist}";
+        if (isChecklist) {
+            window.location.href = "${downloadUrl}";
+        }
     });
-
-    function selectItem(item) {
-        $(item).find('i.fa').removeClass('${unselectedItem}');
-        $(item).find('i.fa').addClass('${selectedItem}');
-        $(item).addClass('list-group-item-success');
-        $(item).find('input').attr('checked','checked');
-        $(item).blur(); // prevent BS focus
-    }
-
-    function deselectItem(item) {
-        $(item).removeClass('disabled').removeClass('list-group-item-success');
-        $(item).find('.fa').addClass('${unselectedItem}');
-        $(item).find('.fa').removeClass('${selectedItem}');
-        $(item).find('input').removeAttr('checked');
-        $(item).blur(); // prevent BS focus
-    }
 
 </g:javascript>
 </body>

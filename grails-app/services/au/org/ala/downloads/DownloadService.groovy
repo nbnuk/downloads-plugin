@@ -31,7 +31,7 @@ class DownloadService {
             downloadParams.file = downloadParams.downloadType + "-" + new Date().format("yyyy-MM-dd")
             // catch different formats
             if (downloadParams.downloadFormat == DownloadFormat.DWC.format) {
-                downloadParams.fields = grailsApplication.config.dwcFields\
+                downloadParams.fields = grailsApplication.config.dwcFields
                 triggerOfflineDownload(downloadParams)
             } else if (downloadParams.downloadFormat == DownloadFormat.LEGACY.format) {
                 downloadParams.extra = (grailsApplication.config.flatten().containsKey("biocache.downloads.extra")) ? grailsApplication.config.biocache.downloads.extra : ""

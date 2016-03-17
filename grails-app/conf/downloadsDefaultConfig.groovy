@@ -15,6 +15,9 @@
 // by the client application or its external config file
 
 indexedDownloadUrl = "http://biocache.ala.org.au/ws/occurrences/offline/download"
+checklistDownloadUrl = "http://biocache.ala.org.au/ws/occurrences/facets/download"
+fieldguideDownloadUrl = "http://biocache.ala.org.au/occurrences/fieldguide/download"
+
 indexedFieldsUrl = "http://biocache.ala.org.au/ws/index/fields"
 
 customSections {
