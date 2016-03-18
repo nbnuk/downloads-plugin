@@ -84,7 +84,7 @@
                                 <g:message code="download.confirm.emailed" default="An email containing a link to the download file will be sent to your email address (linked to your ALA account) when it is completed."/>
                             </g:if>
                             <g:elseif test="${isFieldGuide}">
-                                <button id="fieldguideBtn" class="btn btn-large btn-primary"><g:message code="download.confirm.browser" default="View the field guide (new window)"/></button>
+                                <button id="fieldguideBtn" class="btn btn-large btn-primary btn-block"><g:message code="download.confirm.browser" default="View the field guide (new window)"/></button>
                             </g:elseif>
                             <g:else>
                                 <g:message code="download.confirm.browser" default="Check your downloads folder or your browser's downloads window."/>
@@ -92,16 +92,15 @@
                         </p>
                         <p>&nbsp;</p>
                     </div>
-                    <a href="${downloadParams.targetUri}${downloadParams.searchParams}" class="btn btn-default btn-block margin-bottom-1"
+                    <a href="${downloadParams.targetUri}${downloadParams.searchParams}" class="btn btn-success btn-block margin-bottom-1 font-xxsmall"
                            type="button"><g:message code="download.confirm.returnToSearch" default="Return to search results"/></a>
+                    <g:if test="${isQueuedDownload}">
+                        <button class="btn btn-link btn-block margin-bottom-1" id="downloadUrl"><g:message code="download.confirm.rawUrlBtn" default="View the raw download URL"/></button>
+                    </g:if>
                 </div>
             </div>
         </div>
-        <g:if test="${isQueuedDownload}">
-            <div style="text-align: center;">
-                <button class="btn btn-small" id="downloadUrl"><g:message code="download.confirm.rawUrlBtn" default="View the raw download URL"/></button>
-            </div>
-        </g:if>
+
     </div>
 </div>
 <g:javascript>
