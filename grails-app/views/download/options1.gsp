@@ -57,11 +57,11 @@
                         <div class="comment-wrapper push">
 
                             <div class="row-fluid ">
-                                <div class="span12">
+                                <div class="span2">
                                     <h4 class="heading-medium-alt">Step 1</h4>
-                                    <p>
-                                        Select your download type from 1 of the 3 options below, and then progress to step 2.
-                                    </p>
+                                </div>
+                                <div class="span10">
+                                    <p>Select your download type below, and then progress to step 2.</p>
                                 </div>
                             </div>
                             <div class="row-fluid margin-top-1">
@@ -75,7 +75,7 @@
                                     </div>
                                 </div>
                                 <div class="span7">
-                                    <h4 class="text-uppercase heading-underlined">Occurence records download</h4>
+                                    <h4 class="text-uppercase=heading-underlined">Occurence records </h4>
                                     <p>
                                         A ZIP archive containing a comma separated values (CSV) file which includes a
                                         subset of location, taxon and event information.
@@ -117,10 +117,10 @@
                                     </div>
                                 </div>
                                 <div class="span7">
-                                    <h4 class="text-uppercase heading-underlined">Species Checklist Download</h4>
+                                    <h4 class="text-uppercase=heading-underlined">Species checklist </h4>
                                     <p class="font-xsmall">
-                                        A comma separated values (CSV) file, listing species in the occurrence records
-                                        result set. Each individual species is only listed once.
+                                        A comma separated values (CSV) file, listing the distinct species in the occurrence records
+                                        result set.
                                     </p>
                                 </div>
                                 <div class="span3">
@@ -143,11 +143,10 @@
                                     </div>
                                 </div>
                                 <div class="span7">
-                                    <h4 class="text-uppercase heading-underlined">Species Field-Guide Download</h4>
+                                    <h4 class="text-uppercase=heading-underlined">Species field-guide </h4>
                                     <p>
                                         A PDF document containing species profile information (including photos and maps) for the
-                                        species in the occurrence record set.  Each individual species is only listed once and is
-                                        limited to a maximum of 150 species.
+                                        list of distinct species in the occurrence record set.
                                     </p>
                                 </div>
                                 <div class="span3">
@@ -168,11 +167,11 @@
                     <div class="panel panel-default">
                         <div class="comment-wrapper push">
                             <div class="row-fluid">
-                                <div class="span12">
+                                <div class="span2">
                                     <h4 class="heading-medium-alt">Step 2</h4>
-                                    <p>
-                                        Select your download reason and then click the "Next" button.
-                                    </p>
+                                </div>
+                                <div class="span10">
+                                    <p>Select your download reason and then click the "Next" button.</p>
                                 </div>
                             </div>
                             <div class="row-fluid">
