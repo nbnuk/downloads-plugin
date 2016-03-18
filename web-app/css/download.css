@@ -282,3 +282,12 @@ a.list-group-item:focus {
     border-top: none;
     border-bottom: 1px solid #ababab;
 }
+
+/* Download step 1 -align elements horizontally */
+.contrib-stats .fa {
+    padding-top: 8px;
+}
+
+.select-download-type {
+    margin-top: 12px;
+}
