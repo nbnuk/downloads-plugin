@@ -44,6 +44,7 @@ body h1, body h2, body h3, body h4, body h5 { font-weight:bold; color:#5f5d60;}
     color: #333;
 }
 .heading-small{border-bottom:inherit;font-size:19px;font-weight:700;line-height:1.3157894737;margin-bottom:.3125em;text-transform:none;}
+.heading-xsmall{border-bottom:inherit;font-size:16px;font-weight:700;line-height:1.3157894737;margin-bottom:.3125em;text-transform:none;}
 .heading-xlarge{font-size:48px;font-weight:700;line-height:1.0416666667;margin-bottom:.6em;margin-top:.625em;text-transform:none;}
 .heading-underlined{border:0 solid #cdcdcd;border-bottom-width:1px;padding-bottom:10px;}
 

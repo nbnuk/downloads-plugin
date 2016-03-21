@@ -28,7 +28,7 @@
     <r:require module="download"/>
 </head>
 <body>
-<div class="row">
+<div class="row-fluid">
     <div class="span10 offset1">
         <h1 class="hidden">Welcome to the Atlas of Living Australia website</h1><!-- Show the H1 on each page -->
 
@@ -40,13 +40,6 @@
         </ol>
         <!-- End Breadcrumb -->
         <h2 class="heading-medium">Download</h2>
-
-        <div class="alert alert-info alert-dismissible" role="alert">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
-            By downloading this content you are agreeing to use it in accordance with the Atlas of Living
-            Australia <a href="http://www.ala.org.au/about-the-atlas/terms-of-use/#TOUusingcontent">Terms of Use</a>
-            and any Data Provider Terms associated with the data download.
-        </div>
 
         <div class="well">
             <div id="grid-view" class="row-fluid">
@@ -84,7 +77,7 @@
                                     %{--<p class="separator t-center margin-bottom-2"><span>Download type options</span></p>--}%
                                     <form id="downloadFormatForm" class="form-horizontal hide">
                                         <div class="control-group">
-                                            <label for="downloadFormat" class="control-label heading-small"><span class="color--mellow-red">*</span>Select format</label>
+                                            <label for="downloadFormat" class="control-label heading-xsmall"><span class="color--mellow-red">*</span>Download format</label>
                                             <div class="controls">
                                                 <select class="form-control input-lg" id="downloadFormat">
                                                     <option value="" disabled selected>Select a download format</option>
@@ -92,12 +85,10 @@
                                                         <option value="${df.format}"><g:message code="format.${df.format}" /></option>
                                                     </g:each>
                                                 </select>
-                                                <p class="help-block"><strong>This field is mandatory.</strong> Use the
-                                                dropdown to select the relevant download format - if in doubt choose "full darwin core".</p>
+                                                <p class="help-block"><strong>This field is mandatory.</strong>  </p>
                                             </div>
                                         </div>
                                     </form>
-
                                 </div>
                                 <div class="span3">
                                     <a href="#" id="select-${au.org.ala.downloads.DownloadType.RECORDS.type}" class="select-download-type btn-bs3 btn-white btn-large btn-block margin-top-1 margin-bottom-1 font-xxsmall" type="button">
@@ -187,7 +178,7 @@
                                 <div class="span7">
                                     <form class="form-horizontal margin-top-1">
                                         <div class="form-group">
-                                            <label for="downloadReason" class="control-label heading-small"><span class="color--mellow-red">*</span>Tell us why</label>
+                                            <label for="downloadReason" class="control-label heading-xsmall"><span class="color--mellow-red">*</span>Tell us why</label>
                                             <div class="controls">
                                                 <select class="form-control input-lg" id="downloadReason">
                                                     <option value="" disabled selected>Select a reason ...</option>
@@ -220,8 +211,14 @@
                 </div>
             </div>
         </div>
-    </div>
-</div>
+        <div class="alert alert-info alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+            By downloading this content you are agreeing to use it in accordance with the Atlas of Living
+            Australia <a href="http://www.ala.org.au/about-the-atlas/terms-of-use/#TOUusingcontent">Terms of Use</a>
+            and any Data Provider Terms associated with the data download.
+        </div>
+    </div><!-- /.span10  -->
+</div><!-- /.row-fuid  -->
 <g:javascript>
     $( document ).ready(function() {
         // click event on download type select buttons
@@ -293,7 +290,8 @@
                 } else {
                     // go to next screen
                     $('#errorAlert').hide();
-                    window.location = "${g.createLink(action:'options2')}?searchParams=${searchParams.encodeAsURL()}&targetUri=${targetUri.encodeAsURL()}&downloadType=" + type + "&reasonTypeId=" + reason + "&downloadFormat=" + format;
+                    var sourceTypeId = "${downloads.getSourceId()}";
+                    window.location = "${g.createLink(action:'options2')}?searchParams=${searchParams.encodeAsURL()}&targetUri=${targetUri.encodeAsURL()}&downloadType=" + type + "&reasonTypeId=" + reason + "&sourceTypeId=" + sourceTypeId + "&downloadFormat=" + format;
                 }
             } else {
                 $('#errorAlert').show();
