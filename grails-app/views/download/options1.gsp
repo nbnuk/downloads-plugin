@@ -254,7 +254,17 @@
                     $('#downloadFormatForm').slideDown();
                 } else {
                     $('#downloadFormatForm').slideUp();
+                    $('#downloadReason').focus();
                 }
+            }
+        });
+
+        // download format change event
+        $('#downloadFormat').on('change', function(e) {
+            console.log('this selected val', $(this).find(":selected").val());
+            if ($(this).find(":selected").val()) {
+                // set focus on reason code
+                $('#downloadReason').focus();
             }
         });
 
@@ -272,7 +282,6 @@
 
                 if (type == "${au.org.ala.downloads.DownloadType.RECORDS.type}") {
                     // check for format
-                    //console.log("format",format);
                     if (!format) {
                         $('#downloadType').focus();
                         $('#errorAlert').show();
