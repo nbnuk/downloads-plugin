@@ -60,7 +60,7 @@ class DownloadController {
                     downloadParams: downloadParams
             ])
         } else if (downloadParams.downloadType == DownloadType.RECORDS.type) {
-            // Records downlad
+            // Records download
             def json = downloadService.triggerDownload(downloadParams)
             log.debug "json = ${json}"
             render (view:'confirm', model: [
@@ -100,7 +100,8 @@ class DownloadController {
             def res = customiseService.setUserSavedFields(authService?.getUserId(), fields)
             render res as JSON
         } catch (Exception ex) {
-            render (status: "400", text: "Error saving user preferences: ${ex.message}")
+            log.error("Error saving user preferences: ${ex.message}", ex)
+            render(status: "400", text: "Error saving user preferences: ${ex.message}")
         }
 
     }

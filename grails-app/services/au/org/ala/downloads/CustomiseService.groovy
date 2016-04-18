@@ -19,22 +19,22 @@ class CustomiseService {
     def grailsApplication
     def webService
 
-    final static String NAME_PARAM = "&name=" + URLEncoder.encode(grails.util.Metadata.current.'app.name' + '.download_saved_fields', "UTF-8")
+    final static String NAME_VALUE = grails.util.Metadata.current.'app.name' + '.download_saved_fields'
 
     def getUserSavedFields(userId) {
         def fields = []
 
         if (userId && grailsApplication.config.userdetails.baseUrl) {
             try {
-                def resp = webService.getJsonElements(grailsApplication.config.userdetails.baseUrl +
-                        '/property/getProperty?alaId=' + userId + NAME_PARAM)
+                def resp = webService.get(grailsApplication.config.userdetails.baseUrl + '/property/getProperty',
+                        [alaId: userId, name: NAME_VALUE])
 
-                if (resp && resp[0]?.value) {
-                    fields = JSON.parse(resp[0]?.value)
+                if (resp?.resp && resp?.resp[0]?.value) {
+                    fields = JSON.parse(resp?.resp[0]?.value)
                 }
             } catch (err) {
                 //fail with only a log entry
-                log.error("failed to get user property ${userId}:${NAME_PARAM} ${err.getMessage()}")
+                log.error("failed to get user property ${userId}:${NAME_VALUE} ${err.getMessage()}", err)
             }
         }
 
@@ -43,9 +43,8 @@ class CustomiseService {
 
     def setUserSavedFields(userId, List fields) {
         if (userId && grailsApplication.config.userdetails.baseUrl) {
-            webService.postJsonElements(grailsApplication.config.userdetails.baseUrl +
-                    '/property/saveProperty?alaId=' + userId + NAME_PARAM +
-                    '&value=' + URLEncoder.encode((fields as JSON).toString(), "UTF-8"), '')
+            webService.post(grailsApplication.config.userdetails.baseUrl + '/property/saveProperty', null,
+                    [alaId: userId, name: NAME_VALUE, value: (fields as JSON).toString()])
         }
     }
 }

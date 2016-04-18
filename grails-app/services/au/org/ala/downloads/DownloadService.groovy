@@ -14,14 +14,14 @@
 package au.org.ala.downloads
 
 import grails.plugin.cache.Cacheable
-import org.codehaus.groovy.grails.web.json.JSONArray
-import org.codehaus.groovy.grails.web.json.JSONObject
 
 /**
  * Service to perform the records downloads (marshalls to appropriate web service)
  */
 class DownloadService {
-    def grailsApplication, webService
+    def grailsApplication
+    def webService
+    def biocacheService
 
     def triggerDownload(DownloadParams downloadParams) throws Exception {
 
@@ -74,12 +74,17 @@ class DownloadService {
         }
     }
 
-    JSONObject triggerOfflineDownload(DownloadParams downloadParams)  throws Exception {
+    Map triggerOfflineDownload(DownloadParams downloadParams) throws Exception {
         String url = grailsApplication.config.indexedDownloadUrl + downloadParams.biocacheDownloadParamString()
         log.debug "Doing GET on ${url}"
-        JSONObject json = webService.getJsonElements(url)
-        json.put("requestUrl",url)
-        json
+        Map resp = webService.get(url)
+
+        if (resp?.resp) {
+            resp.resp.put("requestUrl", url)
+            resp.resp
+        } else {
+            throw new Exception(resp?.error)
+        }
     }
 
     @Cacheable('longTermCache')
@@ -97,17 +102,17 @@ class DownloadService {
     }
 
     Map getFieldsMap() {
-        JSONArray fields = webService.getBiocacheFields() // cached
+        List fields = biocacheService.getBiocacheFields() // cached
         Map fieldsByClassMap = [:]
         Map classLookup = grailsApplication.config.classMappings
 
-        fields.each { JSONObject field ->
+        fields.each { field ->
 
-            if (field && field.containsKey("dwcTerm")) {
-                String classsName = (field.containsKey("classs")) ? field.get("classs") : "Misc"
+            if (field && field?.dwcTerm) {
+                String classsName = field?.classs ?: "Misc"
                 String key = classLookup.get(classsName) ?: "Misc"
                 List fieldsList = fieldsByClassMap.get(key) ?: []
-                fieldsList.add(field.get("downloadName"))
+                fieldsList.add(field?.downloadName)
                 fieldsByClassMap.put(key, fieldsList) // overwrites with new list
             }
         }
