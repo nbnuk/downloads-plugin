@@ -75,4 +75,35 @@ class WebService {
             throw new RestClientException(error)
         }
     }
+
+    /**
+     * Perform HTTP POST with jsonBody
+     *
+     * @param url
+     * @param jsonBody
+     * @return
+     */
+    def JSONElement postJsonElements(String url, String jsonBody) {
+        HttpURLConnection conn = null
+        def charEncoding = 'UTF-8'
+        try {
+            conn = new URL(url).openConnection()
+            conn.setDoOutput(true)
+            conn.setRequestProperty("Content-Type", "application/json;charset=${charEncoding}");
+            OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream(), charEncoding)
+            wr.write(jsonBody)
+            wr.flush()
+            def resp = conn.inputStream.text
+            wr.close()
+            return JSON.parse(resp?:"{}")
+        } catch (SocketTimeoutException e) {
+            def error = "Timed out calling web service. URL= ${url}."
+            throw new RestClientException(error) // exception will result in no caching as opposed to returning null
+        } catch (Exception e) {
+            def error = "Failed calling web service. ${e.getMessage()} URL= ${url}." +
+                    "statusCode: " +conn?.responseCode?:"" +
+                    "detail: " + conn?.errorStream?.text
+            throw new RestClientException(error) // exception will result in no caching as opposed to returning null
+        }
+    }
 }

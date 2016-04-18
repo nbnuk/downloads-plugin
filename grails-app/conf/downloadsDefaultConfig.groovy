@@ -20,6 +20,8 @@ fieldguideDownloadUrl = "http://biocache.ala.org.au/occurrences/fieldguide/downl
 
 indexedFieldsUrl = "http://biocache.ala.org.au/ws/index/fields"
 
+userdetails.baseUrl = "https://auth.ala.org.au/userdetails"
+
 customSections {
     //darwinCore = ["recordLevelTerms","occurrence","organism","materialSampleSpecimen","location","geologicalContext","identification","taxon","measurementOrFact","resourceRelationship"],
     darwinCore = ["recordLevelTerms", "occurrence", "organism", "materialSampleSpecimen", "location", "identification", "taxon", "measurementOrFact"] // "geologicalContext", "resourceRelationship"

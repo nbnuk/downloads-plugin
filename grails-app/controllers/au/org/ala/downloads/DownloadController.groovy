@@ -97,7 +97,7 @@ class DownloadController {
         List fields = params.list("fields")
 
         try {
-            def res = customiseService.setUserSavedFields(fields)
+            def res = customiseService.setUserSavedFields(authService?.getUserId(), fields)
             render res as JSON
         } catch (Exception ex) {
             render (status: "400", text: "Error saving user preferences: ${ex.message}")
