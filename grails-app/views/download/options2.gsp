@@ -65,9 +65,7 @@
                     <a class="btn btn-default select-none-btn" href="#"><i class="fa fa-times"></i> <span class="hidden-phone">Unselect all</span></a>
                 </div>
                 <div class="btn-group pull-right">
-                    <g:if test="${grailsApplication.config.userdetails.baseUrl}">
-                        <a class="btn btn-default save-btn"><i class="fa fa-cog"></i> <span class="hidden-phone">Save preferences</span></a>
-                    </g:if>
+                    <a class="btn btn-default save-btn"><i class="fa fa-cog"></i> <span class="hidden-phone">Save preferences</span></a>
                     <a class="btn btn-primary next-btn" href="#"><span class="hidden-phone">Next</span> <i class="fa fa-chevron-right color--white"></i></a>
                 </div>
             </div>
@@ -184,14 +182,21 @@
             $('.fieldClass:checked').each(function(i) {
                 fields.push($(this).val());
             });
-            $.post("${g.createLink(action: 'saveUserPrefs')}?fields=" + fields.join("&fields="),
-                            { },
-                            function(data) {
-                                bootbox.alert("Preferences saved.");
-                            }
-                    ).error(function (request, status, error) {
-                                bootbox.alert("Failed to save preferences.");
-                            });
+
+            $.cookie("download_fields", fields.join(","));
+            <g:if test="${grailsApplication.config.userdetails.baseUrl}">
+                $.post("${g.createLink(action: 'saveUserPrefs')}?fields=" + fields.join("&fields="),
+                                { },
+                                function(data) {
+                                    bootbox.alert("Preferences saved.");
+                                }
+                        ).error(function (request, status, error) {
+                                    bootbox.alert("Failed to save preferences.");
+                                });
+            </g:if>
+            <g:else>
+                bootbox.alert("Preferences saved.");
+            </g:else>
         });
     });
 

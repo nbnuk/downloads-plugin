@@ -20,7 +20,9 @@ fieldguideDownloadUrl = "http://biocache.ala.org.au/occurrences/fieldguide/downl
 
 indexedFieldsUrl = "http://biocache.ala.org.au/ws/index/fields"
 
-userdetails.baseUrl = "https://auth.ala.org.au/userdetails"
+// Define userdetails.baseUrl to enable saving of fields to userdetails instead of cookies.
+// e.g. userdetails.baseUrl = "https://auth.ala.org.au/userdetails"
+userdetails.baseUrl = ""
 
 customSections {
     //darwinCore = ["recordLevelTerms","occurrence","organism","materialSampleSpecimen","location","geologicalContext","identification","taxon","measurementOrFact","resourceRelationship"],

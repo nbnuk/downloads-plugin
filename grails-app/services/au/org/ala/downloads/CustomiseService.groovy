@@ -21,7 +21,7 @@ class CustomiseService {
 
     final static String NAME_VALUE = grails.util.Metadata.current.'app.name' + '.download_saved_fields'
 
-    def getUserSavedFields(userId) {
+    def getUserSavedFields(downloadFieldCookie, userId) {
         def fields = []
 
         if (userId && grailsApplication.config.userdetails.baseUrl) {
@@ -36,6 +36,8 @@ class CustomiseService {
                 //fail with only a log entry
                 log.error("failed to get user property ${userId}:${NAME_VALUE} ${err.getMessage()}", err)
             }
+        } else if (downloadFieldCookie?.value) {
+            fields = URLDecoder.decode(downloadFieldCookie.value, "UTF-8").split(",") as List
         }
 
         fields

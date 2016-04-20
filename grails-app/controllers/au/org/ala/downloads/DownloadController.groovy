@@ -56,7 +56,7 @@ class DownloadController {
             render (view:'options2', model: [
                     customSections: customSections,
                     mandatoryFields: grailsApplication.config.mandatoryFields,
-                    userSavedFields: customiseService.getUserSavedFields(authService?.getUserId()),
+                    userSavedFields: customiseService.getUserSavedFields(request?.cookies?.find { it.name == 'download_fields'}, authService?.getUserId()),
                     downloadParams: downloadParams
             ])
         } else if (downloadParams.downloadType == DownloadType.RECORDS.type) {
