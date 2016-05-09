@@ -51,6 +51,8 @@ class DownloadService {
                         customFields.addAll(fields)
                     } else if (it == "qualityAssertions") {
                         downloadParams.qa = "includeall"
+                    } else if (it == "miscellaneousFields") {
+                        downloadParams.includeMisc = true
                     } else {
                         throw new Exception("Custom field class not recognised: ${it}")
                     }

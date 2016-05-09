@@ -29,7 +29,7 @@ customSections {
     darwinCore = ["recordLevelTerms", "occurrence", "organism", "event", "location", "identification", "taxon", "measurementOrFact"] // "geologicalContext", "resourceRelationship"
     speciesTraits = ["conservationStatus", "otherTraits"]
     spatialIntersections = ["environmentalLayers", "contextualLayers"]
-    quality = ["qualityAssertions"]
+    misc = ["qualityAssertions","miscellaneousFields"]
 }
 
 // other field mappings for classes TODO get from biocache-service
