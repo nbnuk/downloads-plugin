@@ -26,7 +26,7 @@ userdetails.baseUrl = ""
 
 customSections {
     //darwinCore = ["recordLevelTerms","occurrence","organism","materialSampleSpecimen","location","geologicalContext","identification","taxon","measurementOrFact","resourceRelationship"],
-    darwinCore = ["recordLevelTerms", "occurrence", "organism", "materialSampleSpecimen", "location", "identification", "taxon", "measurementOrFact"] // "geologicalContext", "resourceRelationship"
+    darwinCore = ["recordLevelTerms", "occurrence", "organism", "event", "location", "identification", "taxon", "measurementOrFact"] // "geologicalContext", "resourceRelationship"
     speciesTraits = ["conservationStatus", "otherTraits"]
     spatialIntersections = ["environmentalLayers", "contextualLayers"]
     quality = ["qualityAssertions"]
@@ -43,7 +43,7 @@ classMappings {
     Record = "recordLevelTerms"
     Occurrence = "occurrence"
     Organism = "organism"
-    Event = "materialSampleSpecimen"
+    Event = "event"
     Location = "location"
     GeologicalContex = "geologicalContext"
     Identification = "identification"
