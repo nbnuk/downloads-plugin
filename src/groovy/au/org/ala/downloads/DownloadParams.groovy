@@ -44,7 +44,7 @@ class DownloadParams {
     String email
     Boolean dwcHeaders = false
     Boolean includeMisc = false // Miscellaneous fields
-    String qa // can be empty, a comma separated fields or "all"
+    String qa = "none" // can be empty, "none",  a comma separated fields or "all"
 
     @Override
     public String toString() {

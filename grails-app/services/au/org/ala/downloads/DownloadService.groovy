@@ -50,7 +50,7 @@ class DownloadService {
                         def fields = grailsApplication.config.get(it)
                         customFields.addAll(fields)
                     } else if (it == "qualityAssertions") {
-                        downloadParams.qa = true
+                        downloadParams.qa = "includeall"
                     } else {
                         throw new Exception("Custom field class not recognised: ${it}")
                     }
