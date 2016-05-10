@@ -13,7 +13,6 @@
 package au.org.ala.downloads
 
 import grails.converters.JSON
-import grails.util.Holders
 import grails.validation.Validateable
 import groovy.util.logging.Log4j
 import org.apache.commons.lang.StringUtils
@@ -42,9 +41,9 @@ class DownloadParams {
     String extra // "dataResourceUid,dataResourceName.p,occurrenceStatus.p"
     String file  // file name for download file
     String email
-    Boolean dwcHeaders = false
+    Boolean dwcHeaders = true
     Boolean includeMisc = false // Miscellaneous fields
-    String qa = "none" // can be empty, "none",  a comma separated fields or "all"
+    String qa = "none" // can be empty (get default qa fields), "includeall" (get empty fields so same columns every time), "none",  a comma separated fields or "all"
 
     @Override
     public String toString() {

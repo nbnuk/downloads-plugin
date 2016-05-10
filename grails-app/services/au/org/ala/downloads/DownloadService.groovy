@@ -27,11 +27,10 @@ class DownloadService {
 
         if (downloadParams.downloadType == DownloadType.RECORDS.type) {
             // set some defaults
-            downloadParams.dwcHeaders = true
             downloadParams.file = downloadParams.downloadType + "-" + new Date().format("yyyy-MM-dd")
             // catch different formats
             if (downloadParams.downloadFormat == DownloadFormat.DWC.format) {
-                downloadParams.fields = grailsApplication.config.dwcFields
+                downloadParams.fields = biocacheService.getDwCFields() // was: grailsApplication.config.dwcFields
                 triggerOfflineDownload(downloadParams)
             } else if (downloadParams.downloadFormat == DownloadFormat.LEGACY.format) {
                 downloadParams.extra = (grailsApplication.config.flatten().containsKey("biocache.downloads.extra")) ? grailsApplication.config.biocache.downloads.extra : ""
@@ -45,7 +44,7 @@ class DownloadService {
                     List dwcClasses = grailsApplication.config.flatten().containsKey("customSections.darwinCore") ? grailsApplication.config.customSections.darwinCore : []
                     log.debug "dwcClasses = ${dwcClasses}"
                     if (dwcClasses.contains(it)) {
-                        customFields.addAll(getFieldsForDwcClass(it))
+                        customFields.addAll(biocacheService.getFieldsForDwcClass(it))
                     } else if (grailsApplication.config.containsKey(it)) {
                         def fields = grailsApplication.config.get(it)
                         customFields.addAll(fields)
@@ -66,9 +65,9 @@ class DownloadService {
             }
 
         } else if (downloadParams.downloadType == DownloadType.CHECKLIST.type) {
-
+            log.info "${DownloadType.CHECKLIST.type} download triggered"
         } else if (downloadParams.downloadType == DownloadType.FIELDGUIDE.type) {
-
+            log.info "${DownloadType.FIELDGUIDE.type} download triggered"
         } else {
             def msg = "Download type not recognised: ${downloadParams.downloadType}"
             log.warn msg
@@ -89,36 +88,7 @@ class DownloadService {
         }
     }
 
-    @Cacheable('longTermCache')
-    List getFieldsForDwcClass(String classsName) {
-        List fields = []
 
-        if (classsName) {
-            def fieldsMap = getFieldsMap()
-            fields = fieldsMap.get(classsName)
-        } else {
-            throw new IllegalArgumentException("classsName argument not provided")
-        }
 
-        fields
-    }
 
-    Map getFieldsMap() {
-        List fields = biocacheService.getBiocacheFields() // cached
-        Map fieldsByClassMap = [:]
-        Map classLookup = grailsApplication.config.classMappings
-
-        fields.each { field ->
-
-            if (field && field?.dwcTerm) {
-                String classsName = field?.classs ?: "Misc"
-                String key = classLookup.get(classsName) ?: "Misc"
-                List fieldsList = fieldsByClassMap.get(key) ?: []
-                fieldsList.add(field?.downloadName)
-                fieldsByClassMap.put(key, fieldsList) // overwrites with new list
-            }
-        }
-
-        fieldsByClassMap
-    }
 }

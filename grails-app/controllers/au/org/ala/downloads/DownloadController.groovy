@@ -19,7 +19,7 @@ import grails.converters.JSON
  * Download controller
  */
 class DownloadController {
-    def customiseService, authService, downloadService
+    def customiseService, authService, downloadService, biocacheService
 
     static defaultAction = "options1"
 
@@ -49,7 +49,7 @@ class DownloadController {
             redirect(action: "options1", params: params)
         } else if (downloadParams.downloadType == DownloadType.RECORDS.type && downloadParams.downloadFormat == DownloadFormat.CUSTOM.format && !downloadParams.customClasses) {
             // Customise download screen
-            Map sectionsMap = downloadService.getFieldsMap()
+            Map sectionsMap = biocacheService.getFieldsMap()
             log.debug "sectionsMap = ${sectionsMap as JSON}"
             Map customSections = grailsApplication.config.customSections
             // customSections.darwinCore = sectionsMap.keySet()
@@ -104,5 +104,20 @@ class DownloadController {
             render(status: "400", text: "Error saving user preferences: ${ex.message}")
         }
 
+    }
+
+    def getDescription(String id) {
+        if (id) {
+            String description = biocacheService.getDwCDescriptionForField(id)
+            Map response = [field: id, description: ""]
+
+            if (description) {
+                response.description = description
+            }
+
+            render (response as JSON)
+        } else {
+            render (status: 400, text: "no field provided")
+        }
     }
 }
