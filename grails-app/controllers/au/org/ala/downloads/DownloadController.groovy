@@ -51,16 +51,16 @@ class DownloadController {
             // Customise download screen
             Map sectionsMap = biocacheService.getFieldsMap()
             log.debug "sectionsMap = ${sectionsMap as JSON}"
-            Map customSections = grailsApplication.config.customSections
+            Map customSections = grailsApplication.config.downloads.customSections
             // customSections.darwinCore = sectionsMap.keySet()
             render (view:'options2', model: [
                     customSections: customSections,
-                    mandatoryFields: grailsApplication.config.mandatoryFields,
+                    mandatoryFields: grailsApplication.config.downloads.mandatoryFields,
                     userSavedFields: customiseService.getUserSavedFields(request?.cookies?.find { it.name == 'download_fields'}, authService?.getUserId()),
                     downloadParams: downloadParams
             ])
         } else if (downloadParams.downloadType == DownloadType.RECORDS.type) {
-            // Records download
+            // Records download -> confirm
             def json = downloadService.triggerDownload(downloadParams)
             log.debug "json = ${json}"
             render (view:'confirm', model: [
@@ -75,7 +75,7 @@ class DownloadController {
                     isQueuedDownload: false,
                     isChecklist: true,
                     downloadParams: downloadParams,
-                    downloadUrl: grailsApplication.config.checklistDownloadUrl + downloadParams.biocacheDownloadParamString() + extraParamsString
+                    downloadUrl: grailsApplication.config.downloads.checklistDownloadUrl + downloadParams.biocacheDownloadParamString() + extraParamsString
             ])
         } else if (downloadParams.downloadType == DownloadType.FIELDGUIDE.type) {
             // Field guide download
@@ -84,7 +84,7 @@ class DownloadController {
                     isQueuedDownload: false,
                     isFieldGuide: true,
                     downloadParams: downloadParams,
-                    downloadUrl: grailsApplication.config.fieldguideDownloadUrl + downloadParams.biocacheDownloadParamString() + extraParamsString
+                    downloadUrl: grailsApplication.config.downloads.fieldguideDownloadUrl + downloadParams.biocacheDownloadParamString() + extraParamsString
             ])
         }
     }

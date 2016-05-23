@@ -30,23 +30,27 @@ class DownloadService {
             downloadParams.file = downloadParams.downloadType + "-" + new Date().format("yyyy-MM-dd")
             // catch different formats
             if (downloadParams.downloadFormat == DownloadFormat.DWC.format) {
-                downloadParams.fields = biocacheService.getDwCFields() // was: grailsApplication.config.dwcFields
+                // DwC download
+                downloadParams.fields = biocacheService.getDwCFields() // was: grailsApplication.config.downloads.dwcFields
                 triggerOfflineDownload(downloadParams)
             } else if (downloadParams.downloadFormat == DownloadFormat.LEGACY.format) {
+                // Legacy download
                 downloadParams.extra = (grailsApplication.config.flatten().containsKey("biocache.downloads.extra")) ? grailsApplication.config.biocache.downloads.extra : ""
                 downloadParams.dwcHeaders = false
+                log.debug "downloadParams = ${downloadParams} | ${grailsApplication.config.biocache.downloads.extra}"
                 triggerOfflineDownload(downloadParams)
             } else if (downloadParams.downloadFormat == DownloadFormat.CUSTOM.format) {
+                // Custom download
                 List customFields = []
                 downloadParams.customClasses.each {
                     log.debug "classs = ${it}"
 
-                    List dwcClasses = grailsApplication.config.flatten().containsKey("customSections.darwinCore") ? grailsApplication.config.customSections.darwinCore : []
+                    List dwcClasses = grailsApplication.config.flatten().containsKey("downloads.customSections.darwinCore") ? grailsApplication.config.downloads.customSections.darwinCore : []
                     log.debug "dwcClasses = ${dwcClasses}"
                     if (dwcClasses.contains(it)) {
                         customFields.addAll(biocacheService.getFieldsForDwcClass(it))
-                    } else if (grailsApplication.config.containsKey(it)) {
-                        def fields = grailsApplication.config.get(it)
+                    } else if (grailsApplication.config.downloads.containsKey(it)) {
+                        def fields = grailsApplication.config.downloads.get(it)
                         customFields.addAll(fields)
                     } else if (it == "qualityAssertions") {
                         downloadParams.qa = "includeall"
@@ -76,7 +80,7 @@ class DownloadService {
     }
 
     Map triggerOfflineDownload(DownloadParams downloadParams) throws Exception {
-        String url = grailsApplication.config.indexedDownloadUrl + downloadParams.biocacheDownloadParamString()
+        String url = grailsApplication.config.downloads.indexedDownloadUrl + downloadParams.biocacheDownloadParamString()
         log.debug "Doing GET on ${url}"
         Map resp = webService.get(url)
 

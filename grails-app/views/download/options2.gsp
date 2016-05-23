@@ -94,9 +94,9 @@
                                         </g:if>
                                     </div>
                                     <div class="span8">
-                                        <h4 class="text-uppercase heading-underlined"><g:message code="section.${section.key}" default="${section.key}"/></h4>
-                                        <p class="margin-bottom-2">
-                                            <g:message code="section.description.${group}" default="A description of the field groupings below"/>.
+                                        <h4 class="text-uppercase"><g:message code="section.${section.key}" default="${section.key}"/></h4>
+                                        <p class="margin-bottom-2 hide">
+                                            <g:message code="section.description.${section.key}" default="A description of the ${section.key}"/>.
                                         </p>
 
                                         <div class="list-group">

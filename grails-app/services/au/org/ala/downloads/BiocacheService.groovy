@@ -32,7 +32,7 @@ class BiocacheService {
     @Cacheable('longTermCache')
     def getBiocacheFields() {
         List fields
-        Map resp = webService.get(grailsApplication.config.indexedFieldsUrl)
+        Map resp = webService.get(grailsApplication.config.downloads.indexedFieldsUrl)
 
         if (resp?.resp) {
             fields = resp.resp
@@ -63,7 +63,7 @@ class BiocacheService {
     Map getFieldsMap() {
         List fields = getBiocacheFields()
         Map fieldsByClassMap = [:]
-        Map classLookup = grailsApplication.config.classMappings
+        Map classLookup = grailsApplication.config.downloads.classMappings
 
         fields.each { field ->
 
