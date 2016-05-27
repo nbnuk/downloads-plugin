@@ -18,7 +18,7 @@
   Time: 1:53 PM
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page import="grails.converters.JSON" contentType="text/html;charset=UTF-8" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -43,6 +43,10 @@
         }
         textarea {
             width: 100%;
+        }
+        .progress {
+            height: 12px;
+            margin-bottom: 10px;
         }
 
     </style>
@@ -82,6 +86,10 @@
                         <p>
                             <g:if test="${isQueuedDownload}">
                                 <g:message code="download.confirm.emailed" default="An email containing a link to the download file will be sent to your email address (linked to your ALA account) when it is completed."/>
+                                <div class="progress active">
+                                    <div class="bar" style="width: 100%;"></div>
+                                </div>
+                                <div id="queueStatus"></div>
                             </g:if>
                             <g:elseif test="${isFieldGuide}">
                                 <button id="fieldguideBtn" class="btn btn-large btn-success btn-block"><g:message code="download.confirm.browser" default="View the field guide (new window)"/></button>
@@ -100,7 +108,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 </div>
 <g:javascript>
@@ -138,7 +145,46 @@
         if (isChecklist) {
             window.location.href = "${downloadUrl}";
         }
+
+        <g:if test="${json}">
+            // Update status of offline download
+            var jsonResponse = ${json?.encodeAsJSON()};
+
+            if (jsonResponse) {
+                updateStatus(jsonResponse);
+            }
+        </g:if>
     });
+
+    /**
+    * Check offline download statusUrl and update UI, recursively
+    *
+    * @param json
+    */
+    function updateStatus(json) {
+        var timeout = 20 * 1000; // time between checks
+        //console.log("updateStatus", json);
+        if (json.status) {
+            if (json.statusUrl) {
+                $('#queueStatus').html("Download is <span>" + json.status +"</span>");
+                $('.progress').addClass('progress-striped');
+
+                setTimeout(function(){
+                    $.getJSON(json.statusUrl, function(data) {
+                        updateStatus(data);
+                    }).fail(function( jqxhr, textStatus, error ) {
+                        $('#queueStatus').html( "Request Failed: " + textStatus + ", " + error );
+                    });
+                }, timeout);
+            } else if (json.downloadUrl) {
+                $('#queueStatus').html("Download is <span>" + json.status +"</span>. <a href='" + json.downloadUrl + "'>Retrieve download file</a>");
+                $('.progress').removeClass('progress-striped');
+            } else {
+                $('#queueStatus').html("There was a problem getting the status: <code>" + json + "</code>");
+                $('.progress').removeClass('progress-striped');
+            }
+        }
+    }
 
 </g:javascript>
 </body>

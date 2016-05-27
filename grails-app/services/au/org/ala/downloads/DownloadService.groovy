@@ -27,7 +27,7 @@ class DownloadService {
 
         if (downloadParams.downloadType == DownloadType.RECORDS.type) {
             // set some defaults
-            downloadParams.file = downloadParams.downloadType + "-" + new Date().format("yyyy-MM-dd")
+            downloadParams.file = downloadParams.file?:downloadParams.downloadType + "-" + new Date().format("yyyy-MM-dd")
             // catch different formats
             if (downloadParams.downloadFormat == DownloadFormat.DWC.format) {
                 // DwC download

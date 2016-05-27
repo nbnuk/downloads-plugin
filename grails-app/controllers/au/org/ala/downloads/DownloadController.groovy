@@ -27,11 +27,13 @@ class DownloadController {
         //log.debug "downloadParams = ${downloadParams}"
         log.debug "biocacheDownloadParamString = ${downloadParams.biocacheDownloadParamString()}"
         log.debug "request.getHeader('referer') = ${request.getHeader('referer')}"
+        downloadParams.file = DownloadType.RECORDS.type + "-" + new Date().format("yyyy-MM-dd")
 
         if (downloadParams.searchParams) {
             render (view:'options1', model: [
                     searchParams: downloadParams.searchParams,
-                    targetUri: downloadParams.targetUri
+                    targetUri: downloadParams.targetUri,
+                    filename: downloadParams.file
             ])
         } else {
             flash.message = "Download error - No search query parameters were provided."
@@ -66,7 +68,7 @@ class DownloadController {
             render (view:'confirm', model: [
                     isQueuedDownload: true,
                     downloadParams: downloadParams,
-                    json: json // JSONObject
+                    json: json // Map
             ])
         } else if (downloadParams.downloadType == DownloadType.CHECKLIST.type) {
             // Checklist download

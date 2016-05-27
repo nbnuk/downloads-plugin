@@ -77,7 +77,13 @@
                                     %{--<p class="separator t-center margin-bottom-2"><span>Download type options</span></p>--}%
                                     <form id="downloadFormatForm" class="form-horizontal hide">
                                         <div class="control-group">
-                                            <label for="downloadFormat" class="control-label heading-xsmall"><span class="color--mellow-red">*</span>Download format</label>
+                                            <label for="file" class="control-label">Filename</label>
+                                            <div class="controls">
+                                                <input type="text" id="file" name="file" value="${filename}" class="input-lg"/>
+                                            </div>
+                                        </div>
+                                        <div class="control-group">
+                                            <label for="downloadFormat" class="control-label"><span class="color--mellow-red" style="font-size:18px">*</span>Download format</label>
                                             <div class="controls">
                                                 <select class="form-control input-lg" id="downloadFormat">
                                                     <option value="" disabled selected>Select a download format</option>
@@ -85,7 +91,7 @@
                                                         <option value="${df.format}"><g:message code="format.${df.format}" /></option>
                                                     </g:each>
                                                 </select>
-                                                <p class="help-block"><strong>This field is mandatory.</strong>  </p>
+                                                <p class="help-block hide"><strong>This field is mandatory.</strong>  </p>
                                             </div>
                                         </div>
                                     </form>
@@ -178,7 +184,7 @@
                                 <div class="span7">
                                     <form class="form-horizontal margin-top-1">
                                         <div class="form-group">
-                                            <label for="downloadReason" class="control-label heading-xsmall"><span class="color--mellow-red">*</span>Tell us why</label>
+                                            <label for="downloadReason" class="control-label heading-xsmall"><span class="color--mellow-red">*</span>Industry/application</label>
                                             <div class="controls">
                                                 <select class="form-control input-lg" id="downloadReason">
                                                     <option value="" disabled selected>Select a reason ...</option>
@@ -275,6 +281,7 @@
             var type = $('.select-download-type.btn-success').attr('id');
             var format = $('#downloadFormat').find(":selected").val();
             var reason = $('#downloadReason').find(":selected").val();
+            var file = $('#file').val();
             //alert("format = " + format);
             if (type) {
                 type = type.replace(/^select-/,''); // remove prefix
@@ -300,7 +307,7 @@
                     // go to next screen
                     $('#errorAlert').hide();
                     var sourceTypeId = "${downloads.getSourceId()}";
-                    window.location = "${g.createLink(action:'options2')}?searchParams=${searchParams.encodeAsURL()}&targetUri=${targetUri.encodeAsURL()}&downloadType=" + type + "&reasonTypeId=" + reason + "&sourceTypeId=" + sourceTypeId + "&downloadFormat=" + format;
+                    window.location = "${g.createLink(action:'options2')}?searchParams=${searchParams.encodeAsURL()}&targetUri=${targetUri.encodeAsURL()}&downloadType=" + type + "&reasonTypeId=" + reason + "&sourceTypeId=" + sourceTypeId + "&downloadFormat=" + format + "&file=" + file;
                 }
             } else {
                 $('#errorAlert').show();
