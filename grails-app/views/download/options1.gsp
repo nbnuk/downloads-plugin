@@ -290,7 +290,7 @@
                 if (type == "${au.org.ala.downloads.DownloadType.RECORDS.type}") {
                     // check for format
                     if (!format) {
-                        $('#downloadType').focus();
+                        $('#downloadFormat').focus();
                         $('#errorAlert').show();
                         $('#errorFormat').show();
                         return false;
