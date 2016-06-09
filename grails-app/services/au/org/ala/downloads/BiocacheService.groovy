@@ -67,7 +67,7 @@ class BiocacheService {
 
         fields.each { field ->
 
-            if (field && field?.dwcTerm) {
+            if (field && field?.dwcTerm && !field.dwcTerm.contains("_raw")) {
                 String classsName = field?.classs ?: "Misc"
                 String key = classLookup.get(classsName) ?: "Misc"
                 List fieldsList = fieldsByClassMap.get(key) ?: []
