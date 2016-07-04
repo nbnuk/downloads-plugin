@@ -18,5 +18,6 @@ modules = {
         resource url: [dir: 'js', file: 'bootbox.min.js', plugin: 'downloads-plugin']
         resource url: [dir: 'js', file: 'clipboard.min.js', plugin: 'downloads-plugin']
         resource url: [dir: 'js', file: 'jquery.cookie.js', plugin: 'downloads-plugin']
+        resource url: [dir:'css', file:'font-awesome-4.3.0.css', plugin:'downloads-plugin'], attrs: [ media: 'all' ]
     }
 }
