@@ -45,7 +45,7 @@
 </style>
 </head>
 <body>
-<div class="row">
+<div class="row" id="customiseDownload">
     <div class="span10 offset1">
         <h1 class="hidden">Welcome to the Atlas of Living Australia website</h1><!-- Show the H1 on each page -->
 

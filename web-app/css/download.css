@@ -293,4 +293,4 @@ a.list-group-item:focus {
     margin-top: 12px;
 }
 
-input[type="checkbox"]:empty {margin-left: -9999px;}
+#customiseDownload .checkbox input[type="checkbox"]:empty {margin-left: -9999px;}
