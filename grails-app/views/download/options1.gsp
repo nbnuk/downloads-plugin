@@ -98,7 +98,7 @@
                                 </div>
                                 <div class="span3">
                                     <a href="#" id="select-${au.org.ala.downloads.DownloadType.RECORDS.type}" class="select-download-type btn-bs3 btn-white btn-large btn-block margin-top-1 margin-bottom-1 font-xxsmall" type="button">
-                                        <i class="fa fa-check color--white hide"></i><span>Select</span>
+                                        <i class="fa fa-check color--white" style="display: none;"></i><span>Select</span>
                                     </a>
                                 </div><!-- End span3 -->
                                 <hr class="visible-phone"/>
@@ -123,7 +123,7 @@
                                 <div class="span3">
 
                                     <a href="#" id="select-${au.org.ala.downloads.DownloadType.CHECKLIST.type}" class="select-download-type btn-bs3 btn-white btn-large btn-block margin-top-1 margin-bottom-1 font-xxsmall" type="button">
-                                        <i class="fa fa-check color--white hide"></i><span>Select</span>
+                                        <i class="fa fa-check color--white" style="display: none;"></i><span>Select</span>
                                     </a>
                                 </div><!-- End span3 -->
                                 <hr class="visible-phone"/>
@@ -148,7 +148,7 @@
                                 </div>
                                 <div class="span3">
                                     <a href="#" id="select-${au.org.ala.downloads.DownloadType.FIELDGUIDE.type}" class="select-download-type btn-bs3 btn-white btn-large btn-block margin-top-1 margin-bottom-1 font-xxsmall" type="button">
-                                        <i class="fa fa-check color--white hide"></i><span>Select</span>
+                                        <i class="fa fa-check color--white" style="display: none;"></i><span>Select</span>
                                     </a>
                                 </div><!-- End span3 -->
                             </div><!-- End row -->
@@ -236,7 +236,7 @@
                 $(link).find('span').text('Select');
                 $(link).removeClass('btn-success');
                 $(link).addClass('btn-white');
-                $(link).find('.fa').addClass('hide');
+                $(link).find('.fa').hide();
                 $(link).blur(); // prevent BS focus
 
                 if ($(link).attr('id') == "select-${au.org.ala.downloads.DownloadType.RECORDS.type}") {
@@ -252,7 +252,7 @@
                 $(link).find('span').text('Selected');
                 $(link).removeClass('btn-white');
                 $(link).addClass('btn-success');
-                $(link).find('.fa').removeClass('hide');
+                $(link).find('.fa').show();
                 $(link).blur(); // prevent BS focus
 
                 if ($(link).attr('id') == "select-${au.org.ala.downloads.DownloadType.RECORDS.type}") {
