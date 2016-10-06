@@ -55,7 +55,7 @@
 <div class="row">
     <div class="span4 offset4">
         <h1 class="hidden">Welcome to the Atlas of Living Australia website</h1><!-- Show the H1 on each page -->
-
+        <!-- downloadParams = ${downloadParams as grails.converters.JSON} -->
         <!-- Breadcrumb -->
         <ol class="breadcrumb hidden-print">
             <li><a class="font-xxsmall" href="${grailsApplication.config.organisation.baseUrl}">Home</a><span class="divider">/</span></li>
@@ -73,26 +73,29 @@
                         </div>
                         <h2 class="heading-medium-large"> <g:message code="download.confirm.thanks" default="Thank you for your download"/></h2>
                         <p class="lead">
-                            <g:if test="${isQueuedDownload}">
-                                <g:message code="download.confirm.queued" default="Your download is now being queued."/>
+                            <g:if test="${isQueuedDownload && json}">
+                                <g:message code="download.confirm.queued" default="Your download is now being queued"/>
                             </g:if>
-                            <g:elseif test="${isFieldGuide}">
+                            <g:elseif test="${isFieldGuide && downloadUrl}">
                                 <g:message code="download.confirm.ready" default="Your field guide is ready"/>
                             </g:elseif>
                             <g:else>
-                                <g:message code="download.confirm.started" default="Your download has started."/>
+                                <g:message code="download.confirm.started" default="Your download has completed"/>
                             </g:else>
                         </p>
                         <p>
-                            <g:if test="${isQueuedDownload}">
+                            <g:if test="${isQueuedDownload && json}">
                                 <g:message code="download.confirm.emailed" default="An email containing a link to the download file will be sent to your email address (linked to your ALA account) when it is completed."/>
                                 <div class="progress active">
                                     <div class="bar" style="width: 100%;"></div>
                                 </div>
                                 <div id="queueStatus"></div>
                             </g:if>
-                            <g:elseif test="${isFieldGuide}">
+                            <g:elseif test="${isFieldGuide && downloadUrl}">
                                 <button id="fieldguideBtn" class="btn btn-large btn-success btn-block"><g:message code="download.confirm.browser" default="View the field guide (new window)"/></button>
+                            </g:elseif>
+                            <g:elseif test="${isQueuedDownload || isFieldGuide}">
+                                <g:message code="download.confirm.completed" default="The download has already been run. Click the button below to start over."/>
                             </g:elseif>
                             <g:else>
                                 <g:message code="download.confirm.browser" default="Check your downloads folder or your browser's downloads window."/>
@@ -102,7 +105,7 @@
                     </div>
                     <a href="${downloadParams.targetUri}${downloadParams.searchParams}" class="btn btn-primary btn-block margin-bottom-1 font-xxsmall"
                            type="button"><g:message code="download.confirm.returnToSearch" default="Return to search results"/></a>
-                    <g:if test="${isQueuedDownload}">
+                    <g:if test="${isQueuedDownload && json}">
                         <button class="btn btn-link btn-block margin-bottom-1" id="downloadUrl"><g:message code="download.confirm.rawUrlBtn" default="View the raw download URL"/></button>
                     </g:if>
                 </div>
@@ -142,7 +145,7 @@
         });
 
         var isChecklist  = "${isChecklist}";
-        if (isChecklist) {
+        if (isChecklist == "true") {
             window.location.href = "${downloadUrl}";
         }
 

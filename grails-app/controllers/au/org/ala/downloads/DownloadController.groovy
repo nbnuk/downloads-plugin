@@ -14,6 +14,7 @@
 package au.org.ala.downloads
 
 import grails.converters.JSON
+import org.springframework.web.servlet.ModelAndView
 
 /**
  * Download controller
@@ -23,8 +24,13 @@ class DownloadController {
 
     static defaultAction = "options1"
 
+    /**
+     * Initial download screen with options
+     *
+     * @param downloadParams
+     * @return
+     */
     def options1(DownloadParams downloadParams) {
-        //log.debug "downloadParams = ${downloadParams}"
         log.debug "biocacheDownloadParamString = ${downloadParams.biocacheDownloadParamString()}"
         log.debug "request.getHeader('referer') = ${request.getHeader('referer')}"
         downloadParams.file = DownloadType.RECORDS.type + "-" + new Date().format("yyyy-MM-dd")
@@ -42,6 +48,13 @@ class DownloadController {
         }
     }
 
+    /**
+     * Action after initial download screen.
+     * Either redirects user to customise screen or confirmation page & triggers download
+     *
+     * @param downloadParams
+     * @return
+     */
     def options2(DownloadParams downloadParams) {
 
         downloadParams.email = authService?.getEmail() ?: downloadParams.email // if AUTH is not present then email should be populated via input on page
@@ -65,34 +78,40 @@ class DownloadController {
             // Records download -> confirm
             def json = downloadService.triggerDownload(downloadParams)
             log.debug "json = ${json}"
-            render (view:'confirm', model: [
+            chain (action:'confirm', model: [
                     isQueuedDownload: true,
                     downloadParams: downloadParams,
                     json: json // Map
-            ])
+            ], params:[searchParams: downloadParams.searchParams, targetUri: downloadParams.targetUri, downloadType: downloadParams.downloadType])
         } else if (downloadParams.downloadType == DownloadType.CHECKLIST.type) {
             // Checklist download
             def extraParamsString = "&facets=species_guid&lookup=true"
-            render (view:'confirm', model: [
+            chain (action:'confirm', model: [
                     isQueuedDownload: false,
                     isChecklist: true,
                     downloadParams: downloadParams,
                     downloadUrl: grailsApplication.config.downloads.checklistDownloadUrl + downloadParams.biocacheDownloadParamString() + extraParamsString
-            ])
+            ], params:[searchParams: downloadParams.searchParams, targetUri: downloadParams.targetUri, downloadType: downloadParams.downloadType])
         } else if (downloadParams.downloadType == DownloadType.FIELDGUIDE.type) {
             // Field guide download
             def extraParamsString = "&facets=species_guid"
-            render (view:'confirm', model: [
+            chain (action:'confirm', model: [
                     isQueuedDownload: false,
                     isFieldGuide: true,
                     downloadParams: downloadParams,
                     downloadUrl: grailsApplication.config.downloads.fieldguideDownloadUrl + downloadParams.biocacheDownloadParamString() + extraParamsString
-            ])
+            ], params:[searchParams: downloadParams.searchParams, targetUri: downloadParams.targetUri, downloadType: downloadParams.downloadType])
         }
     }
 
-    def confirm () {
-        // testing only
+    def confirm (DownloadParams downloadParams) {
+        // Spring ModelAndView used as work around for chain method called from #options2
+        return new ModelAndView('confirm',  [
+                isQueuedDownload: (downloadParams.downloadType == DownloadType.RECORDS.type) ? true : false,
+                isFieldGuide: (downloadParams.downloadType == DownloadType.FIELDGUIDE.type) ? true : false,
+                isChecklist: (downloadParams.downloadType == DownloadType.CHECKLIST.type) ? true : false,
+                downloadParams: downloadParams
+        ])
     }
 
     def saveUserPrefs() {
