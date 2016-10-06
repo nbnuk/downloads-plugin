@@ -94,11 +94,11 @@
                             <g:elseif test="${isFieldGuide && downloadUrl}">
                                 <button id="fieldguideBtn" class="btn btn-large btn-success btn-block"><g:message code="download.confirm.browser" default="View the field guide (new window)"/></button>
                             </g:elseif>
-                            <g:elseif test="${isQueuedDownload || isFieldGuide}">
-                                <g:message code="download.confirm.completed" default="The download has already been run. Click the button below to start over."/>
+                            <g:elseif test="${isChecklist && downloadUrl}">
+                                <g:message code="download.confirm.browser" default="Check your downloads folder or your browser's downloads window."/>
                             </g:elseif>
                             <g:else>
-                                <g:message code="download.confirm.browser" default="Check your downloads folder or your browser's downloads window."/>
+                                <g:message code="download.confirm.completed" default="The download has already been run. Click the button below to start over."/>
                             </g:else>
                         </p>
                         <p>&nbsp;</p>
@@ -145,8 +145,9 @@
         });
 
         var isChecklist  = "${isChecklist}";
-        if (isChecklist == "true") {
-            window.location.href = "${downloadUrl}";
+        var downloadUrl  = "${downloadUrl}";
+        if (isChecklist == "true" && downloadUrl) {
+            window.location.href = downloadUrl;
         }
 
         <g:if test="${json}">
