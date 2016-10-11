@@ -74,9 +74,15 @@ class DownloadParams {
         paramsMap
     }
 
+    /**
+     * Produce a query string to send to biocache-service for download
+     *
+     * @return
+     */
     public String biocacheDownloadParamString() {
         Map paramsMap = mapForPropsWithExcludeList(["searchParams","targetUri","downloadType","downloadFormat","customClasses"])
-        String queryString = WebUtils.toQueryString(paramsMap) + "&" + StringUtils.removeStart(searchParams,"?")
+        // space chars are removed via replaceChars, as they cause an URI exception
+        String queryString = WebUtils.toQueryString(paramsMap) + "&" + StringUtils.removeStart(StringUtils.replaceChars(searchParams, " ", "+"),"?")
         queryString
     }
 }
