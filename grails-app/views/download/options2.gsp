@@ -101,7 +101,7 @@
 
                                         <div class="list-group">
                                             <g:each in="${section.value}" var="group" status="i">
-                                                <g:set var="disabled" value="${(mandatoryFields.contains(group)) ? true : false }"/>
+                                                <g:set var="disabled" value="${(mandatoryFields.contains(group) || (section.key == 'SPATIAL INTERSECTION' && downloadParams?.layers)) ? true : false }"/>
                                                 <g:set var="active" value="${(mandatoryFields.contains(group) || userSavedFields.contains(group)) ? true : false }"/>
                                                 <a href="#" class="list-group-item ${(disabled)?"disabled":""} ${(active)?"list-group-item-success":""}" title="${(disabled)?"required item (cannot be de-selected)":""}">
                                                     <div class="checkbox pull-left">

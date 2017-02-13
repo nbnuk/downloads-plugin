@@ -27,15 +27,18 @@
     <title>ALA Data Download</title>
     <r:require module="download"/>
 </head>
+
 <body>
 <div class="row-fluid">
     <div class="span10 offset1">
         <h1 class="hidden">Welcome to the Atlas of Living Australia website</h1><!-- Show the H1 on each page -->
 
-        <!-- Breadcrumb -->
+    <!-- Breadcrumb -->
         <ol class="breadcrumb hidden-print">
-            <li><a class="font-xxsmall" href="${grailsApplication.config.organisation.baseUrl}">Home</a><span class="divider">/</span></li>
-            <li><a class="font-xxsmall" href="${g.createLink(uri:'/')}">Occurrence Records</a><span class="divider">/</span></li>
+            <li><a class="font-xxsmall" href="${grailsApplication.config.organisation.baseUrl}">Home</a><span
+                    class="divider">/</span></li>
+            <li><a class="font-xxsmall" href="${g.createLink(uri: '/')}">Occurrence Records</a><span
+                    class="divider">/</span></li>
             <li class="font-xxsmall active">Download</li>
         </ol>
         <!-- End Breadcrumb -->
@@ -53,22 +56,26 @@
                                 <div class="span2">
                                     <h4 class="heading-medium-alt">Step 1</h4>
                                 </div>
+
                                 <div class="span10">
                                     <p>Select your download type below, and then progress to step 2.</p>
                                 </div>
                             </div>
-                            <div class="row-fluid margin-top-1">
-                                <div class="span2">
-                                    <div class="contrib-stats">
-                                        <div class="no-of-questions">
-                                            <div class="survey-details">
-                                                <div class="survey-counter"><strong><i class="fa fa-table color--yellow"></i></strong></div>
-                                            </div>
+                        <div class="row-fluid margin-top-1">
+                            <div class="span2">
+                                <div class="contrib-stats">
+                                    <div class="no-of-questions">
+                                        <div class="survey-details">
+                                            <div class="survey-counter"><strong><i
+                                                    class="fa fa-table color--yellow"></i></strong></div>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                            <g:if test="${!defaults?.downloadType || defaults?.downloadType == 'records'}">
                                 <div class="span7">
-                                    <h4 class="text-uppercase=heading-underlined">Occurence records </h4>
+                                    <h4 class="text-uppercase=heading-underlined">Occurrence records</h4>
+
                                     <p>
                                         A ZIP archive containing a comma separated values (CSV) file which includes a
                                         subset of location, taxon and event information.
@@ -78,85 +85,136 @@
                                     <form id="downloadFormatForm" class="form-horizontal hide">
                                         <div class="control-group">
                                             <label for="file" class="control-label">Filename</label>
+
                                             <div class="controls">
-                                                <input type="text" id="file" name="file" value="${filename}" class="input-lg"/>
+                                                <input type="text" id="file" name="file" value="${filename}"
+                                                       class="input-lg"/>
                                             </div>
                                         </div>
+
                                         <div class="control-group">
-                                            <label for="downloadFormat" class="control-label"><span class="color--mellow-red" style="font-size:18px">*</span>Download format</label>
+                                            <label for="downloadFormat" class="control-label"><span
+                                                    class="color--mellow-red"
+                                                    style="font-size:18px">*</span>Download format</label>
+
                                             <div class="controls">
                                                 <select class="form-control input-lg" id="downloadFormat">
                                                     <option value="" disabled selected>Select a download format</option>
-                                                    <g:each in="${au.org.ala.downloads.DownloadFormat.values()}" var="df">
-                                                        <option value="${df.format}"><g:message code="format.${df.format}" /></option>
+                                                    <g:each in="${au.org.ala.downloads.DownloadFormat.values()}"
+                                                            var="df">
+                                                        <option value="${df.format}"><g:message
+                                                                code="format.${df.format}"/></option>
                                                     </g:each>
                                                 </select>
-                                                <p class="help-block hide"><strong>This field is mandatory.</strong>  </p>
+
+                                                <p class="help-block hide"><strong>This field is mandatory.</strong></p>
+                                            </div>
+                                        </div>
+
+                                        <div class="control-group">
+                                            <label for="fileType" class="control-label"><span class="color--mellow-red"
+                                                                                              style="font-size:18px">*</span>File type
+                                            </label>
+
+                                            <div class="controls">
+                                                <select class="form-control input-lg" id="fileType">
+                                                    <option value="" disabled selected>Select a file type</option>
+                                                    <g:each in="${au.org.ala.downloads.FileType.values()}" var="ft">
+                                                        <option value="${ft.type}"><g:message
+                                                                code="${ft.type}"/></option>
+                                                    </g:each>
+                                                </select>
+
+                                                <p class="help-block hide"><strong>This field is mandatory.</strong></p>
                                             </div>
                                         </div>
                                     </form>
                                 </div>
+
                                 <div class="span3">
-                                    <a href="#" id="select-${au.org.ala.downloads.DownloadType.RECORDS.type}" class="select-download-type btn-bs3 btn-white btn-large btn-block margin-top-1 margin-bottom-1 font-xxsmall" type="button">
-                                        <i class="fa fa-check color--white" style="display: none;"></i><span>Select</span>
+                                    <a href="#" id="select-${au.org.ala.downloads.DownloadType.RECORDS.type}"
+                                       class="select-download-type btn-bs3 btn-white btn-large btn-block margin-top-1 margin-bottom-1 font-xxsmall"
+                                       type="button">
+                                        <i class="fa fa-check color--white"
+                                           style="display: none;"></i><span>Select</span>
                                     </a>
                                 </div><!-- End span3 -->
                                 <hr class="visible-phone"/>
-                            </div><!-- End row -->
-                            <div class="row-fluid margin-top-1">
-                                <div class="span2">
-                                    <div class="contrib-stats">
-                                        <div class="no-of-questions">
-                                            <div class="survey-details">
-                                                <div class="survey-counter"><strong><i class="fa fa-list-alt color--apple"></i></strong></div>
+                                </div><!-- End row -->
+                            </g:if>
+                            <g:if test="${!defaults?.downloadType || defaults?.downloadType == 'checklist'}">
+                                <div class="row-fluid margin-top-1">
+                                    <div class="span2">
+                                        <div class="contrib-stats">
+                                            <div class="no-of-questions">
+                                                <div class="survey-details">
+                                                    <div class="survey-counter"><strong><i
+                                                            class="fa fa-list-alt color--apple"></i></strong></div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="span7">
-                                    <h4 class="text-uppercase=heading-underlined">Species checklist </h4>
-                                    <p class="font-xsmall">
-                                        A comma separated values (CSV) file, listing the distinct species in the occurrence records
-                                        result set.
-                                    </p>
-                                </div>
-                                <div class="span3">
 
-                                    <a href="#" id="select-${au.org.ala.downloads.DownloadType.CHECKLIST.type}" class="select-download-type btn-bs3 btn-white btn-large btn-block margin-top-1 margin-bottom-1 font-xxsmall" type="button">
-                                        <i class="fa fa-check color--white" style="display: none;"></i><span>Select</span>
-                                    </a>
-                                </div><!-- End span3 -->
-                                <hr class="visible-phone"/>
-                            </div><!-- End row -->
+                                    <div class="span7">
+                                        <h4 class="text-uppercase=heading-underlined">Species checklist</h4>
 
-                            <div class="row-fluid margin-top-1">
-                                <div class="span2">
-                                    <div class="contrib-stats">
-                                        <div class="no-of-questions">
-                                            <div class="survey-details">
-                                                <div class="survey-counter"><strong><i class="fa fa-file-pdf-o color--mellow-red"></i></strong></div>
+                                        <p class="font-xsmall">
+                                            A comma separated values (CSV) file, listing the distinct species in the occurrence records
+                                            result set.
+                                        </p>
+                                    </div>
+
+                                    <div class="span3">
+
+                                        <a href="#" id="select-${au.org.ala.downloads.DownloadType.CHECKLIST.type}"
+                                           class="select-download-type btn-bs3 btn-white btn-large btn-block margin-top-1 margin-bottom-1 font-xxsmall"
+                                           type="button">
+                                            <i class="fa fa-check color--white"
+                                               style="display: none;"></i><span>Select</span>
+                                        </a>
+                                    </div><!-- End span3 -->
+                                    <hr class="visible-phone"/>
+                                </div><!-- End row -->
+                            </g:if>
+                            <g:if test="${!defaults?.downloadType || defaults?.downloadType == 'fieldguide'}">
+                                <div class="row-fluid margin-top-1">
+                                    <div class="span2">
+                                        <div class="contrib-stats">
+                                            <div class="no-of-questions">
+                                                <div class="survey-details">
+                                                    <div class="survey-counter"><strong><i
+                                                            class="fa fa-file-pdf-o color--mellow-red"></i></strong>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="span7">
-                                    <h4 class="text-uppercase=heading-underlined">Species field-guide </h4>
-                                    <p>
-                                        A PDF document containing species profile information (including photos and maps) for the
-                                        list of distinct species in the occurrence record set.
-                                    </p>
-                                </div>
-                                <div class="span3">
-                                    <a href="#" id="select-${au.org.ala.downloads.DownloadType.FIELDGUIDE.type}" class="select-download-type btn-bs3 btn-white btn-large btn-block margin-top-1 margin-bottom-1 font-xxsmall" type="button">
-                                        <i class="fa fa-check color--white" style="display: none;"></i><span>Select</span>
-                                    </a>
-                                </div><!-- End span3 -->
-                            </div><!-- End row -->
+
+                                    <div class="span7">
+                                        <h4 class="text-uppercase=heading-underlined">Species field-guide</h4>
+
+                                        <p>
+                                            A PDF document containing species profile information (including photos and maps) for the
+                                            list of distinct species in the occurrence record set.
+                                        </p>
+                                    </div>
+
+                                    <div class="span3">
+                                        <a href="#" id="select-${au.org.ala.downloads.DownloadType.FIELDGUIDE.type}"
+                                           class="select-download-type btn-bs3 btn-white btn-large btn-block margin-top-1 margin-bottom-1 font-xxsmall"
+                                           type="button">
+                                            <i class="fa fa-check color--white"
+                                               style="display: none;"></i><span>Select</span>
+                                        </a>
+                                    </div><!-- End span3 -->
+                                </div><!-- End row -->
+                            </g:if>
                         </div><!-- End comment-wrapper push -->
                     </div>
                 </div>
             </div>
         </div>
+
         <div class="well">
             <div class="row-fluid">
                 <div class="span12">
@@ -167,24 +225,30 @@
                                 <div class="span2">
                                     <h4 class="heading-medium-alt">Step 2</h4>
                                 </div>
+
                                 <div class="span10">
                                     <p>Select your download reason and then click the "Next" button.</p>
                                 </div>
                             </div>
+
                             <div class="row-fluid">
                                 <div class="span2">
                                     <div class="contrib-stats">
                                         <div class="no-of-questions">
                                             <div class="survey-details">
-                                                <div class="survey-counter"><strong><i class="fa fa-tags color--apple"></i></strong></div>
+                                                <div class="survey-counter"><strong><i
+                                                        class="fa fa-tags color--apple"></i></strong></div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="span7">
                                     <form class="form-horizontal margin-top-1">
                                         <div class="form-group">
-                                            <label for="downloadReason" class="control-label heading-xsmall"><span class="color--mellow-red">*</span>Industry/application</label>
+                                            <label for="downloadReason" class="control-label heading-xsmall"><span
+                                                    class="color--mellow-red">*</span>Industry/application</label>
+
                                             <div class="controls">
                                                 <select class="form-control input-lg" id="downloadReason">
                                                     <option value="" disabled selected>Select a reason ...</option>
@@ -192,21 +256,30 @@
                                                         <option value="${it.id}">${it.name}</option>
                                                     </g:each>
                                                 </select>
-                                                <p class="help-block"><strong>This field is mandatory.</strong> Choose the best "use type" from the drop-down menu above.</p>
+
+                                                <p class="help-block"><strong>This field is mandatory.</strong> Choose the best "use type" from the drop-down menu above.
+                                                </p>
                                             </div>
                                         </div>
                                     </form>
                                 </div>
+
                                 <div class="span3">
-                                    <a href="#" id="nextBtn" class="btn btn-large btn-primary btn-block margin-top-1 margin-bottom-1 font-xxsmall" type="button">Next <i class="fa fa-chevron-right color--white"></i></a>
+                                    <a href="#" id="nextBtn"
+                                       class="btn btn-large btn-primary btn-block margin-top-1 margin-bottom-1 font-xxsmall"
+                                       type="button">Next <i class="fa fa-chevron-right color--white"></i></a>
                                 </div><!-- End span3 -->
                             </div>
+
                             <div class="row-fluid">
                                 <div class="span12">
                                     <!-- Alert Information -->
                                     <div id="errorAlert" class="alert alert-danger alert-dismissible hide" role="alert">
-                                        <button type="button" class="close" onclick="$(this).parent().hide()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                        <strong>Error:</strong> Ensure that you 1) select your download <b>type</b><span id="errorFormat" class="hide"> and select a download <b>format</b></span>, 2) select a download <b>reason</b>
+                                        <button type="button" class="close" onclick="$(this).parent().hide()"
+                                                aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <strong>Error:</strong> Ensure that you 1) select your download <b>type</b><span
+                                            id="errorFormat" class="hide">and select a download <b>format</b>
+                                    </span>, 2) select a download <b>reason</b>
 
                                     </div>
                                     <!-- End Alert Information -->
@@ -217,8 +290,10 @@
                 </div>
             </div>
         </div>
+
         <div class="alert alert-info alert-dismissible" role="alert">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                    aria-hidden="true">×</span></button>
             By downloading this content you are agreeing to use it in accordance with the Atlas of Living
             Australia <a href="http://www.ala.org.au/about-the-atlas/terms-of-use/#TOUusingcontent">Terms of Use</a>
             and any Data Provider Terms associated with the data download.
@@ -265,8 +340,29 @@
             }
         });
 
+        if (${defaults?.downloadType != null}) {
+            $('#select-${defaults?.downloadType}').click();
+        }
+
         // download format change event
         $('#downloadFormat').on('change', function(e) {
+            console.log('this selected val', $(this).find(":selected").val());
+            if ($(this).find(":selected").val()) {
+                // set focus on reason code
+                $('#downloadReason').focus();
+            }
+        });
+
+        if (${defaults?.downloadFormat != null}) {
+            $('#downloadFormat')[0].value = '${defaults?.downloadFormat}';
+        }
+
+        if (${defaults?.fileType != null}) {
+            $('#fileType')[0].value = '${defaults?.fileType}';
+        }
+
+        // file type change event
+        $('#fileType').on('change', function(e) {
             console.log('this selected val', $(this).find(":selected").val());
             if ($(this).find(":selected").val()) {
                 // set focus on reason code
@@ -307,7 +403,11 @@
                     // go to next screen
                     $('#errorAlert').hide();
                     var sourceTypeId = "${downloads.getSourceId()}";
-                    window.location = "${g.createLink(action:'options2')}?searchParams=${searchParams.encodeAsURL()}&targetUri=${targetUri.encodeAsURL()}&downloadType=" + type + "&reasonTypeId=" + reason + "&sourceTypeId=" + sourceTypeId + "&downloadFormat=" + format + "&file=" + file;
+                    var layers = "${defaults.layers}";
+                    var layersServiceUrl = "${defaults.layersServiceUrl}";
+                    var customHeader = "${defaults.customHeader}";
+                    var fileType = $('#fileType')[0].value;
+                    window.location = "${g.createLink(action: 'options2')}?searchParams=${searchParams.encodeAsURL()}&targetUri=${targetUri.encodeAsURL()}&downloadType=" + type + "&reasonTypeId=" + reason + "&sourceTypeId=" + sourceTypeId + "&downloadFormat=" + format + "&file=" + file + "&layers=" + layers + "&customHeader=" + customHeader + "&fileType=" + fileType + "&layersServiceUrl=" + layersServiceUrl;
                 }
             } else {
                 $('#errorAlert').show();

@@ -39,7 +39,14 @@ class DownloadController {
             render (view:'options1', model: [
                     searchParams: downloadParams.searchParams,
                     targetUri: downloadParams.targetUri,
-                    filename: downloadParams.file
+                    filename: downloadParams.file,
+                    defaults: [ sourceTypeId: downloadParams.sourceTypeId,
+                                downloadType: downloadParams.downloadType,
+                                downloadFormat: downloadParams.downloadFormat,
+                                fileType: downloadParams.fileType,
+                                layers: downloadParams.layers,
+                                layersServiceUrl: downloadParams.layersServiceUrl,
+                                customHeader: downloadParams.customHeader]
             ])
         } else {
             flash.message = "Download error - No search query parameters were provided."
@@ -66,11 +73,24 @@ class DownloadController {
             // Customise download screen
             Map sectionsMap = biocacheService.getFieldsMap()
             log.debug "sectionsMap = ${sectionsMap as JSON}"
-            Map customSections = grailsApplication.config.downloads.customSections
-            // customSections.darwinCore = sectionsMap.keySet()
+            Map customSections = grailsApplication.config.downloads.customSections.clone()
+
+            //add preselected layer selection to "SPATIAL INTERSECTIONS"
+            def mandatory = grailsApplication.config.downloads.mandatoryFields.clone()
+            if (downloadParams.layers) {
+                def sections = customSections.get("spatialIntersections")
+                if (sections) {
+                    sections = sections.clone()
+                    sections.add("selectedLayers")
+                } else {
+                    customSections.put("spatialIntersections", ["selectedLayers"])
+                }
+                mandatory.add("selectedLayers")
+            }
+
             render (view:'options2', model: [
                     customSections: customSections,
-                    mandatoryFields: grailsApplication.config.downloads.mandatoryFields,
+                    mandatoryFields: mandatory,
                     userSavedFields: customiseService.getUserSavedFields(request?.cookies?.find { it.name == 'download_fields'}, authService?.getUserId()),
                     downloadParams: downloadParams
             ])

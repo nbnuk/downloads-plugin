@@ -14,6 +14,7 @@
 package au.org.ala.downloads
 
 import grails.plugin.cache.Cacheable
+import net.sf.json.JSONArray
 
 /**
  * Service to perform the records downloads (marshalls to appropriate web service)
@@ -56,6 +57,8 @@ class DownloadService {
                         downloadParams.qa = "includeall"
                     } else if (it == "miscellaneousFields") {
                         downloadParams.includeMisc = true
+                    } else if (it == "selectedLayers") {
+                        //already added to extra
                     } else {
                         throw new Exception("Custom field class not recognised: ${it}")
                     }
@@ -92,7 +95,23 @@ class DownloadService {
         }
     }
 
+    @Cacheable('longTermCache')
+    def List getLoggerReasons() {
+        def url = "${grailsApplication.config.logger.baseUrl}/logger/reasons"
+        try {
+            webService.get(url).resp.findAll { !it.deprecated } // skip deprecated reason codes
+        } catch (Exception ex) {
+            log.error "Error calling logger service: ${ex.message}", ex
+        }
+    }
 
-
-
+    @Cacheable('longTermCache')
+    def List getLoggerSources() {
+        def url = "${grailsApplication.config.logger.baseUrl}/logger/sources"
+        try {
+            webService.get(url).resp
+        } catch (Exception ex) {
+            log.error "Error calling logger service: ${ex.message}", ex
+        }
+    }
 }

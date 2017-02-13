@@ -15,7 +15,7 @@ package au.org.ala.downloads.plugin
 
 class DownloadsTagLib {
 
-    def webServicesService
+    def downloadService
     //static defaultEncodeAs = [taglib:'html']
     //static encodeAsForTags = [tagName: [taglib:'html'], otherTagName: [taglib:'none']]
     static returnObjectForTags = ['getAllLoggerReasons','testListOutput','getLoggerReasons']
@@ -47,7 +47,7 @@ class DownloadsTagLib {
      * at top of taglib
      */
     def getAllLoggerReasons = { attrs ->
-        List allreasons = webServicesService.getLoggerReasons()
+        List allreasons = downloadService.getLoggerReasons()
         log.debug "allreasons => ${allreasons.getClass().name}"
         allreasons
     }
@@ -63,7 +63,7 @@ class DownloadsTagLib {
     def getSourceId = { attrs ->
         def skin = grailsApplication.config.skin.layout?.toUpperCase()
         log.debug "skin = ${skin}"
-        def sources = webServicesService.getLoggerSources()
+        def sources = downloadService.getLoggerSources()
         sources.each {
             log.debug "it = ${it}"
             if (it.name == skin) {
@@ -82,7 +82,7 @@ class DownloadsTagLib {
      * at top of taglib
      */
     def getLoggerReasons = { attrs ->
-        webServicesService.getLoggerReasons()
+        downloadService.getLoggerReasons()
     }
 
 }

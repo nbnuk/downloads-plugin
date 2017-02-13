@@ -44,6 +44,11 @@ class DownloadParams {
     Boolean dwcHeaders = true
     Boolean includeMisc = false // Miscellaneous fields
     String qa = "none" // can be empty (get default qa fields), "includeall" (get empty fields so same columns every time), "none",  a comma separated fields or "all"
+    String fileType = "csv"
+
+    String layers //appended to extra
+    String layersServiceUrl = ""
+    String customHeader = ""
 
     @Override
     public String toString() {
@@ -59,7 +64,7 @@ class DownloadParams {
 
     private Map mapForPropsWithExcludeList(List excludes = []) {
         Map paramsMap = [:]
-        List excludeParams = ["mapForPropsWithExcludeList","class","constraints","errors","ValidationErrors","action","controller"]
+        List excludeParams = ["mapForPropsWithExcludeList","class","constraints","errors","ValidationErrors","action","controller","layers"]
 
         if (excludes) {
             excludeParams.addAll(excludes)
@@ -69,6 +74,11 @@ class DownloadParams {
             if (val && !excludeParams.contains(prop)) {
                 paramsMap.put(prop, val)
             }
+        }
+
+        if (layers) {
+            if (extra) paramsMap.extra = extra + ',' + layers
+            else paramsMap.extra = layers
         }
 
         paramsMap
