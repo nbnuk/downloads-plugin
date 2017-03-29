@@ -24,6 +24,13 @@ class DownloadService {
     def webService
     def biocacheService
 
+    /**
+     * Records download service
+     *
+     * @param downloadParams
+     * @return
+     * @throws Exception
+     */
     def triggerDownload(DownloadParams downloadParams) throws Exception {
 
         if (downloadParams.downloadType == DownloadType.RECORDS.type) {

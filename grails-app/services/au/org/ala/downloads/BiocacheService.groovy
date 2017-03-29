@@ -1,6 +1,10 @@
 package au.org.ala.downloads
 
+import grails.converters.JSON
 import grails.plugin.cache.Cacheable
+import org.apache.commons.collections.CollectionUtils
+
+import javax.annotation.PostConstruct
 
 /**
  * Service to access data from biocache-service
@@ -8,7 +12,19 @@ import grails.plugin.cache.Cacheable
 class BiocacheService {
 
     def grailsApplication
+    def grailsResourceLocator
     def webService
+    def thisService // placeholder
+
+    /**
+     * Init method - inttialise fields after Spring has instantiated this singleton
+     *
+     * @return
+     */
+    @PostConstruct
+    void init() {
+        thisService = grailsApplication.mainContext.biocacheService // to maintain cacheable functionality for internal method calls
+    }
 
     /**
      * Get fields info from http://biocache.ala.org.au/ws/index/fields.
@@ -30,7 +46,7 @@ class BiocacheService {
      * @return fields (List)
      */
     @Cacheable('longTermCache')
-    def getBiocacheFields() {
+    List getBiocacheFields() {
         List fields
         Map resp = webService.get(grailsApplication.config.downloads.indexedFieldsUrl)
 
@@ -50,46 +66,83 @@ class BiocacheService {
         }
 
         List fields = []
-        Map fieldsMap = getFieldsMap()
+        Map fieldsMap = thisService.getFieldsMap(true)
 
         if (fieldsMap.containsKey(classsName)) {
             fields = fieldsMap.get(classsName)
         }
 
-        fields
+        log.debug "Getting fields for ${classsName} = ${fields}"
+
+        orderFieldsByDwC(fields)
     }
 
     @Cacheable('longTermCache')
-    Map getFieldsMap() {
-        List fields = getBiocacheFields()
+    Map getFieldsMap(boolean includeRaw = false) {
+        List fields = thisService.getBiocacheFields()
         Map fieldsByClassMap = [:]
         Map classLookup = grailsApplication.config.downloads.classMappings
 
         fields.each { field ->
 
-            if (field && field?.dwcTerm && !field.dwcTerm.contains("_raw")) {
+            if (field && field?.dwcTerm && !(!includeRaw && field.dwcTerm.contains("_raw"))) {
+                // only includes "_raw" fields when 'includeRaw' is true
                 String classsName = field?.classs ?: "Misc"
                 String key = classLookup.get(classsName) ?: "Misc"
                 List fieldsList = fieldsByClassMap.get(key) ?: []
-                fieldsList.add(field?.downloadName)
+                //fieldsList.add(field?.downloadName)
+                fieldsList.add([downloadName:field?.downloadName, dwcTerm: field?.dwcTerm])
                 fieldsByClassMap.put(key, fieldsList) // overwrites with new list
             }
         }
 
+        log.debug "getFieldsMap(${includeRaw}) -> ${fieldsByClassMap as JSON}"
         fieldsByClassMap
     }
 
     @Cacheable('longTermCache')
     String getDwCFields() {
         List fields = []
-        Map fieldsMap = getFieldsMap()
+        Map fieldsMap = thisService.getFieldsMap() // caching maintained
 
         fieldsMap.keySet().each {
             log.debug "getDwCFields - ${it} = ${fieldsMap.get(it)}"
             fields.addAll(fieldsMap.get(it))
         }
 
-        fields.join(",")
+        // order fields in DwC order
+        orderFieldsByDwC(fields).join(",")
+    }
+
+    /**
+     * Order the list of fields by DwC order and then by alphabetic order
+     *
+     * @param fields (List<Map> {downloadName, dwcTerm})
+     * @return orderedFields List<String>
+     */
+    List orderFieldsByDwC(List fields) {
+        List orderedFields = []
+        List dwcOrdered = thisService.getDwCFieldsOrdered() // cached List contains dwcTerms only - e.g. type, class, kingdom
+        List dwcTermsOnly = fields.collect { it.dwcTerm?.replaceAll("dcterms:","") } // flatten List - dwcOrdered has namespace removed
+
+        dwcOrdered.each { field ->
+            // fields can contain duplicate entries for dwcTerm (due to raw and processed version
+            // which is why #findIndexValues() is used
+            List indexValues = dwcTermsOnly.findIndexValues{ it == field} // returns a List<Long> for the matching index positions
+
+            if (indexValues.size() > 0) {
+                indexValues.each { Long val ->
+                    // add matching terms to orderedFields
+                    orderedFields.add(fields.get(val.intValue()))
+                }
+            }
+        }
+
+        List remainingFields = CollectionUtils.subtract(fields, orderedFields) // get the "remaining" list of fields
+        orderedFields.addAll(remainingFields.sort()) // sort remainingFields and append to orderedFields
+        List outputFields = orderedFields.collect { it.downloadName } // flatten to just list of fields
+
+        outputFields
     }
 
     @Cacheable('longTermCache')
@@ -98,5 +151,20 @@ class BiocacheService {
 
         Map entry = fields.find { it.dwcTerm == field }
         entry?.containsKey("downloadDescription") ? entry.get("downloadDescription") : ""
+    }
+
+    @Cacheable('longTermCache')
+    List getDwCFieldsOrdered() {
+        List dwcFieldsOrdered
+
+        try {
+            // DwC fields canonical version found at https://raw.githubusercontent.com/tdwg/dwc/master/downloads/SimpleDwCCSVheaderUTF8.txt
+            dwcFieldsOrdered = grailsResourceLocator.findResourceForURI('classpath:SimpleDwCCSVheaderUTF8.txt').getFile().text.replaceAll("\"","").split(",")
+            log.debug "dwcFieldsOrdered = ${dwcFieldsOrdered}"
+        } catch (Exception ex) {
+            log.error "Failed to load SimpleDwCCSVheaderUTF8.txt file - ${ex.message}", ex
+        }
+
+        dwcFieldsOrdered
     }
 }

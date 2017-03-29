@@ -151,12 +151,14 @@
         }
 
         <g:if test="${json}">
+            <g:applyCodec encodeAs="none">
             // Update status of offline download
-            var jsonResponse = ${json?.encodeAsJSON()};
+            var jsonResponse = ${json as JSON};
 
             if (jsonResponse) {
                 updateStatus(jsonResponse);
             }
+            </g:applyCodec>
         </g:if>
     });
 
