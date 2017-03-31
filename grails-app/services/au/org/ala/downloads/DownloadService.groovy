@@ -14,7 +14,8 @@
 package au.org.ala.downloads
 
 import grails.plugin.cache.Cacheable
-import net.sf.json.JSONArray
+
+import java.text.SimpleDateFormat
 
 /**
  * Service to perform the records downloads (marshalls to appropriate web service)
@@ -119,6 +120,70 @@ class DownloadService {
             webService.get(url).resp
         } catch (Exception ex) {
             log.error "Error calling logger service: ${ex.message}", ex
+        }
+    }
+
+    def triggerFieldGuideDownload(String params) {
+        String url = grailsApplication.config.downloads.fieldguideDownloadUrl + '/generate/offline'
+
+        //detect fieldguide vs biocache-hub url. fieldguide url returns 400 when missing email parameter
+        if (webService.post(url, null)?.statusCode != 400) {
+            null
+        } else {
+            def resp = fieldGuideRequest(params)
+
+            if (resp?.statusUrl) {
+                resp.put("requestUrl", url)
+                resp
+            } else {
+                throw new Exception((String) resp?.error?.toString())
+            }
+        }
+    }
+
+    private fieldGuideRequest(String params) {
+        String flimit = params.replaceAll("^.*maxSpecies=|[^0-9]+.*","")
+        String request = params.replaceAll("pageSize=[0-9]+|flimit=[0-9]+|facets=[a-zA-Z_]+", "") +
+                "&pageSize=0&flimit=" + (flimit?:150) + "&facet=true&facets=species_guid"
+
+        def result = webService.get(grailsApplication.config.biocache.baseUrl + "/occurrences/search" + request)
+
+        def fg = [guids: [], link: "", title: ""]
+
+        result?.resp?.facetResults?.each { fr ->
+            if (fr.fieldName == 'species_guid') {
+                fg.guids = fr.fieldResult?.label // groovy does an implicit collect
+            }
+        }
+
+        if (fg.guids.isEmpty()) {
+            [status: "error", message: "Error: No species were found for the requested search (${params})."]
+        } else {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd MMMMM yyyy")
+
+            //set the properties of the query
+            fg.title = "This document was generated on " + sdf.format(new Date())
+            String serverName = grailsApplication.config.serverName ?: grailsApplication.config.security.cas.appServerName
+            String contextPath = grailsApplication.config.contextPath ?: grailsApplication.config.security.cas.contextPath ?: ""
+            fg.link = serverName + contextPath + "/occurrences/search?" + request
+
+            try {
+                def response = webService.post(grailsApplication.config.fieldguide.url + "/generate/offline" + params, fg)
+
+                if (response?.resp) {
+                    //response data
+                    // {
+                    //  "status": "inQueue",
+                    //  "statusUrl": "http://fieldguide.ala.org.au/generate/status?id=30032017-fieldguide1490878211762.pdf"
+                    // }
+                    response.resp
+                } else {
+                    [status: "error", message: "failed to get fieldguide for this taxa"]
+                }
+            } catch (Exception ex) {
+                log.error ex.getMessage(), ex
+                [status: "error", message: "error generating fieldguide for this taxa"]
+            }
         }
     }
 }

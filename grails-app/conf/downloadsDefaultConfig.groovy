@@ -16,9 +16,15 @@
 
 downloads.indexedDownloadUrl = "http://biocache.ala.org.au/ws/occurrences/offline/download"
 downloads.checklistDownloadUrl = "http://biocache.ala.org.au/ws/occurrences/facets/download"
-downloads.fieldguideDownloadUrl = "http://biocache.ala.org.au/occurrences/fieldguide/download"
+
+// For online fieldguide generation use biocache-hub webservice url e.g. http://biocache.ala.org.au/occurrences/fieldguide/download
+// For offline fieldguide generation use fieldguide url e.g. http://fieldguide.ala.org.au
+//downloads.fieldguideDownloadUrl = "http://fieldguide.ala.org.au"
 
 downloads.indexedFieldsUrl = "http://biocache.ala.org.au/ws/index/fields"
+
+// The parent application should also use biocache.baseUrl, e.g. biocache-hubs
+biocache.baseUrl = "http://biocache.ala.org.au/ws"
 
 // Define userdetails.baseUrl to enable saving of fields to userdetails instead of cookies.
 // e.g. userdetails.baseUrl = "https://auth.ala.org.au/userdetails"

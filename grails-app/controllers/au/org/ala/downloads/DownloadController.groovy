@@ -105,7 +105,7 @@ class DownloadController {
             ], params:[searchParams: downloadParams.searchParams, targetUri: downloadParams.targetUri, downloadType: downloadParams.downloadType])
         } else if (downloadParams.downloadType == DownloadType.CHECKLIST.type) {
             // Checklist download
-            def extraParamsString = "&facets=species_guid&lookup=true"
+            def extraParamsString = "&facets=species_guid&lookup=true&counts=true&lists=true"
             chain (action:'confirm', model: [
                     isQueuedDownload: false,
                     isChecklist: true,
@@ -119,6 +119,7 @@ class DownloadController {
                     isQueuedDownload: false,
                     isFieldGuide: true,
                     downloadParams: downloadParams,
+                    json: downloadService.triggerFieldGuideDownload(downloadParams.biocacheDownloadParamString() + extraParamsString),
                     downloadUrl: grailsApplication.config.downloads.fieldguideDownloadUrl + downloadParams.biocacheDownloadParamString() + extraParamsString
             ], params:[searchParams: downloadParams.searchParams, targetUri: downloadParams.targetUri, downloadType: downloadParams.downloadType])
         }

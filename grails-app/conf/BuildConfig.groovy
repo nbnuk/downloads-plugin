@@ -49,6 +49,6 @@ grails.project.dependency.resolution = {
         //compile ":ala-bootstrap3:1.5"
         compile ':cache:1.1.1'
         compile ":cache-ehcache:1.0.0"
-        runtime ':ala-ws-plugin:1.3'
+        runtime ':ala-ws-plugin:1.5.1-SNAPSHOT'
     }
 }

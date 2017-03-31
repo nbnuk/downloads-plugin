@@ -76,15 +76,20 @@
                             <g:if test="${isQueuedDownload && json}">
                                 <g:message code="download.confirm.queued" default="Your download is now being queued"/>
                             </g:if>
-                            <g:elseif test="${isFieldGuide && downloadUrl}">
-                                <g:message code="download.confirm.ready" default="Your field guide is ready"/>
+                            <g:elseif test="${isFieldGuide && (downloadUrl || json)}">
+                                <g:if test="${json}">
+                                    <g:message code="download.confirm.queue" default="Your download is now being queued"/>
+                                </g:if>
+                                <g:else>
+                                    <g:message code="download.confirm.ready" default="Your field guide is ready${json}"/>
+                                </g:else>
                             </g:elseif>
                             <g:else>
                                 <g:message code="download.confirm.started" default="Your download has completed"/>
                             </g:else>
                         </p>
                         <p>
-                            <g:if test="${isQueuedDownload && json}">
+                            <g:if test="${(isQueuedDownload || isFieldGuide) && json}">
                                 <g:message code="download.confirm.emailed" default="An email containing a link to the download file will be sent to your email address (linked to your ALA account) when it is completed."/>
                                 <div class="progress active">
                                     <div class="bar" style="width: 100%;"></div>
