@@ -168,7 +168,7 @@ class DownloadService {
             fg.link = serverName + contextPath + "/occurrences/search?" + request
 
             try {
-                def response = webService.post(grailsApplication.config.fieldguide.url + "/generate/offline" + params, fg)
+                def response = webService.post(grailsApplication.config.downloads.fieldguideDownloadUrl + "/generate/offline" + params, fg)
 
                 if (response?.resp) {
                     //response data
