@@ -144,7 +144,7 @@ class DownloadService {
     private fieldGuideRequest(String params) {
         String flimit = params.replaceAll("^.*maxSpecies=|[^0-9]+.*","")
         String request = params.replaceAll("pageSize=[0-9]+|flimit=[0-9]+|facets=[a-zA-Z_]+", "") +
-                "&pageSize=0&flimit=" + (flimit?:150) + "&facet=true&facets=species_guid"
+                "&pageSize=0&flimit=" + (flimit?:grailsApplication.config.downloads.fieldguide.species.max) + "&facet=true&facets=species_guid"
 
         def result = webService.get(grailsApplication.config.biocache.baseUrl + "/occurrences/search" + request)
 
@@ -165,7 +165,7 @@ class DownloadService {
             fg.title = "This document was generated on " + sdf.format(new Date())
             String serverName = grailsApplication.config.serverName ?: grailsApplication.config.security.cas.appServerName
             String contextPath = grailsApplication.config.contextPath ?: grailsApplication.config.security.cas.contextPath ?: ""
-            fg.link = serverName + contextPath + "/occurrences/search?" + request
+            fg.link = serverName + contextPath + "/occurrences/search" + request.replaceAll("flimit=[0-9]+|facets=[a-zA-Z_]+","")
 
             try {
                 def response = webService.post(grailsApplication.config.downloads.fieldguideDownloadUrl + "/generate/offline" + params, fg)

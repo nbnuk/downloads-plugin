@@ -64,3 +64,4 @@ downloads.legacy.defaultFields = "uuid,catalogNumber,taxonConceptID.p,scientific
 downloads.mandatoryFields = ["recordLevelTerms","occurrence"]
 downloads.excludeFields = ""
 downloads.dwcFields = "uuid,catalogue_number,taxon_concept_lsid,raw_taxon_name,raw_common_name,scientificName.p,raw_taxon,common_name,kingdom,phylum,class,order,family,genus,species,subspecies_name,institution_code,collection_code,raw_locality,decimalLatitude,decimalLongitude,decimalLatitude.p,decimalLongitude.p,coordinatePrecision,coordinate_uncertainty,country,cl1048,cl21,state,cl23,min_elevation_d,max_elevation_d_rng,min_depth_d,max_depth_d,individualCount,collector,year,month,day.p,eventDate.p,eventTime.p,raw_basis_of_record,basis_of_record,raw_sex,preparations,informationWithheld.p,dataGeneralizations.p"
+downloads.fieldguide.species.max=1000
