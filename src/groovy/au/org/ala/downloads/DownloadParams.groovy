@@ -31,6 +31,7 @@ class DownloadParams {
     String downloadType // records, checklist or field guide TODO put in an Enum?
     String downloadFormat // full-dwc, legacy, custom TODO put in an Enum?
     List customClasses // custom download page - list of field classes
+    Long totalRecords // number of records for search
     //
     // Fields for download service
     // see https://github.com/AtlasOfLivingAustralia/biocache-service/blob/master/src/main/java/au/org/ala/biocache/dto/DownloadRequestParams.java

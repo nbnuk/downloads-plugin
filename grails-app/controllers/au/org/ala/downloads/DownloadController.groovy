@@ -20,7 +20,7 @@ import org.springframework.web.servlet.ModelAndView
  * Download controller
  */
 class DownloadController {
-    def customiseService, authService, downloadService, biocacheService
+    def customiseService, authService, downloadService, biocacheService, utilityService
 
     static defaultAction = "options1"
 
@@ -40,6 +40,7 @@ class DownloadController {
                     searchParams: downloadParams.searchParams,
                     targetUri: downloadParams.targetUri,
                     filename: downloadParams.file,
+                    totalRecords: downloadParams.totalRecords,
                     defaults: [ sourceTypeId: downloadParams.sourceTypeId,
                                 downloadType: downloadParams.downloadType,
                                 downloadFormat: downloadParams.downloadFormat,
@@ -91,6 +92,7 @@ class DownloadController {
             render (view:'options2', model: [
                     customSections: customSections,
                     mandatoryFields: mandatory,
+                    dwcClassesAndTerms: utilityService.getFieldGroupMap(),
                     userSavedFields: customiseService.getUserSavedFields(request?.cookies?.find { it.name == 'download_fields'}, authService?.getUserId()),
                     downloadParams: downloadParams
             ])
@@ -122,6 +124,8 @@ class DownloadController {
                     json: downloadService.triggerFieldGuideDownload(downloadParams.biocacheDownloadParamString() + extraParamsString),
                     downloadUrl: grailsApplication.config.downloads.fieldguideDownloadUrl + downloadParams.biocacheDownloadParamString() + extraParamsString
             ], params:[searchParams: downloadParams.searchParams, targetUri: downloadParams.targetUri, downloadType: downloadParams.downloadType])
+        } else {
+            log.warn"Fell through `downloadType` if-else -> downloadParams = ${downloadParams}"
         }
     }
 
@@ -161,5 +165,40 @@ class DownloadController {
         } else {
             render (status: 400, text: "no field provided")
         }
+    }
+
+    def fields() {
+        List fields = biocacheService.getAllFields()
+        params.max = params.max ?: 10
+        params.order = params.order ?: "ASC"
+        params.sort = params.sort ?: "name"
+        params.filter = params.filter ?: ""
+
+        if (params.filter) {
+            def fld = "name" // default
+            def val = params.filter
+            def parts = val.split(":") // allow SOLR style: &filter=foo:bar
+
+            if (parts.size() == 2) {
+                fld = parts[0]
+                val = parts[1]
+                fields = fields.findAll() { it[fld] ==~ /${val}/  }
+            } else {
+                fields = fields.findAll() { Map it ->
+                    it.values().join(" ").find(/${val}/) // search in any property
+                }
+            }
+
+
+        }
+
+        if (params.dwc) {
+            fields = fields.findAll() { it.dwcTerm }
+        }
+
+        render (view: "fields", model: [
+                fields: utilityService.paginateWrapper(fields, params),
+                fieldsMax: fields.size()
+        ])
     }
 }

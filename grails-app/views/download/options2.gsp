@@ -111,6 +111,7 @@
                                                         <h4 class="padding-left-1">
                                                             <i class="fa  ${(disabled || active)? selectedItem : unselectedItem}"></i>
                                                             <g:message code="customGroup.${group}" default="${group}"/>
+                                                            <i class="fa fa-question-circle tooltips" data-group="${group}" data-content="Includes: ${dwcClassesAndTerms.get(group)?.join(', ')}"></i>
                                                         </h4>
                                                     </div>
                                                     <div class="clearfix"></div>
@@ -135,7 +136,7 @@
     $( document ).ready(function() {
         $('.list-group-item.disabled').click(function(e) {
             e.preventDefault(); // prevent page jump
-        }).tooltip();
+        }).tooltip({placement: 'bottom'});
 
         // catch clicks on list group items
         $('a.list-group-item').not('.disabled').click(function(e) {
@@ -166,7 +167,7 @@
 
         $('.next-btn').click(function(e) {
             e.preventDefault();
-            var queryString = "${downloadParams.queryString()}";
+            var queryString = "${downloadParams?.queryString()}";
             var fields = [];
             $('.fieldClass:checked').each(function(i) {
                 fields.push($(this).val());
@@ -198,11 +199,25 @@
                 bootbox.alert("Preferences saved.");
             </g:else>
         });
+
+        // add BS tooltips trigger
+        $(".tooltips").popover({
+            trigger: 'hover',
+            placement: 'top',
+            delay: { show: 100, hide: 2500 },
+            html: true,
+            container: 'body'
+        });
+        //hide previous tooltip if new tooltip is triggered
+        $(document).on('show.bs.popover', function (e) {
+            // hide any lingering tooltips
+            $(".popover.in").removeClass('in');
+        });
     });
 
     function selectItem(item) {
-        $(item).find('i.fa').removeClass('${unselectedItem}');
-        $(item).find('i.fa').addClass('${selectedItem}');
+        $(item).find('i.fa').not('.tooltips').removeClass('${unselectedItem}');
+        $(item).find('i.fa').not('.tooltips').addClass('${selectedItem}');
         $(item).addClass('list-group-item-success');
         $(item).find('input').attr('checked','checked');
         $(item).blur(); // prevent BS focus
@@ -210,8 +225,8 @@
 
     function deselectItem(item) {
         $(item).removeClass('disabled').removeClass('list-group-item-success');
-        $(item).find('.fa').addClass('${unselectedItem}');
-        $(item).find('.fa').removeClass('${selectedItem}');
+        $(item).find('.fa').not('.tooltips').addClass('${unselectedItem}');
+        $(item).find('.fa').not('.tooltips').removeClass('${selectedItem}');
         $(item).find('input').removeAttr('checked');
         $(item).blur(); // prevent BS focus
     }

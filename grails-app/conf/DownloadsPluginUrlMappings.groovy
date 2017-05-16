@@ -8,8 +8,7 @@ class DownloadsPluginUrlMappings {
         }
 
         "/download/"(controller: "download")
-//        "/download/options2"(controller: "download", action:"options2")
-//        "/download/confirm"(controller: "download", action:"download3")
-        "500"(view:'/error')
+        "/fields"(controller: "download", action:"fields") // so CAS doesn't intercept
+
 	}
 }

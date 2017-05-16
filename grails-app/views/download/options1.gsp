@@ -44,6 +44,15 @@
         <!-- End Breadcrumb -->
         <h2 class="heading-medium">Download</h2>
 
+            <div class="alert alert-info         ">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                <strong>
+                    <g:if test="${totalRecords && (totalRecords > grailsApplication.config.downloads.maxRecords)}">
+                        Your search returned ${g.formatNumber(number: totalRecords, format: "#,###,###")} results and may take more than 24 hours to run.<br>
+                    </g:if>
+                    Did you know the ALA provides a number of pre-generated downloads for common search queries (e.g. all plants, mammals, birds, insects, etc)?
+                <a href="${grailsApplication.config.downloads.staticDownloadsUrl?:'http://downloads.ala.org.au'}" class="" target="_blank">View all pre-generated downloads</a></strong>
+            </div>
         <div class="well">
             <div id="grid-view" class="row-fluid">
                 <div class="span12">
@@ -93,39 +102,47 @@
                                         </div>
 
                                         <div class="control-group">
-                                            <label for="downloadFormat" class="control-label"><span
+                                            <label for="downloadFormatX" class="control-label"><span
                                                     class="color--mellow-red"
                                                     style="font-size:18px">*</span>Download format</label>
 
                                             <div class="controls">
-                                                <select class="form-control input-lg" id="downloadFormat">
-                                                    <option value="" disabled selected>Select a download format</option>
-                                                    <g:each in="${au.org.ala.downloads.DownloadFormat.values()}"
-                                                            var="df">
-                                                        <option value="${df.format}"><g:message
-                                                                code="format.${df.format}"/></option>
-                                                    </g:each>
-                                                </select>
-
+                                                %{--<select class="form-control input-lg" id="downloadFormat">--}%
+                                                    %{--<option value="" disabled selected>Select a download format</option>--}%
+                                                    %{--<g:each in="${au.org.ala.downloads.DownloadFormat.values()}" var="df">--}%
+                                                        %{--<option value="${df.format}"><g:message--}%
+                                                                %{--code="format.${df.format}"/></option>--}%
+                                                    %{--</g:each>--}%
+                                                %{--</select>--}%
+                                                <g:each in="${au.org.ala.downloads.DownloadFormat.values()}" var="df">
+                                                    <label class="radio" for="downloadFormat">
+                                                        <input type="radio" name="downloadFormat" class="form-control input-lg" value="${df.format}" ${(df.ordinal() == 0)?'checked':''}/>
+                                                        <g:message code="format.${df.format}"/> <g:message code="helpicon.${df.format}" default=""/><br/>
+                                                    </label>
+                                                </g:each>
                                                 <p class="help-block hide"><strong>This field is mandatory.</strong></p>
                                             </div>
                                         </div>
 
                                         <div class="control-group">
                                             <label for="fileType" class="control-label"><span class="color--mellow-red"
-                                                                                              style="font-size:18px">*</span>File type
+                                                                                              style="font-size:18px">*</span>Output file format
                                             </label>
 
                                             <div class="controls">
-                                                <select class="form-control input-lg" id="fileType">
-                                                    <option value="" disabled selected>Select a file type</option>
-                                                    <g:each in="${au.org.ala.downloads.FileType.values()}" var="ft">
-                                                        <option value="${ft.type}"><g:message
-                                                                code="${ft.type}"/></option>
-                                                    </g:each>
-                                                </select>
-
-                                                <p class="help-block hide"><strong>This field is mandatory.</strong></p>
+                                                %{--<select class="form-control input-lg" id="fileType">--}%
+                                                    %{--<option value="" disabled selected>Select a file type</option>--}%
+                                                    %{--<g:each in="${au.org.ala.downloads.FileType.values()}" var="ft">--}%
+                                                        %{--<option value="${ft.type}"><g:message--}%
+                                                                %{--code="${ft.type}"/></option>--}%
+                                                    %{--</g:each>--}%
+                                                %{--</select>--}%
+                                                <g:each in="${au.org.ala.downloads.FileType.values()}" var="ft">
+                                                    <label class="radio" for="fileType">
+                                                        <input type="radio" name="fileType" class="form-control input-lg" value="${ft.type}" ${(ft.ordinal() == 0)?'checked':''}/>
+                                                        <g:message code="type.${ft.type}"/> <g:message code="helpicon.${ft.type}" default=""/><br/>
+                                                    </label>
+                                                </g:each>
                                             </div>
                                         </div>
                                     </form>
@@ -304,7 +321,7 @@
     $( document ).ready(function() {
         // click event on download type select buttons
         $('a.select-download-type').click(function(e) {
-            e.preventDefault(); // its a link so stop any regular link stuff hapenning
+            e.preventDefault(); // its a link so stop any regular link stuff happening
             var link = this;
             if ($(link).hasClass('btn-success')) {
                 // already selected so de-select it
@@ -320,10 +337,10 @@
                 }
             } else {
                 // not selected
-                $('a.select-download-type').find('span').text('Select'); // reset any other selcted buttons
-                $('a.select-download-type').removeClass('btn-success'); // reset any other selcted buttons
-                $('a.select-download-type').addClass('btn-white'); // reset any other selcted buttons
-                $('a.select-download-type').find('.fa').addClass('hide'); // reset any other selcted buttons
+                $('a.select-download-type').find('span').text('Select'); // reset any other selected buttons
+                $('a.select-download-type').removeClass('btn-success'); // reset any other selected buttons
+                $('a.select-download-type').addClass('btn-white'); // reset any other selected buttons
+                $('a.select-download-type').find('.fa').addClass('hide'); // reset any other selected buttons
                 $(link).find('span').text('Selected');
                 $(link).removeClass('btn-white');
                 $(link).addClass('btn-success');
@@ -354,11 +371,13 @@
         });
 
         if (${defaults?.downloadFormat != null}) {
-            $('#downloadFormat')[0].value = '${defaults?.downloadFormat}';
+            //$('#downloadFormat')[0].value = '${defaults?.downloadFormat}';
+            $('input[name=downloadFormat]:checked').val(${defaults?.downloadFormat});
         }
 
         if (${defaults?.fileType != null}) {
-            $('#fileType')[0].value = '${defaults?.fileType}';
+            //$('#fileType')[0].value = '${defaults?.fileType}';
+            //$('input[name=fileType]:checked').val(${defaults?.downloadFormat});
         }
 
         // file type change event
@@ -375,7 +394,8 @@
             e.preventDefault();
             // do form validation
             var type = $('.select-download-type.btn-success').attr('id');
-            var format = $('#downloadFormat').find(":selected").val();
+            //var format = $('#downloadFormat').find(":selected").val();
+            var format = $('input[name=downloadFormat]:checked').val();
             var reason = $('#downloadReason').find(":selected").val();
             var file = $('#file').val();
             //alert("format = " + format);
@@ -406,7 +426,7 @@
                     var layers = "${defaults.layers}";
                     var layersServiceUrl = "${defaults.layersServiceUrl}";
                     var customHeader = "${defaults.customHeader}";
-                    var fileType = $('#fileType')[0].value;
+                    var fileType = $('input[name=fileType]:checked').val();
                     window.location = "${g.createLink(action: 'options2')}?searchParams=${searchParams.encodeAsURL()}&targetUri=${targetUri.encodeAsURL()}&downloadType=" + type + "&reasonTypeId=" + reason + "&sourceTypeId=" + sourceTypeId + "&downloadFormat=" + format + "&file=" + file + "&layers=" + layers + "&customHeader=" + customHeader + "&fileType=" + fileType + "&layersServiceUrl=" + layersServiceUrl;
                 }
             } else {
@@ -419,6 +439,18 @@
             $('#errorAlert').show();
         }
 
+        // add BS tooltips trigger
+        $(".tooltips").popover({
+            trigger: 'hover',
+            placement: 'top',
+            delay: { show: 100, hide: 2500 },
+            html: true
+        });
+
+        $(document).on('show.bs.popover', function (e) {
+            // hide any lingering tooltips
+            $(".popover.in").removeClass('in');
+        });
     });
 </g:javascript>
 </body>

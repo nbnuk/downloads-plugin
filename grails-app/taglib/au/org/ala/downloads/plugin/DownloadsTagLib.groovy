@@ -20,6 +20,7 @@ class DownloadsTagLib {
     //static encodeAsForTags = [tagName: [taglib:'html'], otherTagName: [taglib:'none']]
     static returnObjectForTags = ['getAllLoggerReasons','testListOutput','getLoggerReasons']
     static namespace = 'downloads'
+    static defaultEncodeAs = "raw"
 
     /**
      * Determine the URL prefix for biocache-service AJAX calls. Looks at the
@@ -85,4 +86,48 @@ class DownloadsTagLib {
         downloadService.getLoggerReasons()
     }
 
+    /**
+     * Add extra class name if current param name & value match the provided
+     * version
+     *
+     * @attr fld REQUIRED the field name
+     * @attr val REQUIRED the value name
+     */
+    def btnState = { attrs ->
+        def outputClass = ""
+        def field = attrs.fld
+        def value = attrs.val
+        def activeClass = attrs.msg ?: "btn-inverse"
+
+        log.debug "field = ${field} || value = ${value}"
+        log.debug "params = ${params}"
+
+        if (params.containsKey(field) && (params.get(field) as String) == value) {
+            outputClass = activeClass
+        } else if (field == "*" && value == "*") {
+            outputClass = activeClass
+        }
+
+        out << outputClass
+    }
+
+    /**
+     * If field.info exists, then format field.dwcTerm as a link
+     * with field.info as the href attr.
+     *
+     * @attr field REQUIRED the field Map
+     */
+    def formatDwcTerm = { attrs ->
+        Map fieldMap = attrs.field
+        def text = fieldMap?.dwcTerm
+
+        if (fieldMap.containsKey("info")) {
+            String link = fieldMap.info
+            if (link.startsWith("http")) {
+                text = "<a href='${link}' target='ext'>${text}</a>"
+            }
+        }
+
+        out << text
+    }
 }

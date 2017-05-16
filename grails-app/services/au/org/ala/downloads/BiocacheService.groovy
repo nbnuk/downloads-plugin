@@ -146,6 +146,11 @@ class BiocacheService {
     }
 
     @Cacheable('longTermCache')
+    List getAllFields() {
+        getBiocacheFields()
+    }
+
+    @Cacheable('longTermCache')
     String getDwCDescriptionForField(String field) {
         List fields = getBiocacheFields()
 
