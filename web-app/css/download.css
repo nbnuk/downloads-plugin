@@ -309,8 +309,12 @@ body .popover {
     font-size: 13px;
 }
 
-#fieldsTable, #table-metadata {
+.fwtable, #table-metadata, #filters {
     margin-top: 10px;
+}
+
+#fieldsTable {
+    /*white-space: nowrap;*/
 }
 
 #pagination-details {
