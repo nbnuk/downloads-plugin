@@ -93,6 +93,7 @@ class DownloadController {
                     customSections: customSections,
                     mandatoryFields: mandatory,
                     dwcClassesAndTerms: utilityService.getFieldGroupMap(),
+                    groupingsFilterMap: grailsApplication.config.downloads.groupingsFilterMap,
                     userSavedFields: customiseService.getUserSavedFields(request?.cookies?.find { it.name == 'download_fields'}, authService?.getUserId()),
                     downloadParams: downloadParams
             ])

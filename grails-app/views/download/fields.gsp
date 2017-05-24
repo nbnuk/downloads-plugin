@@ -41,8 +41,8 @@
             <div class="btn-group">
                 <g:link class="btn btn-mini ${downloads.btnState(fld:'filter', val:'')}" action="fields" params="${params + [filter:'']}"><g:message code="downloads.fields.filter.all" default="all fields"/></g:link>
                 <g:link class="btn btn-mini ${downloads.btnState(fld:'filter', val:'dwcTerm:.*')}" action="fields" params="${params + [filter:"dwcTerm:.*"]}"><g:message code="downloads.fields.filter.dwc" default="only DwC terms"/></g:link>
-                <g:link class="btn btn-mini ${downloads.btnState(fld:'filter', val:'el[0-9]*')}" action="fields" params="${params + [filter:'el[0-9]*']}"><g:message code="downloads.fields.filter.environmental" default="only environmental layers"/></g:link>
-                <g:link class="btn btn-mini ${downloads.btnState(fld:'filter', val:'cl[0-9]*')}" action="fields" params="${params + [filter:'cl[0-9]*']}"><g:message code="downloads.fields.filter.contextual" default="only contextual layers"/></g:link>
+                <g:link class="btn btn-mini ${downloads.btnState(fld:'filter', val:'name:el[0-9]')}" action="fields" params="${params + [filter:'name:el[0-9]*']}"><g:message code="downloads.fields.filter.environmental" default="only environmental layers"/></g:link>
+                <g:link class="btn btn-mini ${downloads.btnState(fld:'filter', val:'name:cl[0-9]*')}" action="fields" params="${params + [filter:'name:cl[0-9]*']}"><g:message code="downloads.fields.filter.contextual" default="only contextual layers"/></g:link>
                 <g:link class="btn btn-mini ${downloads.btnState(fld:'filter', val:'indexed:true')}" action="fields" params="${params + [filter:'indexed:true']}"><g:message code="downloads.fields.filter.indexed" default="only indexed fields"/></g:link>
                 <g:link class="btn btn-mini ${downloads.btnState(fld:'filter', val:'jsonName:.*')}" action="fields" params="${params + [filter:'jsonName:.*']}"><g:message code="downloads.fields.filter.json" default="only JSON output fields"/></g:link>
             </div>
@@ -58,7 +58,12 @@
         <g:set var="start" value="${((params.getInt('offset')?:0) + 1)}"/>
         <g:set var="end" value="${(start + ((params.getInt('max')?:10) - 1))}"/>
         <g:set var="end" value="${(end > fieldsMax ? fieldsMax : end)}"/>
-        <div class="span5" id="pagination-details"><g:message code="downloads.fields.showing.results" args="[start, end, fieldsMax]" /></div>
+        <div class="span5" id="pagination-details">
+            <g:message code="downloads.fields.showing.results" args="[start, end, fieldsMax]" />
+            <g:if test="${params.filter}">
+                (filter: ${params.filter})
+            </g:if>
+        </div>
         <div class="span7" id="sort-widgets">
             <g:message code="downloads.fields.items.per.page" default="items per page"/>:
             <select id="per-page" name="per-page" class="input-small" onchange="location = this.value;">
@@ -74,6 +79,7 @@
                 <option value="${g.createLink(action:'fields',params:params + [sort:'downloadName'])}" ${params.sort == 'downloadName' ? 'selected': ''}><g:message code="downloads.fields.download.name" default="Download term"/></option>
                 <option value="${g.createLink(action:'fields',params:params + [sort:'dwcTerm'])}" ${params.sort == 'dwcTerm' ? 'selected': ''}><g:message code="downloads.fields.dwc.term" default="DwC term"/></option>
                 <option value="${g.createLink(action:'fields',params:params + [sort:'classs'])}" ${params.sort == 'classs' ? 'selected': ''}><g:message code="downloads.fields.dwc.class" default="DwC class"/></option>
+                <option value="${g.createLink(action:'fields',params:params + [sort:'dataType'])}" ${params.sort == 'dataType' ? 'selected': ''}><g:message code="downloads.fields.dwc.dataType" default="Data type"/></option>
             </select>&nbsp;
             <g:message code="downloads.fields.order" default="order"/>:
             <select id="dir" name="dir" class="input-small" onchange="location = this.value;">
@@ -82,7 +88,7 @@
             </select>
         </div>
     </div>
-    <div class="fwtable table-bordered" style="overflow-x:auto;width:100%;">
+    <div class="fwtable">
         <table id="fieldsTable" class="table table-bordered table-striped table-responsive">
             <tr>
                 <th><g:message code="downloads.fields.search.name" default="Search name"/></th>

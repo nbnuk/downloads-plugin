@@ -50,6 +50,23 @@ downloads {
         MeasurementOrFact = "measurementOrFact"
         ResourceRelationship = "resourceRelationship"
     }
+    groupingsFilterMap {
+        // values used to link through to the index fields web page, via filter param
+        recordLevelTerms = "classs:Record"
+        occurrence = "classs:Occurrence"
+        organism = "classs:Organism"
+        event = "classs:Event"
+        location = "classs:Location"
+        identification = "classs:Identification"
+        taxon = "classs:Taxon"
+        measurementOrFact = "classs:MeasurementOrFact"
+        conservationStatus = ".*Conservation"
+        otherTraits = "species_group|species_subgroup"
+        environmentalLayers = "name:el[0-9]*"
+        contextualLayers = "name:cl[0-9]*"
+        qualityAssertions = "assertion"
+        miscellaneousFields = ""
+    }
 }
 
 // other field mappings for classes TODO get from biocache-service

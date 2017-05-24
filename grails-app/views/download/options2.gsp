@@ -111,15 +111,15 @@
                                                         <h4 class="padding-left-1">
                                                             <i class="fa  ${(disabled || active)? selectedItem : unselectedItem}"></i>
                                                             <g:message code="customGroup.${group}" default="${group}"/>
-                                                            <i class="fa fa-question-circle tooltips" data-group="${group}" data-content="Includes: ${dwcClassesAndTerms.get(group)?.join(', ')}"></i>
+                                                            <i class="fa fa-question-circle tooltips" data-group="${group}"
+                                                                   data-content="<downloads:groupHelpHtml fields="${dwcClassesAndTerms.get(group)?.join(', ')}" filter="${groupingsFilterMap.get(group)}" group="${group}"/>"></i>
                                                         </h4>
                                                     </div>
                                                     <div class="clearfix"></div>
                                                 </a>
                                             </g:each>
-                                        </div>
-
-                                    </div>
+                                        </div><!-- /.list-group -->
+                                    </div><!-- /.span8 -->
                                 </div>
                             </div><!-- End comment-wrapper push -->
                         </div>

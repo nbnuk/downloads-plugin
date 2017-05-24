@@ -130,4 +130,31 @@ class DownloadsTagLib {
 
         out << text
     }
+
+    /**
+     * Format HTML to be inserted into popup
+     *
+     * @attr group REQUIRED
+     * @attr filter REQUIRED
+     * @attr fields REQUIRED
+     * @attr action
+     */
+    def groupHelpHtml = { attrs ->
+        def group = attrs.group
+        def filter = attrs.filter
+        def fields = attrs.fields
+        def action = attrs.action ?: "fields"
+        def html
+        log.debug "attrs = ${attrs}"
+
+        if (filter && fields) {
+            html =  "<a href='${g.createLink(action: action)}?filter=${filter}' target='_fields'>" +
+                    g.message(code:"downloads.fields.group.${group}", default: group) +
+                    "</a> which include: ${fields}"
+        } else {
+            html = g.message(code:"downloads.fields.group.${group}", default: group)
+        }
+
+        out << html
+    }
 }

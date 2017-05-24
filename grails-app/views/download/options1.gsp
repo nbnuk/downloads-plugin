@@ -84,17 +84,13 @@
                             <g:if test="${!defaults?.downloadType || defaults?.downloadType == 'records'}">
                                 <div class="span7">
                                     <h4 class="text-uppercase=heading-underlined">Occurrence records</h4>
-
                                     <p>
                                         A ZIP archive containing a comma separated values (CSV) file which includes a
                                         subset of location, taxon and event information.
                                     </p>
-
-                                    %{--<p class="separator t-center margin-bottom-2"><span>Download type options</span></p>--}%
                                     <form id="downloadFormatForm" class="form-horizontal hide">
                                         <div class="control-group">
                                             <label for="file" class="control-label">Filename</label>
-
                                             <div class="controls">
                                                 <input type="text" id="file" name="file" value="${filename}"
                                                        class="input-lg"/>
@@ -105,19 +101,11 @@
                                             <label for="downloadFormatX" class="control-label"><span
                                                     class="color--mellow-red"
                                                     style="font-size:18px">*</span>Download format</label>
-
                                             <div class="controls">
-                                                %{--<select class="form-control input-lg" id="downloadFormat">--}%
-                                                    %{--<option value="" disabled selected>Select a download format</option>--}%
-                                                    %{--<g:each in="${au.org.ala.downloads.DownloadFormat.values()}" var="df">--}%
-                                                        %{--<option value="${df.format}"><g:message--}%
-                                                                %{--code="format.${df.format}"/></option>--}%
-                                                    %{--</g:each>--}%
-                                                %{--</select>--}%
                                                 <g:each in="${au.org.ala.downloads.DownloadFormat.values()}" var="df">
                                                     <label class="radio" for="downloadFormat">
                                                         <input type="radio" name="downloadFormat" class="form-control input-lg" value="${df.format}" ${(df.ordinal() == 0)?'checked':''}/>
-                                                        <g:message code="format.${df.format}"/> <g:message code="helpicon.${df.format}" default=""/><br/>
+                                                        <g:message code="format.${df.format}"/> <g:message code="helpicon.${df.format}" args="[ g.createLink(action:'fields') ]" default=""/><br/>
                                                     </label>
                                                 </g:each>
                                                 <p class="help-block hide"><strong>This field is mandatory.</strong></p>
@@ -125,18 +113,10 @@
                                         </div>
 
                                         <div class="control-group">
-                                            <label for="fileType" class="control-label"><span class="color--mellow-red"
-                                                                                              style="font-size:18px">*</span>Output file format
+                                            <label for="fileTypeX" class="control-label"><span class="color--mellow-red"
+                                                    style="font-size:18px">*</span>Output file format
                                             </label>
-
                                             <div class="controls">
-                                                %{--<select class="form-control input-lg" id="fileType">--}%
-                                                    %{--<option value="" disabled selected>Select a file type</option>--}%
-                                                    %{--<g:each in="${au.org.ala.downloads.FileType.values()}" var="ft">--}%
-                                                        %{--<option value="${ft.type}"><g:message--}%
-                                                                %{--code="${ft.type}"/></option>--}%
-                                                    %{--</g:each>--}%
-                                                %{--</select>--}%
                                                 <g:each in="${au.org.ala.downloads.FileType.values()}" var="ft">
                                                     <label class="radio" for="fileType">
                                                         <input type="radio" name="fileType" class="form-control input-lg" value="${ft.type}" ${(ft.ordinal() == 0)?'checked':''}/>

@@ -313,8 +313,14 @@ body .popover {
     margin-top: 10px;
 }
 
+.fwtable {
+    overflow-x:auto;
+    width:100%;
+}
+
 #fieldsTable {
     /*white-space: nowrap;*/
+    margin-bottom: 0;
 }
 
 #pagination-details {
