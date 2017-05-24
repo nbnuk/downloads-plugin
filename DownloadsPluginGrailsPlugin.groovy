@@ -2,7 +2,7 @@ import grails.util.Environment
 
 class DownloadsPluginGrailsPlugin {
     // the plugin version
-    def version = "1.3.0"
+    def version = "1.4-SNAPSHOT"
     // the version or versions of Grails the plugin is designed for
     def grailsVersion = "2.3 > *"
     // resources that are excluded from plugin packaging
