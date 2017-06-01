@@ -83,14 +83,19 @@ class UtilityService {
         def sort = params.sort
         def order = params.order ?: 'ASC'
 
+        if (offset > toIndex) {
+            // if offset is greater than toIndex, show last page
+            offset = toIndex - (toIndex % max)
+        }
+
         if (sort) {
-            results = results.sort { it[params.sort].toLowerCase() }
+            results = results.sort { it[params.sort]?.toLowerCase() }
         }
 
         if (order == 'DESC') {
             results = results.reverse()
         }
-
+        // get the requested items for pagination
         results.subList(offset,toIndex)
     }
 }
