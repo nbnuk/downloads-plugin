@@ -86,3 +86,5 @@ downloads.fieldguide.species.max=1000
 downloads.maxRecords = 1000000
 downloads.staticDownloadsUrl = "https://downloads.ala.org.au"
 downloads.dwcSchemaUrl = "https://raw.githubusercontent.com/tdwg/dwc/master/xsd/tdwg_dwcterms.xsd"
+
+downloads.termsOfUseUrl="http://www.ala.org.au/about-the-atlas/terms-of-use/#TOUusingcontent"

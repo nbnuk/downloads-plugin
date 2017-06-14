@@ -24,7 +24,7 @@
 <head>
     <meta name="layout" content="${grailsApplication.config.skin.layout}"/>
     <meta name="fluidLayout" content="false"/>
-    <title>ALA Data Download</title>
+    <title><g:message code="download.page.title"/></title>
     <r:require module="download"/>
     <style type="text/css">
         a h4 > .fa {
@@ -81,7 +81,7 @@
                                     <g:message code="download.confirm.queue" default="Your download is now being queued"/>
                                 </g:if>
                                 <g:else>
-                                    <g:message code="download.confirm.ready" default="Your field guide is ready${json}"/>
+                                    <g:message code="download.confirm.ready" default="Your field guide is ready ${json}"/>
                                 </g:else>
                             </g:elseif>
                             <g:else>
@@ -168,10 +168,10 @@
     });
 
     /**
-    * Check offline download statusUrl and update UI, recursively
-    *
-    * @param json
-    */
+     * Check offline download statusUrl and update UI, recursively
+     *
+     * @param json
+     */
     function updateStatus(json) {
         var timeout = 20 * 1000; // time between checks
         //console.log("updateStatus", json);
