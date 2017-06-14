@@ -24,16 +24,16 @@
 <head>
     <meta name="layout" content="${grailsApplication.config.skin.layout}"/>
     <meta name="fluidLayout" content="false"/>
-    <title>ALA Data Download</title>
+    <title><g:message code="download.page.title"/></title>
     <r:require module="download"/>
 </head>
 
 <body>
 <div class="row-fluid">
     <div class="span10 offset1">
-        <h1 class="hidden">Welcome to the Atlas of Living Australia website</h1><!-- Show the H1 on each page -->
+        <h1 class="hidden">Welcome to the ${grailsApplication.config.skin.orgNameLong} website</h1><!-- Show the H1 on each page -->
 
-    <!-- Breadcrumb -->
+        <!-- Breadcrumb -->
         <ol class="breadcrumb hidden-print">
             <li><a class="font-xxsmall" href="${grailsApplication.config.organisation.baseUrl}">Home</a><span
                     class="divider">/</span></li>
@@ -42,32 +42,37 @@
             <li class="font-xxsmall active">Download</li>
         </ol>
         <!-- End Breadcrumb -->
-        <h2 class="heading-medium">Download</h2>
 
-            <div class="alert alert-info         ">
-                <button type="button" class="close" data-dismiss="alert">×</button>
-                <strong>
-                    <g:if test="${totalRecords && (totalRecords > grailsApplication.config.downloads.maxRecords)}">
-                        Your search returned ${g.formatNumber(number: totalRecords, format: "#,###,###")} results and may take more than 24 hours to run.<br>
-                    </g:if>
-                    Did you know the ALA provides a number of pre-generated downloads for common search queries (e.g. all plants, mammals, birds, insects, etc)?
-                <a href="${grailsApplication.config.downloads.staticDownloadsUrl?:'http://downloads.ala.org.au'}" class="" target="_blank">View all pre-generated downloads</a></strong>
-            </div>
+        <h2 class="heading-medium"><g:message code="download.download.title"/></h2>
+        <g:set var="showLongTimeWarning" value="${totalRecords && (totalRecords > grailsApplication.config.downloads.maxRecords)}"/>
+
+        <!-- Long download warning -->
+        <g:if test="${showLongTimeWarning || grailsApplication.config.downloads.staticDownloadsUrl}">
+        <div class="alert alert-info">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <strong>
+                <g:if test="${showLongTimeWarning}">
+                    Your search returned ${g.formatNumber(number: totalRecords, format: "#,###,###")} results and may take more than 24 hours to run.<br>
+                </g:if>
+
+                Did you know the ALA provides a number of pre-generated downloads for common search queries (e.g. all plants, mammals, birds, insects, etc)?
+            <a href="${grailsApplication.config.downloads.staticDownloadsUrl?:'http://downloads.ala.org.au'}" class="" target="_blank">View all pre-generated downloads</a></strong>
+        </div>
+        </g:if>
+
         <div class="well">
             <div id="grid-view" class="row-fluid">
                 <div class="span12">
-                    <!-- <h4>Pre-sets Download</h4> -->
-
                     <div class="panel panel-default">
                         <div class="comment-wrapper push">
 
                             <div class="row-fluid ">
                                 <div class="span2">
-                                    <h4 class="heading-medium-alt">Step 1</h4>
+                                    <h4 class="heading-medium-alt"><g:message code="download.step1" /></h4>
                                 </div>
 
                                 <div class="span10">
-                                    <p>Select your download type below, and then progress to step 2.</p>
+                                    <p><g:message code="download.select.download.type" /></p>
                                 </div>
                             </div>
                         <div class="row-fluid margin-top-1">
@@ -83,14 +88,13 @@
                             </div>
                             <g:if test="${!defaults?.downloadType || defaults?.downloadType == 'records'}">
                                 <div class="span7">
-                                    <h4 class="text-uppercase=heading-underlined">Occurrence records</h4>
+                                    <h4 class="text-uppercase=heading-underlined"><g:message code="download.occurrence.records" /></h4>
                                     <p>
-                                        A ZIP archive containing a comma separated values (CSV) file which includes a
-                                        subset of location, taxon and event information.
+                                        <g:message code="download.occurrence.records.zip" />
                                     </p>
                                     <form id="downloadFormatForm" class="form-horizontal hide">
                                         <div class="control-group">
-                                            <label for="file" class="control-label">Filename</label>
+                                            <label for="file" class="control-label"><g:message code="download.occurrence.records.filename" /></label>
                                             <div class="controls">
                                                 <input type="text" id="file" name="file" value="${filename}"
                                                        class="input-lg"/>
@@ -113,13 +117,13 @@
                                         </div>
 
                                         <div class="control-group">
-                                            <label for="fileTypeX" class="control-label"><span class="color--mellow-red"
+                                            <label class="control-label"><span class="color--mellow-red"
                                                     style="font-size:18px">*</span>Output file format
                                             </label>
                                             <div class="controls">
                                                 <g:each in="${au.org.ala.downloads.FileType.values()}" var="ft">
                                                     <label class="radio" for="fileType">
-                                                        <input type="radio" name="fileType" class="form-control input-lg" value="${ft.type}" ${(ft.ordinal() == 0)?'checked':''}/>
+                                                        <input id="fileType" type="radio" name="fileType" class="form-control input-lg" value="${ft.type}" ${(ft.ordinal() == 0)?'checked':''}/>
                                                         <g:message code="type.${ft.type}"/> <g:message code="helpicon.${ft.type}" default=""/><br/>
                                                     </label>
                                                 </g:each>
@@ -173,7 +177,8 @@
                                     <hr class="visible-phone"/>
                                 </div><!-- End row -->
                             </g:if>
-                            <g:if test="${!defaults?.downloadType || defaults?.downloadType == 'fieldguide'}">
+
+                            <g:if test="${ grailsApplication.config.downloads.fieldguideDownloadUrl && (!defaults?.downloadType || defaults?.downloadType == 'fieldguide')}">
                                 <div class="row-fluid margin-top-1">
                                     <div class="span2">
                                         <div class="contrib-stats">
@@ -291,9 +296,9 @@
         <div class="alert alert-info alert-dismissible" role="alert">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
                     aria-hidden="true">×</span></button>
-            By downloading this content you are agreeing to use it in accordance with the Atlas of Living
-            Australia <a href="http://www.ala.org.au/about-the-atlas/terms-of-use/#TOUusingcontent">Terms of Use</a>
-            and any Data Provider Terms associated with the data download.
+            <g:message code="download.termsofusedownload.01" />
+            <a href="${grailsApplication.config.downloads.termsOfUseUrl}"><g:message code="download.termsofusedownload.02" /></a>
+            <g:message code="download.termsofusedownload.03" />
         </div>
     </div><!-- /.span10  -->
 </div><!-- /.row-fuid  -->
