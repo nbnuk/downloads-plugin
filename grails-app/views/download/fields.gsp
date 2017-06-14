@@ -90,16 +90,19 @@
     </div>
     <div class="fwtable">
         <table id="fieldsTable" class="table table-bordered table-striped table-responsive">
-            <tr>
-                <th><g:message code="downloads.fields.search.name" default="Search name"/></th>
-                <th><g:message code="downloads.fields.jsonName.name" default="Search results term"/></th>
-                <th><g:message code="downloads.fields.download.name" default="Download name"/></th>
-                <th><g:message code="downloads.fields.dwc.term" default="DwC term"/></th>
-                <th><g:message code="downloads.fields.dwc.class" default="DwC class"/></th>
-                <th><g:message code="downloads.fields.description" default="Description"/></th>
-                <th><g:message code="downloads.fields.download.description" default="Download description"/></th>
-                <th><g:message code="downloads.fields.attributes" default="Attributes"/></th>
-            </tr>
+            <thead>
+                <tr>
+                    <th><g:message code="downloads.fields.search.name" default="Search name"/></th>
+                    <th><g:message code="downloads.fields.jsonName.name" default="Search results term"/></th>
+                    <th><g:message code="downloads.fields.download.name" default="Download name"/></th>
+                    <th><g:message code="downloads.fields.dwc.term" default="DwC term"/></th>
+                    <th><g:message code="downloads.fields.dwc.class" default="DwC class"/></th>
+                    <th><g:message code="downloads.fields.description" default="Description"/></th>
+                    <th><g:message code="downloads.fields.download.description" default="Download description"/></th>
+                    <th><g:message code="downloads.fields.attributes" default="Attributes"/></th>
+                </tr>
+            </thead>
+            <tbody>
             <g:each in="${fields}" var="fld">
                 <tr>
                     <td>${fld.name}</td>
@@ -118,6 +121,7 @@
                     </td>
                 </tr>
             </g:each>
+            </tbody>
         </table>
     </div>
     <div  class="pagination">
