@@ -188,8 +188,10 @@
                     });
                 }, timeout);
             } else if (json.downloadUrl) {
-                $('#queueStatus').html("Download is <span>" + json.status +"</span>. <a href='" + json.downloadUrl + "'>Retrieve download file</a>");
+                $('#queueStatus').html("<a class='btn btn-primary' href='" + json.downloadUrl + "'><i class='fa fa-download'></i> Download now</a>");
                 $('.progress').removeClass('progress-striped');
+                $('.progress').hide();
+                $('.lead').html("Your download is ready.");
             } else {
                 $('#queueStatus').html("There was a problem getting the status: <code>" + json + "</code>");
                 $('.progress').removeClass('progress-striped');
