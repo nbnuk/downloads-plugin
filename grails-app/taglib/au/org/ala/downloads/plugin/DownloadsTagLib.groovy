@@ -73,6 +73,19 @@ class DownloadsTagLib {
         }
     }
 
+    def isDefaultDownloadFormat = { attrs ->
+
+        if(grailsApplication.config.downloads.defaultDownloadFormat){
+            if(grailsApplication.config.downloads.defaultDownloadFormat.equalsIgnoreCase(attrs.df.name())) {
+                out << 'checked'
+            }
+        } else {
+            if(attrs.df.ordinal() == 0) {
+                out << 'checked'
+            }
+        }
+    }
+
     /**
      * Get the list of available reason codes and labels from the Logger app
      *

@@ -192,8 +192,12 @@
                 $('.progress').removeClass('progress-striped');
                 $('.progress').hide();
                 $('.lead').html("Your download is ready.");
+            } else if (json.status && json.status.toLowerCase().startsWith("skipped")) {
+                $('.progress').removeClass('progress-striped');
+                $('.progress').hide();
+                $('.lead').html(json.message);
             } else {
-                $('#queueStatus').html("There was a problem getting the status: <code>" + json + "</code>");
+                $('#queueStatus').html("There was a problem getting the status: <code>" + json.status + "</code>");
                 $('.progress').removeClass('progress-striped');
             }
         }

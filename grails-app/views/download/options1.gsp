@@ -52,11 +52,17 @@
             <button type="button" class="close" data-dismiss="alert">×</button>
             <strong>
                 <g:if test="${showLongTimeWarning}">
-                    Your search returned ${g.formatNumber(number: totalRecords, format: "#,###,###")} results and may take more than 24 hours to run.<br>
+                    Your search returned ${g.formatNumber(number: totalRecords, format: "#,###,###")} results and may take more than 24 hours to run.
                 </g:if>
-
-                Did you know the ALA provides a number of pre-generated downloads for common search queries (e.g. all plants, mammals, birds, insects, etc)?
-            <a href="${grailsApplication.config.downloads.staticDownloadsUrl?:'http://downloads.ala.org.au'}" class="" target="_blank">View all pre-generated downloads</a></strong>
+                <g:if test="${grailsApplication.config.downloads.staticDownloadsUrl}">
+                    <br/>
+                    Did you know the ${grailsApplication.config.skin.orgNameLong} provides a number of pre-generated downloads for common search queries
+                    (e.g. all plants, mammals, birds, insects, etc)?
+                    <a href="${grailsApplication.config.downloads.staticDownloadsUrl?:'http://downloads.ala.org.au'}" target="_blank">
+                        View all pre-generated downloads
+                    </a>
+                </g:if>
+            </strong>
         </div>
         </g:if>
 
@@ -107,8 +113,11 @@
                                                     style="font-size:18px">*</span>Download format</label>
                                             <div class="controls">
                                                 <g:each in="${au.org.ala.downloads.DownloadFormat.values()}" var="df">
-                                                    <label class="radio" for="downloadFormat">
-                                                        <input type="radio" name="downloadFormat" class="form-control input-lg" value="${df.format}" ${(df.ordinal() == 0)?'checked':''}/>
+                                                    <label class="radio">
+                                                        <input type="radio" name="downloadFormat" class="form-control input-lg"
+                                                               value="${df.format}"
+                                                               <downloads:isDefaultDownloadFormat df="${df}" />
+                                                        />
                                                         <g:message code="format.${df.format}"/> <g:message code="helpicon.${df.format}" args="[ g.createLink(action:'fields') ]" default=""/><br/>
                                                     </label>
                                                 </g:each>
