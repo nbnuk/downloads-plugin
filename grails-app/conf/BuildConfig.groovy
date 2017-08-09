@@ -28,7 +28,7 @@ grails.project.dependency.resolution = {
         grailsCentral()
         mavenLocal()
         mavenCentral()
-        mavenRepo ("http://nexus.ala.org.au/content/groups/public/")
+        mavenRepo ("https://nexus.ala.org.au/content/groups/public/")
         // uncomment the below to enable remote dependency resolution
         // from public Maven repositories
         //mavenRepo "http://repository.codehaus.org"
