@@ -11,9 +11,9 @@
 
     <title><g:layoutTitle /></title>
 
-    <r:require modules="bootstrap, ala"/>
+    <asset:javascript src="ala.js" />
+    <asset:stylesheet src="ala.css" />
 
-    <r:layoutResources/>
     <g:layoutHead />
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -39,6 +39,6 @@
 <!-- End footer -->
 
 <!-- JS resources-->
-<r:layoutResources disposition="defer"/>
+<asset:deferredScripts/>
 </body>
 </html>

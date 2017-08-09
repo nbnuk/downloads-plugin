@@ -25,7 +25,10 @@
     <meta name="layout" content="${grailsApplication.config.skin.layout}"/>
     <meta name="fluidLayout" content="false"/>
     <title><g:message code="download.page.title"/></title>
-    <r:require module="download"/>
+
+    <asset:javascript src="ala/downloads.js" />
+    <asset:stylesheet src="ala/downloads.css" />
+
     <style type="text/css">
         a h4 > .fa {
             width: 18px;

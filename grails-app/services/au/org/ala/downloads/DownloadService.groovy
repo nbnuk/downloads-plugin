@@ -14,6 +14,7 @@
 package au.org.ala.downloads
 
 import grails.plugin.cache.Cacheable
+import org.codehaus.groovy.grails.web.util.WebUtils
 
 import java.text.SimpleDateFormat
 
@@ -143,10 +144,10 @@ class DownloadService {
 
     private fieldGuideRequest(String params) {
         String flimit = params.replaceAll("^.*maxSpecies=|[^0-9]+.*","")
-        String request = params.replaceAll("pageSize=[0-9]+|flimit=[0-9]+|facets=[a-zA-Z_]+", "") +
+        String requestParams = params.replaceAll("pageSize=[0-9]+|flimit=[0-9]+|facets=[a-zA-Z_]+", "") +
                 "&pageSize=0&flimit=" + (flimit?:grailsApplication.config.downloads.fieldguide.species.max) + "&facet=true&facets=species_guid"
 
-        def result = webService.get(grailsApplication.config.biocache.baseUrl + "/occurrences/search" + request)
+        def result = webService.get(grailsApplication.config.biocache.baseUrl + "/occurrences/search" + requestParams)
 
         def fg = [guids: [], link: "", title: ""]
 
@@ -164,8 +165,10 @@ class DownloadService {
             //set the properties of the query
             fg.title = "This document was generated on " + sdf.format(new Date())
             String serverName = grailsApplication.config.serverName ?: grailsApplication.config.security.cas.appServerName
-            String contextPath = grailsApplication.config.contextPath ?: grailsApplication.config.security.cas.contextPath ?: ""
-            fg.link = serverName + contextPath + "/occurrences/search" + request.replaceAll("flimit=[0-9]+|facets=[a-zA-Z_]+","")
+
+            def request = WebUtils.retrieveGrailsWebRequest().getCurrentRequest()
+            String contextPath = request.contextPath
+            fg.link = serverName + contextPath + "/occurrences/search" + requestParams.replaceAll("flimit=[0-9]+|facets=[a-zA-Z_]+","")
 
             try {
                 def response = webService.post(grailsApplication.config.downloads.fieldguideDownloadUrl + "/generate/offline" + params, fg)

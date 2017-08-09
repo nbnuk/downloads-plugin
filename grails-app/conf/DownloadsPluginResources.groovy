@@ -12,6 +12,7 @@
  */
 
 modules = {
+    // assets pipeline replaces this module with ala/downloads.js and ala/downloads.css
     download {
         dependsOn 'jquery'
         resource url: [dir: 'css', file: 'download.css', plugin: 'downloads-plugin']
