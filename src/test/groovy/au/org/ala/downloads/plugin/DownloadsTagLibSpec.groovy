@@ -14,12 +14,16 @@
 package au.org.ala.downloads.plugin
 
 import grails.test.mixin.TestFor
+import grails.test.mixin.TestMixin
+import grails.test.mixin.support.GrailsUnitTestMixin
+import grails.test.mixin.web.InterceptorUnitTestMixin
 import spock.lang.Specification
 
 /**
  * See the API for {@link grails.test.mixin.web.GroovyPageUnitTestMixin} for usage instructions
  */
 @TestFor(DownloadsTagLib)
+@TestMixin([GrailsUnitTestMixin, InterceptorUnitTestMixin])
 class DownloadsTagLibSpec extends Specification {
 
     def setup() {
@@ -29,5 +33,10 @@ class DownloadsTagLibSpec extends Specification {
     }
 
     void "test something"() {
+        when:
+        def a = 1+2
+        then:
+            //fail
+            a == 3
     }
 }
