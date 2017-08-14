@@ -14,13 +14,13 @@
 
 package au.org.ala.downloads
 
-import groovy.util.logging.Log4j
+import groovy.util.logging.Slf4j
 
 /**
  * Enum for file type
  *
  */
-@Log4j
+@Slf4j
 enum FileType {
     CSV("csv"),
     TSV("tsv"),

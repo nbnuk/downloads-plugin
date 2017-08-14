@@ -14,14 +14,14 @@
 
 package au.org.ala.downloads
 
-import groovy.util.logging.Log4j
+import groovy.util.logging.Slf4j
 
 /**
  * Enum for download records format
  *
  * @author "Nick dos Remedios <Nick.dosRemedios@csiro.au>"
  */
-@Log4j
+@Slf4j
 enum DownloadFormat {
     DWC("dwc"),
     LEGACY("legacy"),

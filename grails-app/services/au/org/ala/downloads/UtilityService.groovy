@@ -2,7 +2,7 @@ package au.org.ala.downloads
 
 import grails.converters.JSON
 import groovy.util.slurpersupport.GPathResult
-import org.codehaus.groovy.grails.web.servlet.mvc.GrailsParameterMap
+import grails.web.servlet.mvc.GrailsParameterMap
 
 class UtilityService {
 

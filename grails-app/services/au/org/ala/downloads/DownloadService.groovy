@@ -14,7 +14,7 @@
 package au.org.ala.downloads
 
 import grails.plugin.cache.Cacheable
-import org.codehaus.groovy.grails.web.util.WebUtils
+import org.grails.web.util.WebUtils
 
 import java.text.SimpleDateFormat
 
