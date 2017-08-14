@@ -1,3 +1,5 @@
+package au.org.ala.downloads
+
 class DownloadsPluginUrlMappings {
 
 	static mappings = {

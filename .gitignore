@@ -21,3 +21,13 @@ stacktrace.log
 /*.iml
 /.project
 /.classpath
+Thumbs.db
+.gradle
+build/
+.idea
+*.iml
+*.ipr
+*.iws
+.project
+.settings
+.classpath

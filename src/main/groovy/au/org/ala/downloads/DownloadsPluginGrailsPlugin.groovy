@@ -1,10 +1,13 @@
+package au.org.ala.downloads
+
+import grails.plugins.Plugin
 import grails.util.Environment
 
-class DownloadsPluginGrailsPlugin {
+class DownloadsPluginGrailsPlugin extends Plugin {
     // the plugin version
     def version = "1.6-SNAPSHOT"
     // the version or versions of Grails the plugin is designed for
-    def grailsVersion = "2.3 > *"
+    def grailsVersion = "3.2.11 > *"
     // resources that are excluded from plugin packaging
     def pluginExcludes = [
         "grails-app/views/error.gsp"
