@@ -4,8 +4,6 @@ import grails.plugins.Plugin
 import grails.util.Environment
 
 class DownloadsPluginGrailsPlugin extends Plugin {
-    // the plugin version
-    def version = "1.6-SNAPSHOT"
     // the version or versions of Grails the plugin is designed for
     def grailsVersion = "3.2.11 > *"
     // resources that are excluded from plugin packaging
@@ -50,11 +48,13 @@ ALA Biocache system.
         // TODO Implement additions to web.xml (optional), this event occurs before
     }
 
-    def doWithSpring = {
-        def config = application.config
-        // Load the "sensible defaults"
-        def loadConfig = new ConfigSlurper(Environment.current.name).parse(application.classLoader.loadClass("downloadsDefaultConfig"))
-        application.config = loadConfig.merge(config) // client app will now override the defaultConfig version
+    Closure doWithSpring() {
+        { ->
+//            def config = application.config
+            // Load the "sensible defaults"
+//        def loadConfig = new ConfigSlurper(Environment.current.name).parse(application.classLoader.loadClass("au.org.ala.downloads.downloadsDefaultConfig"))
+//            application.config = loadConfig.merge(config) // client app will now override the defaultConfig version
+        }
     }
 
     def doWithDynamicMethods = { ctx ->
