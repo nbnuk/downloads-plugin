@@ -45,7 +45,7 @@ class DownloadService {
                 triggerOfflineDownload(downloadParams)
             } else if (downloadParams.downloadFormat == DownloadFormat.LEGACY.format) {
                 // Legacy download
-                downloadParams.extra = (grailsApplication.config.flatten().containsKey("biocache.downloads.extra")) ? grailsApplication.config.biocache.downloads.extra : ""
+                downloadParams.extra = grailsApplication.config.biocache.downloads.extra?: ""
                 downloadParams.dwcHeaders = false
                 log.debug "downloadParams = ${downloadParams} | ${grailsApplication.config.biocache.downloads.extra}"
                 triggerOfflineDownload(downloadParams)
@@ -55,7 +55,7 @@ class DownloadService {
                 downloadParams.customClasses.each {
                     log.debug "classs = ${it}"
 
-                    List dwcClasses = grailsApplication.config.flatten().containsKey("downloads.customSections.darwinCore") ? grailsApplication.config.downloads.customSections.darwinCore : []
+                    List dwcClasses = grailsApplication.config.downloads.customSections.darwinCore ?: []
                     log.debug "dwcClasses = ${dwcClasses}"
                     if (dwcClasses.contains(it)) {
                         customFields.addAll(biocacheService.getFieldsForDwcClass(it))

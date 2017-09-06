@@ -28,7 +28,7 @@ class DownloadsTagLib {
      */
     def getBiocacheAjaxUrl = { attrs ->
         String url = grailsApplication.config.biocache.baseUrl
-        Boolean useProxy = grailsApplication.config.biocache.ajax.useProxy.toBoolean() // will convert String 'true' to boolean true
+        Boolean useProxy = grailsApplication.config.biocache.ajax.useProxy?.toString()?.toBoolean() // will convert String 'true' to boolean true
         log.debug "useProxy = ${useProxy}"
 
         if (useProxy) {
@@ -62,7 +62,7 @@ class DownloadsTagLib {
      * Get the appropriate sourceId for the current hub
      */
     def getSourceId = { attrs ->
-        def skin = grailsApplication.config.skin.layout?.toUpperCase()
+        def skin = grailsApplication.config.skin.layout?.toString()?.toUpperCase()
         log.debug "skin = ${skin}"
         def sources = downloadService.getLoggerSources()
         sources.each {
@@ -76,7 +76,7 @@ class DownloadsTagLib {
     def isDefaultDownloadFormat = { attrs ->
 
         if(grailsApplication.config.downloads.defaultDownloadFormat){
-            if(grailsApplication.config.downloads.defaultDownloadFormat.equalsIgnoreCase(attrs.df.name())) {
+            if(grailsApplication.config.downloads.defaultDownloadFormat?.toString()?.equalsIgnoreCase(attrs.df.name())) {
                 out << 'checked'
             }
         } else {

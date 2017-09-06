@@ -53,7 +53,7 @@ dependencies {
     testRuntime "net.sourceforge.htmlunit:htmlunit:2.18"
 
     // Grails plugins
-    compile 'org.grails.plugins:cache:4.0.0'
+//    compile 'org.grails.plugins:cache:4.0.0'
     compile 'org.grails.plugins:cache-ehcache:3.0.0.M1'
     runtime 'org.grails.plugins:ala-ws-plugin:2.0-SNAPSHOT'
 }

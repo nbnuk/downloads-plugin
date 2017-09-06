@@ -15,7 +15,7 @@ class UtilityService {
      */
     Map getFieldGroupMap() {
         Map fieldGroupMap = [:]
-        List dwcClasses = grailsApplication.config.flatten().containsKey("downloads.customSections.darwinCore") ? grailsApplication.config.downloads.customSections.darwinCore : []
+        List dwcClasses = grailsApplication.config.downloads.customSections.darwinCore ?: []
 
         dwcClasses.each { cls ->
             fieldGroupMap.put(cls, biocacheService.getFieldsForDwcClass(cls))
