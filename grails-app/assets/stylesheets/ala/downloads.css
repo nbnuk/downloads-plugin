@@ -1,7 +1,8 @@
 /*
  * Replaces download resource in old resources plugin
  *= encoding UTF-8
- * // require jquery
  *= require download.css
- *= require font-awesome/css/font-awesome-4.3.0.css
+ * font-awesome and jquery are provided by ala-bootstrap3
+ **** = require jquery
+ **** = require font-awesome/css/font-awesome-4.3.0.css
  */
