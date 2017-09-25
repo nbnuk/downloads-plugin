@@ -150,7 +150,7 @@
                                            style="display: none;"></i><span>Select</span>
                                     </a>
                                 </div><!-- End span3 -->
-                                <hr class="visible-phone"/>
+                                <hr class="visible-xs"/>
                                 </div><!-- End row -->
                             </g:if>
                             <g:if test="${!defaults?.downloadType || defaults?.downloadType == 'checklist'}">
@@ -184,7 +184,7 @@
                                                style="display: none;"></i><span>Select</span>
                                         </a>
                                     </div><!-- End span3 -->
-                                    <hr class="visible-phone"/>
+                                    <hr class="visible-xs"/>
                                 </div><!-- End row -->
                             </g:if>
 

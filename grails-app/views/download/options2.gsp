@@ -62,12 +62,12 @@
             <div class="button-toolbar row-fluid">
                 <div class="btn-group">
                     <!-- <a class="btn btn-default" disabled="disabled" href="#"><span class="glyphicon glyphicon-th" aria-hidden="true"></span> <span class="hidden-xs hidden-sm">Toggle grid view</span></a> -->
-                    <a class="btn btn-default select-all-btn" href="#"><i class="fa fa-check"></i> <span class="hidden-phone">Select all</span></a>
-                    <a class="btn btn-default select-none-btn" href="#"><i class="fa fa-times"></i> <span class="hidden-phone">Unselect all</span></a>
+                    <a class="btn btn-default select-all-btn" href="#"><i class="fa fa-check"></i> <span class="hidden-xs">Select all</span></a>
+                    <a class="btn btn-default select-none-btn" href="#"><i class="fa fa-times"></i> <span class="hidden-xs">Unselect all</span></a>
                 </div>
                 <div class="btn-group pull-right">
-                    <a class="btn btn-default save-btn"><i class="fa fa-cog"></i> <span class="hidden-phone">Save preferences</span></a>
-                    <a class="btn btn-primary next-btn" href="#"><span class="hidden-phone">Next</span> <i class="fa fa-chevron-right color--white"></i></a>
+                    <a class="btn btn-default save-btn"><i class="fa fa-cog"></i> <span class="hidden-xs">Save preferences</span></a>
+                    <a class="btn btn-primary next-btn" href="#"><span class="hidden-xs">Next</span> <i class="fa fa-chevron-right color--white"></i></a>
                 </div>
             </div>
         </g:set>
@@ -83,7 +83,7 @@
                         <div class="panel panel-default">
                             <div class="comment-wrapper push">
                                 <div class="row-fluid">
-                                    <div class="span2 hidden-phone">
+                                    <div class="span2 hidden-xs">
                                         <g:if test="${s == 0}">
                                             <div class="contrib-stats">
                                                 <div class="no-of-questions">
