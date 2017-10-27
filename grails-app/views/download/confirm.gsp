@@ -91,13 +91,13 @@
                         <p>
                             <g:if test="${(isQueuedDownload || isFieldGuide) && json}">
                                 <g:message code="download.confirm.emailed" default="An email containing a link to the download file will be sent to your email address (linked to your ALA account) when it is completed."/>
-                                <div class="progress active">
+                                <div class="progress active hide">
                                     <div class="bar" style="width: 100%;"></div>
                                 </div>
                                 <div id="queueStatus"></div>
                             </g:if>
                             <g:elseif test="${isFieldGuide && downloadUrl}">
-                                <button id="fieldguideBtn" class="btn btn-large btn-success btn-block"><g:message code="download.confirm.browser" default="View the field guide (new window)"/></button>
+                                <button id="fieldguideBtn" class="btn btn-large btn-success btn-block"><g:message code="download.confirm.newWindow" default="View the field guide (new window)"/></button>
                             </g:elseif>
                             <g:elseif test="${isChecklist && downloadUrl}">
                                 <g:message code="download.confirm.browser" default="Check your downloads folder or your browser's downloads window."/>
@@ -120,7 +120,7 @@
 </div>
 <g:javascript>
     $( document ).ready(function() {
-
+        // raw download URL popup
         $('#downloadUrl').click(function(e) {
             //e.preventDefault();
             var button = '<button class="btn" data-clipboard-action="copy" data-clipboard-target="#requestUrl">Copy to clipboard</button>';
@@ -172,28 +172,35 @@
      *
      * @param json
      */
+    var max = 2;
+    var tries = 0;
+
     function updateStatus(json) {
-        var timeout = 20 * 1000; // time between checks
+        //var timeout = 20 * 1000; // time between checks
         //console.log("updateStatus", json);
+
         if (json.status) {
-            if (json.statusUrl) {
+            if (json.statusUrl && tries < max) {
+                tries++;
                 $('#queueStatus').html("Download is <span>" + json.status +"</span>");
                 $('.progress').addClass('progress-striped');
 
-                setTimeout(function(){
+                // setTimeout(function(){
                     $.getJSON(json.statusUrl, function(data) {
                         updateStatus(data);
                     }).fail(function( jqxhr, textStatus, error ) {
                         $('#queueStatus').html( "Request Failed: " + textStatus + ", " + error );
                     });
-                }, timeout);
+                // }, timeout);
             } else if (json.downloadUrl) {
                 $('#queueStatus').html("<a class='btn btn-primary' href='" + json.downloadUrl + "'><i class='fa fa-download'></i> Download now</a>");
                 $('.progress').removeClass('progress-striped');
                 $('.progress').hide();
                 $('.lead').html("Your download is ready.");
+            } else if (json.status == "inQueue" || json.status == "running") {
+                $('#queueStatus').html(""); //ignore
             } else {
-                $('#queueStatus').html("There was a problem getting the status: <code>" + json + "</code>");
+                $('#queueStatus').html("There was a problem getting the status: <code>" + json.message + "</code> (" + json.status + ")");
                 $('.progress').removeClass('progress-striped');
             }
         }
