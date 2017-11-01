@@ -92,7 +92,7 @@
                                 <div id="queueStatus"></div>
                             </g:if>
                             <g:elseif test="${isFieldGuide && downloadUrl}">
-                                <button id="fieldguideBtn" class="btn btn-lg btn-success btn-block"><g:message code="download.confirm.browser" default="View the field guide (new window)"/></button>
+                                <button id="fieldguideBtn" class="btn btn-lg btn-success btn-block"><g:message code="download.confirm.newWindow" default="View the field guide (new window)"/></button>
                             </g:elseif>
                             <g:elseif test="${isChecklist && downloadUrl}">
                                 <g:message code="download.confirm.browser" default="Check your downloads folder or your browser's downloads window."/>
