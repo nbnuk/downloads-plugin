@@ -110,8 +110,8 @@ class BiocacheService {
             fields.addAll(fieldsMap.get(it))
         }
 
-        // order fields in DwC order
-        orderFieldsByDwC(fields).join(",")
+        // order fields in DwC order with UUID as first field
+        'uuid,' + orderFieldsByDwC(fields).join(",") // comma-separated tring
     }
 
     /**
