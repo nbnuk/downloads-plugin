@@ -50,7 +50,7 @@ class DownloadService {
                 triggerOfflineDownload(downloadParams)
             } else if (downloadParams.downloadFormat == DownloadFormat.CUSTOM.format) {
                 // Custom download
-                List customFields = []
+                List customFields = ["uuid"] // always inlcude record ID
                 downloadParams.customClasses.each {
                     log.debug "classs = ${it}"
 
