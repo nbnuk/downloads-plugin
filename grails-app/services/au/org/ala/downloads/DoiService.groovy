@@ -32,11 +32,11 @@ class DoiService {
         def client = new OkHttpClient.Builder().addInterceptor(new Interceptor() {
             @Override
             Response intercept(Interceptor.Chain chain) throws IOException {
-                def request = chain.request().newBuilder()
-                    .addHeader(apiKeyHeader, apiKey)
-                    .addHeader('Accept', 'application/json')
-                    .build()
-                return chain.proceed(request)
+                def request = chain.request()
+                def builder = request.newBuilder()
+                if (request.method() != 'GET') builder.addHeader(apiKeyHeader, apiKey)
+                def newRequest = builder.addHeader('Accept', 'application/json').build()
+                return chain.proceed(newRequest)
             }
         }).build()
 
