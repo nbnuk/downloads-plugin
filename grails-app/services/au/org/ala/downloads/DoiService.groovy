@@ -50,7 +50,7 @@ class DoiService {
         def response = doiClient.list(max, offset, sortColumn, order, userId).execute()
         if (response.isSuccessful()) {
             def totalCount = response.headers()['X-Total-Count']?.toInteger() ?: 0
-            def doiList = response.body() as WithTotalCount
+            def doiList = response.body().withTraits(WithTotalCount)
             doiList.totalCount = totalCount
             return doiList
         } else {
