@@ -143,27 +143,24 @@ class DownloadController {
     def mydownloads() {
         String userId = authService?.getUserId()
 
-        def result = doiService.listDownloadsDoi(userId, params?.sort?:"dateMinted", params?.order?:"ASC", params?.offset, params?.max)
-
-        if (result.statusCode == 200) {
-            render view: 'mydownloads', model: [dois: result.resp.list, totalRecords: result.resp.totalCount]
-        } else {
-            log.error ("Error while retrieving mydownloads: ${result.statusCode}" - ${result.error} )
-            render view: '../error', model: [exception: result] //new Exception(result)]
+        try {
+            def result = doiService.listDownloadsDoi(userId, params?.sort?:"dateMinted", params?.order?:"ASC", params?.int('offset'), params?.int('max'))
+            render view: 'mydownloads', model: [dois: result, totalRecords: result.totalCount]
+        } catch (DoiServiceException e) {
+            log.error ("Error while retrieving mydownloads", e)
+            render view: '../error', model: [exception: e]
         }
-
     }
 
     def doi() {
         String userId = authService?.getUserId()
 
-        def result = doiService.getDoi(params?.doi)
-
-        if (result.statusCode == 200) {
-            render view: 'doi', model: [dois: result.resp]
-        } else {
-            log.error ("Error while retrieving mydownloads: ${result.statusCode}" - ${result.error} )
-            render view: '../error', model: [exception: result] //new Exception(result)]
+        try {
+            def result = doiService.getDoi(params?.doi)
+            render view: 'doi', model: [dois: result]
+        } catch (DoiServiceException e) {
+            log.error ("Error while retrieving mydownloads", e)
+            render view: '../error', model: [exception: e]
         }
     }
 

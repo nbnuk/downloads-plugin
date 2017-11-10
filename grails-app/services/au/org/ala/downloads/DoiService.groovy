@@ -1,29 +1,82 @@
 package au.org.ala.downloads
 
-import grails.transaction.Transactional
-import org.grails.web.json.JSONObject
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.Rfc3339DateJsonAdapter
+import grails.gorm.PagedResultList
+import okhttp3.Interceptor
+import okhttp3.OkHttpClient
+import okhttp3.Response
+import org.springframework.beans.factory.annotation.Value
+import retrofit2.Retrofit
+import retrofit2.converter.moshi.MoshiConverterFactory
+
+import javax.annotation.PostConstruct
 
 class DoiService {
 
     def grailsApplication
-    def webService
 
-    def listDownloadsDoi(String userId, String sortColumn = "dateMinted", String order = "DESC", String offset = 0, String max = 10) {
-        def result = webService.get(grailsApplication.config.doiService.baseUrl + "/api/doi?userId=${userId}&sort=${sortColumn}&order=${order}&offset=${offset}&max=${max}")
-        (result.resp.list as ArrayList).each {
-            Map map = (it as Map)
-            map.put("searchQuery", URLDecoder.decode(map.applicationMetadata?.searchUrl, "UTF-8"))
-            map.put("occurrencesCount", map.applicationMetadata?.occurrences)
-            map.put("datasetCounts", map.applicationMetadata?.datasets.size())
-            map.put("displayDate", new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(map.dateMinted))
+    @Value('${doiService.baseUrl}')
+    String doiServiceBaseUrl
+
+    @Value('${webservice.apiKeyHeader:apiKey}')
+    String apiKeyHeader
+
+    @Value('${webservice.apikey}')
+    String apiKey
+
+    DoiClient doiClient
+
+    @PostConstruct
+    def init() {
+        def client = new OkHttpClient.Builder().addInterceptor(new Interceptor() {
+            @Override
+            Response intercept(Interceptor.Chain chain) throws IOException {
+                def request = chain.request().newBuilder()
+                    .addHeader(apiKeyHeader, apiKey)
+                    .addHeader('Accept', 'application/json')
+                    .build()
+                return chain.proceed(request)
+            }
+        }).build()
+
+        def moshi = new Moshi.Builder().add(Date, new Rfc3339DateJsonAdapter().nullSafe()).build()
+
+        def retrofit = new Retrofit.Builder().baseUrl(doiServiceBaseUrl).client(client).addConverterFactory(MoshiConverterFactory.create(moshi)).build()
+        doiClient = retrofit.create(DoiClient)
+    }
+
+    def listDownloadsDoi(String userId, String sortColumn = "dateMinted", String order = "DESC", Integer offset = 0, Integer max = 10) {
+        def response = doiClient.list(max, offset, sortColumn, order, userId).execute()
+        if (response.isSuccessful()) {
+            def totalCount = response.headers()['X-Total-Count']?.toInteger() ?: 0
+            def doiList = response.body()
+
+            return new PagedResultList<Doi>(null) {
+
+                {
+                    resultList = doiList
+                }
+
+                @Override
+                int getTotalCount() {
+                    return totalCount
+                }
+            }
+        } else {
+            throw new DoiServiceException("Got ${response.code()} from DOI List service")
         }
-        return result
     }
 
     def getDoi(String doi = null) {
-        Map result = [:]
+        Doi result
         if (doi) {
-            result = webService.get(grailsApplication.config.doiService.baseUrl + "/api/doi/${doi}")
+            def response = doiClient.get(doi).execute()
+            if (response.isSuccessful()) {
+                result = response.body()
+            } else {
+                throw new DoiServiceException("Got ${response.code()} for $doi from DOI get service")
+            }
         }
         return result
     }

@@ -60,11 +60,12 @@
                 <g:each in="${dois}" var="doi">
                    <tr>
                        <td class="col-xs-3"><a href="${g.createLink(controller: 'download', action: 'doi')}?${doi.doi}">${doi.doi}</a></td>
-                       <td class="col-xs-2"><g:formatDate date="${doi.displayDate}"/></td>
+                       <td class="col-xs-2"><g:formatDate date="${doi.dateMinted}"/></td>
                        <td class="col-xs-2">${doi.title}</td>
-                       <td class="col-xs-1">${doi.occurrencesCount}</td>
-                       <td class="col-xs-1">${doi.datasetCounts}</td>
-                       <td class="col-xs-3"><a href="${doi.searchQuery}">${doi.searchQuery}</a></td>
+                       <td class="col-xs-1">${doi?.applicationMetadata['occurences']}</td>
+                       <td class="col-xs-1">${doi?.applicationMetadata['datasets']?.size()}</td>
+                       <g:set var="searchQuery" value="${URLDecoder.decode(doi?.applicationMetadata['searchUrl'], 'UTF-8')}"/>
+                       <td class="col-xs-3"><a href="${searchQuery}">${searchQuery}</a></td>
                    </tr>
                 </g:each>
             </tbody>
