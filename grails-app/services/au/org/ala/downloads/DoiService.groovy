@@ -9,7 +9,7 @@ import okhttp3.Response
 import org.springframework.beans.factory.annotation.Value
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-
+import okhttp3.logging.HttpLoggingInterceptor
 import javax.annotation.PostConstruct
 
 class DoiService {
@@ -29,6 +29,11 @@ class DoiService {
 
     @PostConstruct
     def init() {
+        def logging = new HttpLoggingInterceptor()
+
+        logging.level = HttpLoggingInterceptor.Level.BODY
+
+
         def client = new OkHttpClient.Builder().addInterceptor(new Interceptor() {
             @Override
             Response intercept(Interceptor.Chain chain) throws IOException {
@@ -38,7 +43,8 @@ class DoiService {
                 def newRequest = builder.addHeader('Accept', 'application/json').build()
                 return chain.proceed(newRequest)
             }
-        }).build()
+        }).addInterceptor(logging).build()
+
 
         def moshi = new Moshi.Builder().add(Date, new Rfc3339DateJsonAdapter().nullSafe()).build()
 
@@ -59,7 +65,7 @@ class DoiService {
     }
 
     def getDoi(String doi = null) {
-        Doi result
+        def result
         if (doi) {
             def response = doiClient.get(doi).execute()
             if (response.isSuccessful()) {

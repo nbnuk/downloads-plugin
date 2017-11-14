@@ -362,4 +362,8 @@ body .popover {
     margin-bottom: 0;
 }
 
+.row row-m-b {
+    margin-bottom: 15px;
+}
+
 

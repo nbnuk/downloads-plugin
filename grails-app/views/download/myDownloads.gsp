@@ -10,7 +10,8 @@
 </head>
 
 <body>
-    <h2><g:message code="download.mydownloads.pageTitle"/></h2>
+<div class="container">
+    <div class="row"><h3><g:message code="download.mydownloads.pageTitle"/></h3></div>
     <div class="row" id="table-metadata">
         <g:set var="start" value="${((params.getInt('offset')?:0) + 1)}"/>
         <g:set var="end" value="${(start + ((params.getInt('max')?:10) - 1))}"/>
@@ -22,7 +23,7 @@
             </g:if>
         </div>
         <div class="span7" id="sort-widgets">
-            <g:message code="downloads.mydownloads.items.per.page" default="items per page"/>:
+            <g:message code="download.mydownloads.items.per.page" default="items per page"/>:
             <select id="per-page" name="per-page" class="input-small" onchange="location = this.value;">
                 <option value="${g.createLink(action:'mydownloads',params:params + [max:'10'])}" ${params.max == '10' ? 'selected': ''}>10</option>
                 <option value="${g.createLink(action:'mydownloads',params:params + [max:'20'])}" ${params.max == '20' ? 'selected': ''}>20</option>
@@ -30,13 +31,13 @@
                 <option value="${g.createLink(action:'mydownloads',params:params + [max:'100'])}" ${params.max == '100' ? 'selected': ''}>100</option>
             </select>&nbsp;
 
-        <g:message code="downloads.mydownloads.sort" default="sort"/>:
+        <g:message code="download.mydownloads.sort" default="sort"/>:
             <select id="sort" name="sort" class="input-small" onchange="location = this.value;">
-                <option value="${g.createLink(action:'mydownloads',params:params + [sort:'doi'])}" ${params.sort == 'doi' ? 'selected': ''}><g:message code="downloads.mydownloads.doi" default="Doi"/></option>
-                <option value="${g.createLink(action:'mydownloads',params:params + [sort:'dateMinted'])}" ${params.sort == 'dateMinted' ? 'selected': ''}><g:message code="downloads.mydownloads.dateMinted" default="Date Minted"/></option>
-                <option value="${g.createLink(action:'mydownloads',params:params + [sort:'title'])}" ${params.sort == 'title' ? 'selected': ''}><g:message code="downloads.mydownloads.title" default="Title"/></option>
+                <option value="${g.createLink(action:'mydownloads',params:params + [sort:'doi'])}" ${params.sort == 'doi' ? 'selected': ''}><g:message code="download.mydownloads.doi" default="Doi"/></option>
+                <option value="${g.createLink(action:'mydownloads',params:params + [sort:'dateMinted'])}" ${params.sort == 'dateMinted' ? 'selected': ''}><g:message code="download.mydownloads.dateMinted" default="Date Minted"/></option>
+                <option value="${g.createLink(action:'mydownloads',params:params + [sort:'title'])}" ${params.sort == 'title' ? 'selected': ''}><g:message code="download.mydownloads.title" default="Title"/></option>
             </select>&nbsp;
-        <g:message code="downloads.mydownloads.order" default="order"/>:
+        <g:message code="download.mydownloads.order" default="order"/>:
             <select id="dir" name="dir" class="input-small" onchange="location = this.value;">
                 <option value="${g.createLink(action:'mydownloads',params:params + [order:'ASC'])}" ${params.order == 'ASC' ? 'selected': ''}><g:message code="downloads.fields.ascending" default="Ascending"/></option>
                 <option value="${g.createLink(action:'mydownloads',params:params + [order:'DESC'])}" ${params.order == 'DESC' ? 'selected': ''}><g:message code="downloads.fields.descending" default="Descending"/></option>
@@ -44,6 +45,7 @@
         </div>
     </div>
 
+    <div class="row">
     <div class="fwtable">
         <table class="table table-bordered table-striped table-responsive">
             <thead>
@@ -59,10 +61,10 @@
             <tbody>
                 <g:each in="${dois}" var="doi">
                    <tr>
-                       <td class="col-xs-3"><a href="${g.createLink(controller: 'download', action: 'doi')}?${doi.doi}">${doi.doi}</a></td>
+                       <td class="col-xs-3"><a href="${g.createLink(controller: 'download', action: 'doi')}?doi=${doi.doi}">${doi.doi}</a></td>
                        <td class="col-xs-2"><g:formatDate date="${doi.dateMinted}"/></td>
                        <td class="col-xs-2">${doi.title}</td>
-                       <td class="col-xs-1">${doi?.applicationMetadata['occurences']}</td>
+                       <td class="col-xs-1">${doi?.applicationMetadata['recordCount']}</td>
                        <td class="col-xs-1">${doi?.applicationMetadata['datasets']?.size()}</td>
                        <g:set var="searchQuery" value="${URLDecoder.decode(doi?.applicationMetadata['searchUrl'], 'UTF-8')}"/>
                        <td class="col-xs-3"><a href="${searchQuery}">${searchQuery}</a></td>
@@ -74,6 +76,8 @@
     <div  class="pagination">
         <g:paginate total="${totalRecords}" params="${[filter:params.filter]}"/>
     </div>
+    </div>
+</div>
  %{--   </div>
 </div>--}%
 </body>
