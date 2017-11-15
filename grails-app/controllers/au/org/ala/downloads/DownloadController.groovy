@@ -99,7 +99,6 @@ class DownloadController {
             ])
         } else if (downloadParams.downloadType == DownloadType.RECORDS.type) {
             // Records download -> confirm
-            downloadParams.mintDoi = true
             def json = downloadService.triggerDownload(downloadParams)
             log.debug "json = ${json}"
             chain (action:'confirm', model: [
