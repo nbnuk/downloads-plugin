@@ -31,7 +31,7 @@
             <tr>
                 <th>Uid</th>
                 <th>Name</th>
-                <th>License</th>
+                <th>Licence</th>
                 <th>Count</th>
             </tr>
             </thead>
@@ -40,7 +40,7 @@
                 <tr>
                     <td class="col-xs-1">${dataset.uid}</td>
                     <td class="col-xs-4">${dataset.name}</td>
-                    <td class="col-xs-3">${dataset.license}</td>
+                    <td class="col-xs-3">${dataset.licence}</td>
                     <td class="col-xs-1">${dataset.count}</td>
                 </tr>
             </g:each>
