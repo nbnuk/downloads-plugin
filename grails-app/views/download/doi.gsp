@@ -11,7 +11,7 @@
 <body>
 <div class="container">
 
-    <div class="row row-m-b" align="center"><h3><span class="label label-info">DOI</span><span>${doi.doi}</span></h3></div>
+    <div class="row row-m-b" align="center"><h3><a href="${g.createLink(controller: 'download', action: 'doi')}?doi=${doi.doi}" type="button" class="btn btn-info">DOI ${doi.doi}</a></h3></div>
 
     <div class="row row-m-b"><b>Occurrences:</b> ${doi?.applicationMetadata?.recordCount}</div>
     <div class="row row-m-b"><b>Title:</b> ${doi.title}</div>
@@ -24,34 +24,29 @@
     <div class="row row-m-b"><b>File:</b> <a href="${grailsApplication?.config.doiService.baseUrl}/doi/${URLEncoder.encode(doi.doi, 'UTF-8')}/download"> ${doi.filename}</a></div><br>
 
     <div class="row">
-    Datasets:
-    <div class="fwtable">
-        <table class="table table-bordered table-striped table-responsive">
-            <thead>
-            <tr>
-                <th>Uid</th>
-                <th>Name</th>
-                <th>Licence</th>
-                <th>Count</th>
-            </tr>
-            </thead>
-            <tbody>
-            <g:each in="${doi.applicationMetadata?.datasets}" var="dataset">
+        Datasets:
+        <div class="fwtable">
+            <table class="table table-bordered table-striped table-responsive">
+                <thead>
                 <tr>
-                    <td class="col-xs-1">${dataset.uid}</td>
-                    <td class="col-xs-4">${dataset.name}</td>
-                    <td class="col-xs-3">${dataset.licence}</td>
-                    <td class="col-xs-1">${dataset.count}</td>
+                    <th>Name</th>
+                    <th>Licence</th>
+                    <th style="text-align: center">Count</th>
                 </tr>
-            </g:each>
-            </tbody>
-        </table>
-    </div>
+                </thead>
+                <tbody>
+                <g:each in="${doi.applicationMetadata?.datasets}" var="dataset">
+                    <tr>
+                        <td class="col-xs-4"><a href="${grailsApplication?.config.collections.baseUrl}/public/show/${dataset.uid}">${dataset.name}</a></td>
+                        <td class="col-xs-3">${dataset.licence}</td>
+                        <td class="col-xs-1" align="center">${dataset.count}</td>
+                    </tr>
+                </g:each>
+                </tbody>
+            </table>
+        </div>
 
-</div>
+    </div>
 </div>
 </body>
 </html>
-
-
-
