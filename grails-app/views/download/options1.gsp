@@ -24,43 +24,36 @@
 <head>
     <meta name="layout" content="${grailsApplication.config.skin.layout}"/>
     <meta name="fluidLayout" content="false"/>
+    <meta name="breadcrumbParent" content="${request.contextPath ?: '/'},${message(code: "download.occurrence.records")}"/>
+    <meta name="breadcrumb" content="${message(code: "download.breadcumb.title")}"/>
     <title><g:message code="download.page.title"/></title>
     <asset:javascript src="ala/downloads.js" />
     <asset:stylesheet src="ala/downloads.css" />
 </head>
 
 <body>
-<div class="row-fluid">
-    <div class="span10 offset1">
-        <h1 class="hidden">Welcome to the ${grailsApplication.config.skin.orgNameLong} website</h1><!-- Show the H1 on each page -->
-
-        <!-- Breadcrumb -->
-        <ol class="breadcrumb hidden-print">
-            <li><a class="font-xxsmall" href="${grailsApplication.config.organisation.baseUrl}">Home</a><span
-                    class="divider">/</span></li>
-            <li><a class="font-xxsmall" href="${g.createLink(uri: '/')}">Occurrence Records</a><span
-                    class="divider">/</span></li>
-            <li class="font-xxsmall active">Download</li>
-        </ol>
-        <!-- End Breadcrumb -->
+<div class="row">
+    <div class="col-md-10 col-md-offset-1">
 
         <h2 class="heading-medium"><g:message code="download.download.title"/></h2>
         <g:set var="showLongTimeWarning" value="${totalRecords && (totalRecords > grailsApplication.config.downloads.maxRecords)}"/>
 
         <!-- Long download warning -->
         <g:if test="${showLongTimeWarning || grailsApplication.config.downloads.staticDownloadsUrl}">
-        <div class="alert alert-info">
-            <button type="button" class="close" data-dismiss="alert">×</button>
+        <div class="alert alert-info" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             <strong>
                 <g:if test="${showLongTimeWarning}">
                     Your search returned ${g.formatNumber(number: totalRecords, format: "#,###,###")} results and may take more than 24 hours to run.
                 </g:if>
-                <g:if test="${grailsApplication.config.downloads.staticDownloadsUrl}">
+                <g:if test="${showLongTimeWarning && grailsApplication.config.downloads.staticDownloadsUrl}">
                     <br/>
+                </g:if>
+                <g:if test="${grailsApplication.config.downloads.staticDownloadsUrl}">
                     Did you know the ${grailsApplication.config.skin.orgNameLong} provides a number of pre-generated downloads for common search queries
-                    (e.g. all plants, mammals, birds, insects, etc)?
+                    (e.g. all plants, mammals, birds, insects, etc.)?
                     <a href="${grailsApplication.config.downloads.staticDownloadsUrl?:'http://downloads.ala.org.au'}" target="_blank">
-                        View all pre-generated downloads
+                        View all pre-generated downloads.
                     </a>
                 </g:if>
             </strong>
@@ -68,22 +61,22 @@
         </g:if>
 
         <div class="well">
-            <div id="grid-view" class="row-fluid">
-                <div class="span12">
-                    <div class="panel panel-default">
+            <div id="grid-view" class="row">
+                <div class="col-md-12">
+                    %{--<div class="panel panel-default">--}%
                         <div class="comment-wrapper push">
 
-                            <div class="row-fluid ">
-                                <div class="span2">
+                            <div class="row ">
+                                <div class="col-md-2">
                                     <h4 class="heading-medium-alt"><g:message code="download.step1" /></h4>
                                 </div>
 
-                                <div class="span10">
+                                <div class="col-md-10">
                                     <p><g:message code="download.select.download.type" /></p>
                                 </div>
                             </div>
-                        <div class="row-fluid margin-top-1">
-                            <div class="span2">
+                        <div class="row margin-top-1">
+                            <div class="col-md-2">
                                 <div class="contrib-stats">
                                     <div class="no-of-questions">
                                         <div class="survey-details">
@@ -94,7 +87,7 @@
                                 </div>
                             </div>
                             <g:if test="${!defaults?.downloadType || defaults?.downloadType == 'records'}">
-                                <div class="span7">
+                                <div class="col-md-7">
                                     <h4 class="text-uppercase=heading-underlined"><g:message code="download.occurrence.records" /></h4>
                                     <p>
                                         <g:message code="download.occurrence.records.zip" />
@@ -142,20 +135,20 @@
                                     </form>
                                 </div>
 
-                                <div class="span3">
+                                <div class="col-md-3">
                                     <a href="#" id="select-${au.org.ala.downloads.DownloadType.RECORDS.type}"
                                        class="select-download-type btn-bs3 btn-white btn-large btn-block margin-top-1 margin-bottom-1 font-xxsmall"
                                        type="button">
                                         <i class="fa fa-check color--white"
                                            style="display: none;"></i><span>Select</span>
                                     </a>
-                                </div><!-- End span3 -->
+                                </div><!-- End col-md-3 -->
                                 <hr class="visible-xs"/>
                                 </div><!-- End row -->
                             </g:if>
                             <g:if test="${!defaults?.downloadType || defaults?.downloadType == 'checklist'}">
-                                <div class="row-fluid margin-top-1">
-                                    <div class="span2">
+                                <div class="row margin-top-1">
+                                    <div class="col-md-2">
                                         <div class="contrib-stats">
                                             <div class="no-of-questions">
                                                 <div class="survey-details">
@@ -166,7 +159,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="span7">
+                                    <div class="col-md-7">
                                         <h4 class="text-uppercase=heading-underlined">Species checklist</h4>
 
                                         <p class="font-xsmall">
@@ -175,7 +168,7 @@
                                         </p>
                                     </div>
 
-                                    <div class="span3">
+                                    <div class="col-md-3">
 
                                         <a href="#" id="select-${au.org.ala.downloads.DownloadType.CHECKLIST.type}"
                                            class="select-download-type btn-bs3 btn-white btn-large btn-block margin-top-1 margin-bottom-1 font-xxsmall"
@@ -183,14 +176,14 @@
                                             <i class="fa fa-check color--white"
                                                style="display: none;"></i><span>Select</span>
                                         </a>
-                                    </div><!-- End span3 -->
+                                    </div><!-- End col-md-3 -->
                                     <hr class="visible-xs"/>
                                 </div><!-- End row -->
                             </g:if>
 
                             <g:if test="${ grailsApplication.config.downloads.fieldguideDownloadUrl && (!defaults?.downloadType || defaults?.downloadType == 'fieldguide')}">
-                                <div class="row-fluid margin-top-1">
-                                    <div class="span2">
+                                <div class="row margin-top-1">
+                                    <div class="col-md-2">
                                         <div class="contrib-stats">
                                             <div class="no-of-questions">
                                                 <div class="survey-details">
@@ -202,7 +195,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="span7">
+                                    <div class="col-md-7">
                                         <h4 class="text-uppercase=heading-underlined">Species field-guide</h4>
 
                                         <p>
@@ -211,40 +204,40 @@
                                         </p>
                                     </div>
 
-                                    <div class="span3">
+                                    <div class="col-md-3">
                                         <a href="#" id="select-${au.org.ala.downloads.DownloadType.FIELDGUIDE.type}"
-                                           class="select-download-type btn-bs3 btn-white btn-large btn-block margin-top-1 margin-bottom-1 font-xxsmall"
+                                           class="select-download-type btn-bs3 btn-white btn-lg btn-block margin-top-1 margin-bottom-1 font-xxsmall"
                                            type="button">
                                             <i class="fa fa-check color--white"
                                                style="display: none;"></i><span>Select</span>
                                         </a>
-                                    </div><!-- End span3 -->
+                                    </div><!-- End col-md-3 -->
                                 </div><!-- End row -->
                             </g:if>
                         </div><!-- End comment-wrapper push -->
-                    </div>
+                    %{--</div><!-- End panel -->--}%
                 </div>
             </div>
         </div>
 
         <div class="well">
-            <div class="row-fluid">
-                <div class="span12">
+            <div class="row">
+                <div class="col-md-12">
                     <!-- <h4>Species Download</h4> -->
-                    <div class="panel panel-default">
+                    %{--<div class="panel panel-default">--}%
                         <div class="comment-wrapper push">
-                            <div class="row-fluid">
-                                <div class="span2">
+                            <div class="row">
+                                <div class="col-md-2">
                                     <h4 class="heading-medium-alt">Step 2</h4>
                                 </div>
 
-                                <div class="span10">
+                                <div class="col-md-10">
                                     <p>Select your download reason and then click the "Next" button.</p>
                                 </div>
                             </div>
 
-                            <div class="row-fluid">
-                                <div class="span2">
+                            <div class="row">
+                                <div class="col-md-2">
                                     <div class="contrib-stats">
                                         <div class="no-of-questions">
                                             <div class="survey-details">
@@ -255,36 +248,32 @@
                                     </div>
                                 </div>
 
-                                <div class="span7">
-                                    <form class="form-horizontal margin-top-1">
+                                <div class="col-md-7">
+                                    <form class="form-inline margin-top-1">
                                         <div class="form-group">
                                             <label for="downloadReason" class="control-label heading-xsmall"><span
-                                                    class="color--mellow-red">*</span>Industry/application</label>
-
-                                            <div class="controls">
-                                                <select class="form-control input-lg" id="downloadReason">
-                                                    <option value="" disabled selected>Select a reason ...</option>
-                                                    <g:each var="it" in="${downloads.getLoggerReasons()}">
-                                                        <option value="${it.id}">${it.name}</option>
-                                                    </g:each>
-                                                </select>
-
-                                                <p class="help-block"><strong>This field is mandatory.</strong> Choose the best "use type" from the drop-down menu above.
-                                                </p>
-                                            </div>
+                                                    class="color--mellow-red">*</span>Industry/application</label>&nbsp;&nbsp;
+                                            <select class="form-control" id="downloadReason">
+                                                <option value="" disabled selected>Select a reason ...</option>
+                                                <g:each var="it" in="${downloads.getLoggerReasons()}">
+                                                    <option value="${it.id}">${it.name}</option>
+                                                </g:each>
+                                            </select>
+                                            <p class="help-block"><strong>This field is mandatory.</strong> Choose the best "use type" from the drop-down menu above.
+                                            </p>
                                         </div>
                                     </form>
                                 </div>
 
-                                <div class="span3">
+                                <div class="col-md-3">
                                     <a href="#" id="nextBtn"
-                                       class="btn btn-large btn-primary btn-block margin-top-1 margin-bottom-1 font-xxsmall"
+                                       class="btn btn-lg btn-primary btn-bs3 btn-block margin-top-1 margin-bottom-1 font-xxsmall"
                                        type="button">Next <i class="fa fa-chevron-right color--white"></i></a>
-                                </div><!-- End span3 -->
+                                </div><!-- End col-md-3 -->
                             </div>
 
-                            <div class="row-fluid">
-                                <div class="span12">
+                            <div class="row">
+                                <div class="col-md-12">
                                     <!-- Alert Information -->
                                     <div id="errorAlert" class="alert alert-danger alert-dismissible hide" role="alert">
                                         <button type="button" class="close" onclick="$(this).parent().hide()"
@@ -298,7 +287,7 @@
                                 </div>
                             </div><!-- End body -->
                         </div><!-- End comment-wrapper push -->
-                    </div>
+                    %{--</div>--}%
                 </div>
             </div>
         </div>
@@ -310,7 +299,7 @@
             <a href="${grailsApplication.config.downloads.termsOfUseUrl}"><g:message code="download.termsofusedownload.02" /></a>
             <g:message code="download.termsofusedownload.03" />
         </div>
-    </div><!-- /.span10  -->
+    </div><!-- /.col-md-10  -->
 </div><!-- /.row-fuid  -->
 <g:javascript>
     $( document ).ready(function() {
