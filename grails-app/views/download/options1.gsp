@@ -92,43 +92,47 @@
                                     <p>
                                         <g:message code="download.occurrence.records.zip" />
                                     </p>
-                                    <form id="downloadFormatForm" class="form-horizontal hide">
-                                        <div class="control-group">
-                                            <label for="file" class="control-label"><g:message code="download.occurrence.records.filename" /></label>
-                                            <div class="controls">
+                                    <form id="downloadFormatForm" class="form-horizontal collapse">
+                                        <div class="form-group">
+                                            <label for="file" class="control-label col-sm-4"><g:message code="download.occurrence.records.filename" /></label>
+                                            <div class="col-sm-8">
                                                 <input type="text" id="file" name="file" value="${filename}"
-                                                       class="input-lg"/>
+                                                       class="input form-control"/>
                                             </div>
                                         </div>
 
-                                        <div class="control-group">
-                                            <label for="downloadFormatX" class="control-label"><span
-                                                    class="color--mellow-red"
-                                                    style="font-size:18px">*</span>Download format</label>
-                                            <div class="controls">
-                                                <g:each in="${au.org.ala.downloads.DownloadFormat.values()}" var="df">
-                                                    <label class="radio">
-                                                        <input type="radio" name="downloadFormat" class="form-control input-lg"
-                                                               value="${df.format}"
-                                                               <downloads:isDefaultDownloadFormat df="${df}" />
-                                                        />
-                                                        <g:message code="format.${df.format}"/> <g:message code="helpicon.${df.format}" args="[ g.createLink(action:'fields') ]" default=""/><br/>
-                                                    </label>
-                                                </g:each>
-                                                <p class="help-block hide"><strong>This field is mandatory.</strong></p>
-                                            </div>
-                                        </div>
-
-                                        <div class="control-group">
-                                            <label class="control-label"><span class="color--mellow-red"
-                                                    style="font-size:18px">*</span>Output file format
+                                        <div class="form-group">
+                                            <label for="downloadFormat" class="control-label col-sm-4">
+                                                <span class="color--mellow-red" style="font-size:18px">*</span>
+                                                Download format
                                             </label>
-                                            <div class="controls">
+                                            <div class="col-sm-8 radio">
+                                                <g:each in="${au.org.ala.downloads.DownloadFormat.values()}" var="df">
+                                                    <div class="">
+                                                        <label>
+                                                            <input type="radio" name="downloadFormat" id="downloadFormat" class=""
+                                                                   value="${df.format}" ${downloads.isDefaultDownloadFormat(df: df)} />
+                                                            <g:message code="format.${df.format}"/> <g:message code="helpicon.${df.format}" args="[ g.createLink(action:'fields') ]" default=""/>
+                                                        </label>
+                                                    </div>
+                                                </g:each>
+                                                <p class="help-block collapse"><strong>This field is mandatory.</strong></p>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-4">
+                                                <span class="color--mellow-red" style="font-size:18px">*</span>
+                                                Output file format
+                                            </label>
+                                            <div class="col-sm-8 radio">
                                                 <g:each in="${au.org.ala.downloads.FileType.values()}" var="ft">
-                                                    <label class="radio" for="fileType">
-                                                        <input id="fileType" type="radio" name="fileType" class="form-control input-lg" value="${ft.type}" ${(ft.ordinal() == 0)?'checked':''}/>
-                                                        <g:message code="type.${ft.type}"/> <g:message code="helpicon.${ft.type}" default=""/><br/>
-                                                    </label>
+                                                    <div class="">
+                                                        <label>
+                                                            <input id="fileType" type="radio" name="fileType" class="" value="${ft.type}" ${(ft.ordinal() == 0)?'checked':''}/>
+                                                            <g:message code="type.${ft.type}"/> <g:message code="helpicon.${ft.type}" default=""/>
+                                                        </label>
+                                                    </div>
                                                 </g:each>
                                             </div>
                                         </div>
@@ -275,11 +279,11 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <!-- Alert Information -->
-                                    <div id="errorAlert" class="alert alert-danger alert-dismissible hide" role="alert">
+                                    <div id="errorAlert" class="alert alert-danger alert-dismissible collapse" role="alert">
                                         <button type="button" class="close" onclick="$(this).parent().hide()"
                                                 aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                         <strong>Error:</strong> Ensure that you 1) select your download <b>type</b><span
-                                            id="errorFormat" class="hide">and select a download <b>format</b>
+                                            id="errorFormat" class="collapse">and select a download <b>format</b>
                                     </span>, 2) select a download <b>reason</b>
 
                                     </div>
@@ -330,6 +334,7 @@
                 $(link).addClass('btn-success');
                 $(link).find('.fa').show();
                 $(link).blur(); // prevent BS focus
+                console.log('link id', $(link).attr('id'), "select-${au.org.ala.downloads.DownloadType.RECORDS.type}");
 
                 if ($(link).attr('id') == "select-${au.org.ala.downloads.DownloadType.RECORDS.type}") {
                     // show type options
@@ -347,7 +352,7 @@
 
         // download format change event
         $('#downloadFormat').on('change', function(e) {
-            console.log('this selected val', $(this).find(":selected").val());
+            //console.log('this selected val', $(this).find(":selected").val());
             if ($(this).find(":selected").val()) {
                 // set focus on reason code
                 $('#downloadReason').focus();

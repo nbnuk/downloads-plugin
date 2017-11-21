@@ -362,4 +362,7 @@ body .popover {
     margin-bottom: 0;
 }
 
+#downloadFormatForm label {
+    font-weight: normal;
+}
 
