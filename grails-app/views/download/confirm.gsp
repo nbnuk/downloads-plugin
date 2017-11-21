@@ -24,6 +24,8 @@
 <head>
     <meta name="layout" content="${grailsApplication.config.skin.layout}"/>
     <meta name="fluidLayout" content="false"/>
+    <meta name="breadcrumbParent" content="${request.contextPath ?: '/'},${message(code: "download.occurrence.records")}"/>
+    <meta name="breadcrumb" content="${message(code: "download.breadcumb.title")}"/>
     <title><g:message code="download.page.title"/></title>
 
     <asset:javascript src="ala/downloads.js" />
@@ -56,20 +58,10 @@
 </head>
 <body>
 <div class="row">
-    <div class="span4 offset4">
-        <h1 class="hidden">Welcome to the Atlas of Living Australia website</h1><!-- Show the H1 on each page -->
-        <!-- downloadParams = ${downloadParams as grails.converters.JSON} -->
-        <!-- Breadcrumb -->
-        <ol class="breadcrumb hidden-print">
-            <li><a class="font-xxsmall" href="${grailsApplication.config.organisation.baseUrl}">Home</a><span class="divider">/</span></li>
-            <li><a class="font-xxsmall" href="${g.createLink(uri:'/')}">Occurrence Records</a><span class="divider">/</span></li>
-            <li class="font-xxsmall active">Download</li>
-        </ol>
-        <!-- End Breadcrumb -->
-
+    <div class="col-md-4 col-md-offset-4">
         <div class="well">
-            <div class="row-fluid">
-                <div class="span12">
+            <div class="row">
+                <div class="col-md-12">
                     <div class="logo-brand">
                         <div class="font-awesome-icon-large">
                             <i class="fa fa-check-circle color--apple"></i>
@@ -100,7 +92,7 @@
                                 <div id="queueStatus"></div>
                             </g:if>
                             <g:elseif test="${isFieldGuide && downloadUrl}">
-                                <button id="fieldguideBtn" class="btn btn-large btn-success btn-block"><g:message code="download.confirm.browser" default="View the field guide (new window)"/></button>
+                                <button id="fieldguideBtn" class="btn btn-lg btn-success btn-block"><g:message code="download.confirm.browser" default="View the field guide (new window)"/></button>
                             </g:elseif>
                             <g:elseif test="${isChecklist && downloadUrl}">
                                 <g:message code="download.confirm.browser" default="Check your downloads folder or your browser's downloads window."/>

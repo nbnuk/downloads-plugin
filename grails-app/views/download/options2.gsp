@@ -47,16 +47,7 @@
 </head>
 <body>
 <div class="row" id="customiseDownload">
-    <div class="span10 offset1">
-        <h1 class="hidden">Welcome to the Atlas of Living Australia website</h1><!-- Show the H1 on each page -->
-
-        <!-- Breadcrumb -->
-        <ol class="breadcrumb hidden-print">
-            <li><a class="font-xxsmall" href="${grailsApplication.config.organisation.baseUrl}">Home</a><span class="divider">/</span></li>
-            <li><a class="font-xxsmall" href="${g.createLink(uri:'/')}">Occurrence Records</a><span class="divider">/</span></li>
-            <li class="font-xxsmall active">Download</li>
-        </ol>
-        <!-- End Breadcrumb -->
+    <div class="col-md-10 col-md-offset-1">
         <h2 class="heading-medium">Customise Your Download</h2>
         <g:set var="toolbar">
             <div class="button-toolbar row-fluid">
@@ -78,12 +69,12 @@
 
         <div class="well">
             <g:each in="${customSections}" var="section" status="s">
-                <div class="row-fluid ${(s > 0) ? "margin-top-1" : ""}">
-                    <div class="span12">
-                        <div class="panel panel-default">
+                <div class="row ${(s > 0) ? "margin-top-1" : ""}">
+                    <div class="col-md-12">
+                        %{--<div class="panel panel-default">--}%
                             <div class="comment-wrapper push">
-                                <div class="row-fluid">
-                                    <div class="span2 hidden-xs">
+                                <div class="row">
+                                    <div class="col-md-2 hidden-xs">
                                         <g:if test="${s == 0}">
                                             <div class="contrib-stats">
                                                 <div class="no-of-questions">
@@ -94,7 +85,7 @@
                                             </div>
                                         </g:if>
                                     </div>
-                                    <div class="span8">
+                                    <div class="col-md-8">
                                         <h4 class="text-uppercase"><g:message code="section.${section.key}" default="${section.key}"/></h4>
                                         <p class="margin-bottom-2 hide">
                                             <g:message code="section.description.${section.key}" default="A description of the ${section.key}"/>.
@@ -120,10 +111,10 @@
                                                 </a>
                                             </g:each>
                                         </div><!-- /.list-group -->
-                                    </div><!-- /.span8 -->
+                                    </div><!-- /.col-md-8 -->
                                 </div>
                             </div><!-- End comment-wrapper push -->
-                        </div>
+                        %{--</div>--}%
                     </div>
                 </div>
             </g:each>

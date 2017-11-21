@@ -285,6 +285,27 @@ a.list-group-item:focus {
     border-bottom: 1px solid #ababab;
 }
 
+.well h4 {
+    margin: 10px 0 10px 0;
+}
+
+.well h4.text-uppercase {
+    margin: 10px 0 16px 0;
+}
+
+.well .list-group {
+    margin-bottom: 0;
+}
+
+.well .checkbox {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.well .padding-left-1 {
+     padding-left: 0;
+}
+
 /* Download step 1 -align elements horizontally */
 .contrib-stats .fa {
     padding-top: 8px;
