@@ -83,10 +83,16 @@
                                 <g:message code="download.confirm.started" default="Your download has completed"/>
                             </g:else>
                         </p>
+                        <code class="collapse">
+                            isQueuedDownload = ${isQueuedDownload}<br>
+                            isFieldGuide = ${isFieldGuide}<br>
+                            downloadUrl = ${downloadUrl}<br>
+                            json = ${json}<br>
+                        </code>
                         <p>
                             <g:if test="${(isQueuedDownload || isFieldGuide) && json}">
                                 <g:message code="download.confirm.emailed" default="An email containing a link to the download file will be sent to your email address (linked to your ALA account) when it is completed."/>
-                                <div class="progress active">
+                                <div class="progress active hidden">
                                     <div class="bar" style="width: 100%;"></div>
                                 </div>
                                 <div id="queueStatus"></div>
@@ -106,37 +112,35 @@
                     <a href="${downloadParams.targetUri}${downloadParams.searchParams}" class="btn btn-primary btn-block margin-bottom-1 font-xxsmall"
                            type="button"><g:message code="download.confirm.returnToSearch" default="Return to search results"/></a>
                     <g:if test="${isQueuedDownload && json}">
-                        <button class="btn btn-link btn-block margin-bottom-1" id="downloadUrl"><g:message code="download.confirm.rawUrlBtn" default="View the raw download URL"/></button>
+                        <button class="btn btn-link btn-block margin-bottom-1" data-toggle="modal" data-target="#downloadUrlModal"><g:message code="download.confirm.rawUrlBtn" default="View the raw download URL"/></button>
                     </g:if>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<!-- Copy download URL modal -->
+<div class="modal fade" id="downloadUrlModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><g:message code="download.downloadUrl.title" default="Download URL"/> </h4>
+            </div>
+            <div class="modal-body">
+                <textarea id='requestUrl'>${json?.requestUrl}</textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><g:message code="modal.close" default="Close"/></button>
+                <button id="copyBtn" class="btn btn-primary" data-clipboard-action="copy" data-clipboard-target="#requestUrl">Copy to clipboard</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 <g:javascript>
     $( document ).ready(function() {
-
-        $('#downloadUrl').click(function(e) {
-            //e.preventDefault();
-            var button = '<button class="btn" data-clipboard-action="copy" data-clipboard-target="#requestUrl">Copy to clipboard</button>';
-            bootbox.dialog("<h4>Raw download URL</h4><textarea id='requestUrl'>${json?.requestUrl}</textarea>",
-                [{
-                    "label" : "Copy to clipboard",
-                    "class" : "btn-success",
-                    "callback" : function() {
-                        new Clipboard('.btn-success', {
-                            target: function(trigger) {
-                                return document.getElementById("requestUrl");
-                            }
-                        });
-                    }
-                },
-                {
-                    "label" : "Close",
-                    "class" : "btn",
-                }]
-            );
-        });
+        // raw download URL popup
+        new Clipboard('#copyBtn');
 
         $('#fieldguideBtn').click(function(e) {
             e.preventDefault();
@@ -150,16 +154,16 @@
             window.location.href = downloadUrl;
         }
 
-        <g:if test="${json}">
-            <g:applyCodec encodeAs="none">
+    <g:if test="${json}">
+        <g:applyCodec encodeAs="none">
             // Update status of offline download
             var jsonResponse = ${json as JSON};
 
             if (jsonResponse) {
                 updateStatus(jsonResponse);
             }
-            </g:applyCodec>
-        </g:if>
+        </g:applyCodec>
+    </g:if>
     });
 
     /**
@@ -167,30 +171,33 @@
      *
      * @param json
      */
+    var maxTries = 1;
+    var tries = 0;
+
     function updateStatus(json) {
-        var timeout = 20 * 1000; // time between checks
+        //var timeout = 20 * 1000; // time between checks
         //console.log("updateStatus", json);
+
         if (json.status) {
-            if (json.statusUrl) {
+            if (json.statusUrl && maxTries > tries) {
+                tries++;
                 $('#queueStatus').html("Download is <span>" + json.status +"</span>");
                 $('.progress').addClass('progress-striped');
 
-                setTimeout(function(){
+                // setTimeout(function(){
                     $.getJSON(json.statusUrl, function(data) {
                         updateStatus(data);
                     }).fail(function( jqxhr, textStatus, error ) {
                         $('#queueStatus').html( "Request Failed: " + textStatus + ", " + error );
                     });
-                }, timeout);
+                // }, timeout);
             } else if (json.downloadUrl) {
                 $('#queueStatus').html("<a class='btn btn-primary' href='" + json.downloadUrl + "'><i class='fa fa-download'></i> Download now</a>");
                 $('.progress').removeClass('progress-striped');
                 $('.progress').hide();
                 $('.lead').html("Your download is ready.");
-            } else if (json.status && json.status.toLowerCase().startsWith("skipped")) {
-                $('.progress').removeClass('progress-striped');
-                $('.progress').hide();
-                $('.lead').html(json.message);
+            } else if (json.status == "inQueue" || json.status == "running") {
+                $('#queueStatus').html(""); //ignore
             } else {
                 $('#queueStatus').html("There was a problem getting the status: <code>" + json.status + "</code>");
                 $('.progress').removeClass('progress-striped');

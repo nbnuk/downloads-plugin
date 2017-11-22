@@ -131,13 +131,19 @@ class DownloadController {
     }
 
     def confirm (DownloadParams downloadParams) {
-        // Spring ModelAndView used as work around for chain method called from #options2
-        return new ModelAndView('confirm',  [
-                isQueuedDownload: (downloadParams.downloadType == DownloadType.RECORDS.type) ? true : false,
-                isFieldGuide: (downloadParams.downloadType == DownloadType.FIELDGUIDE.type) ? true : false,
-                isChecklist: (downloadParams.downloadType == DownloadType.CHECKLIST.type) ? true : false,
-                downloadParams: downloadParams
-        ])
+
+        Map returnModel = [isChained: true]
+        if (!chainModel) {
+            returnModel = [
+                    isChained: false,
+                    isQueuedDownload: (downloadParams.downloadType == DownloadType.RECORDS.type) ? true : false,
+                    isFieldGuide: (downloadParams.downloadType == DownloadType.FIELDGUIDE.type) ? true : false,
+                    isChecklist: (downloadParams.downloadType == DownloadType.CHECKLIST.type) ? true : false,
+                    downloadParams: downloadParams
+            ]
+        }
+
+        returnModel
     }
 
     def saveUserPrefs() {

@@ -33,7 +33,7 @@ class DownloadService {
      * @return
      * @throws Exception
      */
-    def triggerDownload(DownloadParams downloadParams) throws Exception {
+    Map triggerDownload(DownloadParams downloadParams) throws Exception {
 
         if (downloadParams.downloadType == DownloadType.RECORDS.type) {
             // set some defaults

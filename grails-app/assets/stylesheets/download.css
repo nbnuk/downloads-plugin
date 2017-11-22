@@ -125,8 +125,8 @@ a > i.fa:hover{color:#DA644E;}
     background-color: #fff;
     border-color: #cdcdcd;
 }
-.btn-bs3:focus:not(.btn-success),
-.btn-bs3.focus:not(.btn-success) {
+.btn-bs3:focus:not(.btn-primary),
+.btn-bs3.focus:not(.btn-primary) {
     color: #333;
     background-color: #e6e6e6;
     border-color: #8c8c8c;
@@ -135,7 +135,7 @@ a > i.fa:hover{color:#DA644E;}
 .btn-bs3:hover {
     text-decoration: none;
 }
-.btn-bs3:hover:not(.btn-success) {
+.btn-bs3:hover:not(.btn-primary) {
     color: #333;
     background-color: #e6e6e6;
     border-color: #adadad;
@@ -144,7 +144,7 @@ a > i.fa:hover{color:#DA644E;}
     text-decoration: none;
 }
 
-.btn-bs3:active:not(.btn-success),
+.btn-bs3:active:not(.btn-primary),
 .open > .dropdown-toggle.btn-bs3 {
     color: #333;
     background-color: #e6e6e6;
