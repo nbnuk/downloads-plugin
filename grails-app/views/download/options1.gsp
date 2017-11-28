@@ -28,7 +28,7 @@
     <meta name="breadcrumb" content="${message(code: "download.breadcumb.title")}"/>
     <title><g:message code="download.page.title"/></title>
     <asset:javascript src="ala/downloads.js" />
-    <asset:stylesheet src="ala/downloads.css" />
+    <asset:stylesheet src="downloads.css" />
 </head>
 
 <body>
@@ -141,10 +141,9 @@
 
                                 <div class="col-md-3">
                                     <a href="#" id="select-${au.org.ala.downloads.DownloadType.RECORDS.type}"
-                                       class="select-download-type btn-bs3 btn-white btn-large btn-block margin-top-1 margin-bottom-1 font-xxsmall"
+                                       class="select-download-type btn btn-white btn-lg btn-block margin-top-1 margin-bottom-1 font-xxsmall"
                                        type="button">
-                                        <i class="fa fa-check color--white"
-                                           style="display: none;"></i><span>Select</span>
+                                        <i class="glyphicon glyphicon-ok" style="display: none;"></i><span>Select</span>
                                     </a>
                                 </div><!-- End col-md-3 -->
                                 <hr class="visible-xs"/>
@@ -175,10 +174,9 @@
                                     <div class="col-md-3">
 
                                         <a href="#" id="select-${au.org.ala.downloads.DownloadType.CHECKLIST.type}"
-                                           class="select-download-type btn-bs3 btn-white btn-large btn-block margin-top-1 margin-bottom-1 font-xxsmall"
+                                           class="select-download-type btn btn-white btn-lg btn-block margin-top-1 margin-bottom-1 font-xxsmall"
                                            type="button">
-                                            <i class="fa fa-check color--white"
-                                               style="display: none;"></i><span>Select</span>
+                                            <i class="glyphicon glyphicon-ok collapse"></i><span>Select</span>
                                         </a>
                                     </div><!-- End col-md-3 -->
                                     <hr class="visible-xs"/>
@@ -210,10 +208,9 @@
 
                                     <div class="col-md-3">
                                         <a href="#" id="select-${au.org.ala.downloads.DownloadType.FIELDGUIDE.type}"
-                                           class="select-download-type btn-bs3 btn-white btn-lg btn-block margin-top-1 margin-bottom-1 font-xxsmall"
+                                           class="select-download-type btn btn-white btn-lg btn-block margin-top-1 margin-bottom-1 font-xxsmall"
                                            type="button">
-                                            <i class="fa fa-check color--white"
-                                               style="display: none;"></i><span>Select</span>
+                                            <i class="glyphicon glyphicon-ok" style="display: none;"></i><span>Select</span>
                                         </a>
                                     </div><!-- End col-md-3 -->
                                 </div><!-- End row -->
@@ -316,7 +313,7 @@
                 $(link).find('span').text('Select');
                 $(link).removeClass('btn-success');
                 $(link).addClass('btn-white');
-                $(link).find('.fa').hide();
+                $(link).find('.glyphicon').hide();
                 $(link).blur(); // prevent BS focus
 
                 if ($(link).attr('id') == "select-${au.org.ala.downloads.DownloadType.RECORDS.type}") {
@@ -328,11 +325,11 @@
                 $('a.select-download-type').find('span').text('Select'); // reset any other selected buttons
                 $('a.select-download-type').removeClass('btn-success'); // reset any other selected buttons
                 $('a.select-download-type').addClass('btn-white'); // reset any other selected buttons
-                $('a.select-download-type').find('.fa').addClass('hide'); // reset any other selected buttons
+                $('a.select-download-type').find('.glyphicon').hide(); // reset any other selected buttons
                 $(link).find('span').text('Selected');
                 $(link).removeClass('btn-white');
                 $(link).addClass('btn-success');
-                $(link).find('.fa').show();
+                $(link).find('.glyphicon').show();
                 $(link).blur(); // prevent BS focus
                 console.log('link id', $(link).attr('id'), "select-${au.org.ala.downloads.DownloadType.RECORDS.type}");
 

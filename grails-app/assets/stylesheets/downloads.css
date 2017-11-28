@@ -10,10 +10,22 @@
  * implied. See the License for the specific language governing
  * rights and limitations under the License.
  */
+/*
+ * Replaces download resource in old resources plugin
+ *= encoding UTF-8
+ *= require_self
+ * font-awesome and jquery are provided by ala-bootstrap3
+ **** = require jquery
+ **** = require font-awesome/css/font-awesome-4.3.0.css
+ *= require pagination.css
+ */
 
-
-
-.font-xxsmall{font-size:13px;line-height:1.5;text-transform:uppercase;font-weight: 400;}
+.font-xxsmall{
+    font-size:14px;
+    line-height:1.5;
+    text-transform:uppercase;
+    font-weight: 500;
+}
 .heading-medium-alt{
     font-size: 24px;
     font-weight: 700;
@@ -100,7 +112,7 @@ a > i.fa:hover{color:#DA644E;}
     display: inline-block;
     padding: 11px 19px;
     margin-bottom: 0;
-    font-weight: 400;
+    font-weight: 500;
     line-height: 1.5;
     text-align: center;
     white-space: nowrap;
@@ -112,8 +124,8 @@ a > i.fa:hover{color:#DA644E;}
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    background-image: none;
-    border: 1px solid transparent;
+    /*background-image: none;*/
+    /*border: 1px solid transparent;*/
     /*border-radius: 4px;*/
     text-decoration: none;
 }
@@ -123,10 +135,19 @@ a > i.fa:hover{color:#DA644E;}
 .btn-white {
     color: #333;
     background-color: #fff;
+    border: 1px solid transparent;
     border-color: #cdcdcd;
+    background-image: none;
 }
-.btn-bs3:focus:not(.btn-primary),
-.btn-bs3.focus:not(.btn-primary) {
+.btn-white:focus, .btn-white:hover {
+    background-image: none;
+    background-color: #f9f9f9;
+}
+.btn-success.btn-bs3, .btn-success.btn-bs3:hover, .btn-success.btn-bs3:focus {
+    background-image: none;
+}
+.btn-bs3.btn-white:focus,
+.btn-bs3.btn-white.focus {
     color: #333;
     background-color: #e6e6e6;
     border-color: #8c8c8c;
@@ -135,7 +156,7 @@ a > i.fa:hover{color:#DA644E;}
 .btn-bs3:hover {
     text-decoration: none;
 }
-.btn-bs3:hover:not(.btn-primary) {
+.btn-bs3.btn-white:hover {
     color: #333;
     background-color: #e6e6e6;
     border-color: #adadad;
@@ -144,7 +165,7 @@ a > i.fa:hover{color:#DA644E;}
     text-decoration: none;
 }
 
-.btn-bs3:active:not(.btn-primary),
+.btn-bs3.btn-white:active,
 .open > .dropdown-toggle.btn-bs3 {
     color: #333;
     background-color: #e6e6e6;
@@ -155,48 +176,12 @@ a > i.fa:hover{color:#DA644E;}
     font-size: 14px;
 }
 
-/* Colours and Swatchs
-================================= */
-
-.swatch-colour{height:70px;width:100%;display:block;border-bottom:1px solid #ccc;}
-.color--dark-grey{color: #9d9d9d;} .backgroundcolor--dark-grey{background-color: #9d9d9d;}
-.color--dark-red{color: #C44D34;} .backgroundcolor--dark-red{background-color: #C44D34;}
-.color--green{color: #006435;} .backgroundcolor--green{background-color: #006435;}
-.color--medium-blue{color: #2475A4;} .backgroundcolor--medium-blue{background-color: #2475A4;}
-.color--medium-grey{color: #637073;} .backgroundcolor--medium-grey{background-color: #637073;}
-.color--mellow-red{color: #DF3034;} .backgroundcolor--mellow-red{background-color: #DF3034;}
-.color--off-black{color: #212121;} .backgroundcolor--off-black{background-color: #212121;}
-.color--off-white{color: #F2F2F2;} .backgroundcolor--off-white{background-color: #F2F2F2;}
-.color--pink{color: #D0367D;} .backgroundcolor--pink{background-color: #D0367D;}
-.color--primary-red{color: #F26649;} .backgroundcolor--primary-red{background-color: #F26649;}
-.color--purple{color: #2E358B;} .backgroundcolor--purple{background-color: #2E358B;}
-.color--red{color: #B10E1E;} .backgroundcolor--red{background-color: #B10E1E;}
-.color--white{color: #fff !important;} .backgroundcolor--white{background-color: #fff;}
-.color--yellow{color: #FFBF47;} .backgroundcolor--yellow{background-color: #FFBF47;}
-.color--apple{color: #65B044;} .backgroundcolor--apple{background-color: #65B044;}
-.color-lochmara {color: #0087BE;} .background-lochmara {background-color: #0087BE;}
-.color-facebook {color: #507CBE;} .background-facebook {background-color: #507CBE;}
-
 /* Branding
 ================================= */
 
 .logo-brand {text-align: center;margin-top: 1em;}
 .navbar-brand-layout-control {display: inline-block;font-size: 64px;}
 .heading-medium-large {border-bottom: inherit;font-size: 26px;font-weight: 700;line-height: 1.25;margin-bottom: .8em;margin-top: 0.3em;text-transform: none;}
-
-/* Social Icons
-================================= */
-
-.social li > a{border-radius:50%;color:#fff;display:inline-block;height:35px;text-align:center;width:35px;}
-.social li a .fa{font-size:15px;padding-top:0.65em;color:#fff;}
-.login-social li > a {border-radius: 50%;color: #fff;display: inline-block;height: 50px;text-align: center;width: 50px;}
-.login-social li a .fa{font-size:15px;padding-top:1.20em;color:white;}
-.form-signin.separator {margin: 24px 0;font-size: 14px;font-weight: 300;}
-.separator {position: relative;text-transform: uppercase;font-size: 12px;font-weight: 700;margin: 16px 0;}
-.separator span {padding: 5px 20px;background: #f5f5f5;color: #8f989d;position: relative;}
-.separator:before {content: '';display: block;width: 100%;height: 1px;background: #e3e6e7;position: absolute;top: 50%;}
-.t-center {text-align: center;}
-.font-awesome-icon-large {display: inline-block;font-size: 113px;}
 
 /* Radio button and check list button styles
 ================================= */
@@ -275,7 +260,7 @@ a.list-group-item:focus {
     border-color: #3c763d;
 }
 
-.select-download-type .fa {
+.select-download-type .glyphicon {
     margin-right: 10px;
     font-size: 16px;
 }
@@ -386,4 +371,11 @@ body .popover {
 #downloadFormatForm label {
     font-weight: normal;
 }
+
+
+#main .table > thead > tr > th {
+    font-weight: 500;
+}
+
+
 

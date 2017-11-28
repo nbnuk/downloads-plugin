@@ -25,12 +25,10 @@
     <meta name="fluidLayout" content="false"/>
     <title><g:message code="downloads.fields.heading" default="Occurrence Record Fields"/></title>
     <asset:javascript src="ala/downloads.js" />
-    <asset:stylesheet src="ala/downloads.css" />
-
+    <asset:stylesheet src="downloads.css" />
 </head>
-
-<body>
-    <div class="page-headerx">
+<body class="content">
+    <div class="">
         <h1><g:message code="downloads.fields.heading" default="Occurrence Record Fields"/></h1>
     </div>
     <div style="padding-bottom:10px;">
@@ -38,20 +36,22 @@
         readable names, descriptions, Darwin Core terms and classes, as well as other miscellaneous attributes."/>
     </div>
     <div class="row" id="filters">
-        <div class="span12">
+        <div class="col-md-12">
             <g:message code="downloads.fields.filters" default="Filters"/>:
             <div class="btn-group">
-                <g:link class="btn btn-mini ${downloads.btnState(fld:'filter', val:'')}" action="fields" params="${params + [filter:'']}"><g:message code="downloads.fields.filter.all" default="all fields"/></g:link>
-                <g:link class="btn btn-mini ${downloads.btnState(fld:'filter', val:'dwcTerm:.*')}" action="fields" params="${params + [filter:"dwcTerm:.*"]}"><g:message code="downloads.fields.filter.dwc" default="only DwC terms"/></g:link>
-                <g:link class="btn btn-mini ${downloads.btnState(fld:'filter', val:'name:el[0-9]*')}" action="fields" params="${params + [filter:'name:el[0-9]*']}"><g:message code="downloads.fields.filter.environmental" default="only environmental layers"/></g:link>
-                <g:link class="btn btn-mini ${downloads.btnState(fld:'filter', val:'name:cl[0-9]*')}" action="fields" params="${params + [filter:'name:cl[0-9]*']}"><g:message code="downloads.fields.filter.contextual" default="only contextual layers"/></g:link>
-                <g:link class="btn btn-mini ${downloads.btnState(fld:'filter', val:'indexed:true')}" action="fields" params="${params + [filter:'indexed:true']}"><g:message code="downloads.fields.filter.indexed" default="only indexed fields"/></g:link>
-                <g:link class="btn btn-mini ${downloads.btnState(fld:'filter', val:'jsonName:.*')}" action="fields" params="${params + [filter:'jsonName:.*']}"><g:message code="downloads.fields.filter.json" default="only JSON output fields"/></g:link>
+                <g:link class="btn btn-default btn-sm ${downloads.btnState(fld:'filter', val:'')}" action="fields" params="${params + [filter:'']}"><g:message code="downloads.fields.filter.all" default="all fields"/></g:link>
+                <g:link class="btn btn-default btn-sm ${downloads.btnState(fld:'filter', val:'dwcTerm:.*')}" action="fields" params="${params + [filter:"dwcTerm:.*"]}"><g:message code="downloads.fields.filter.dwc" default="only DwC terms"/></g:link>
+                <g:link class="btn btn-default btn-sm ${downloads.btnState(fld:'filter', val:'name:el[0-9]*')}" action="fields" params="${params + [filter:'name:el[0-9]*']}"><g:message code="downloads.fields.filter.environmental" default="only environmental layers"/></g:link>
+                <g:link class="btn btn-default btn-sm ${downloads.btnState(fld:'filter', val:'name:cl[0-9]*')}" action="fields" params="${params + [filter:'name:cl[0-9]*']}"><g:message code="downloads.fields.filter.contextual" default="only contextual layers"/></g:link>
+                <g:link class="btn btn-default btn-sm ${downloads.btnState(fld:'filter', val:'indexed:true')}" action="fields" params="${params + [filter:'indexed:true']}"><g:message code="downloads.fields.filter.indexed" default="only indexed fields"/></g:link>
+                <g:link class="btn btn-default btn-sm ${downloads.btnState(fld:'filter', val:'jsonName:.*')}" action="fields" params="${params + [filter:'jsonName:.*']}"><g:message code="downloads.fields.filter.json" default="only JSON output fields"/></g:link>
             </div>
             <form class="form-inline" style="display:inline-block;">
-                <div class="input-append">
-                    <input class="span2 input-mini" name="filter" id="appendedInputButton" type="text" value="${params.filter}">
-                    <input class="btn btn-mini" type="submit" value="Search">
+                <div class="input-group input-group-sm">
+                    <input class="input-sm form-control" name="filter" id="appendedInputButton" type="text" value="${params.filter}">
+                    <span class="input-group-btn">
+                        <input class="btn btn-default btn-sm" type="submit" value="Search">
+                    </span>
                 </div>
             </form>
         </div>
@@ -60,13 +60,13 @@
         <g:set var="start" value="${((params.getInt('offset')?:0) + 1)}"/>
         <g:set var="end" value="${(start + ((params.getInt('max')?:10) - 1))}"/>
         <g:set var="end" value="${(end > fieldsMax ? fieldsMax : end)}"/>
-        <div class="span5" id="pagination-details">
+        <div class="col-md-5" id="pagination-details">
             <g:message code="downloads.fields.showing.results" args="[start, end, fieldsMax]" />
             <g:if test="${params.filter}">
-                (filter: ${params.filter})
+                (filter: ${params.filter} <g:link class="btn btn-default btn-xs ${downloads.btnState(fld:'filter', val:'')}" action="fields" params="${params + [filter:'']}" title="clear">&times;</g:link>)
             </g:if>
         </div>
-        <div class="span7" id="sort-widgets">
+        <div class="col-md-7" id="sort-widgets">
             <g:message code="downloads.fields.items.per.page" default="items per page"/>:
             <select id="per-page" name="per-page" class="input-small" onchange="location = this.value;">
                 <option value="${g.createLink(action:'fields',params:params + [max:'10'])}" ${params.max == '10' ? 'selected': ''}>10</option>
@@ -126,7 +126,7 @@
             </tbody>
         </table>
     </div>
-    <div  class="pagination">
+    <div class="pagination">
         <g:paginate total="${fieldsMax}" params="${[filter:params.filter]}"/>
     </div>
 

@@ -29,7 +29,7 @@
     <title><g:message code="download.page.title"/></title>
 
     <asset:javascript src="ala/downloads.js" />
-    <asset:stylesheet src="ala/downloads.css" />
+    <asset:stylesheet src="downloads.css" />
 
     <style type="text/css">
         a h4 > .fa {
