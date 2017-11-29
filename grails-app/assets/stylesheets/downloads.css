@@ -176,6 +176,10 @@ a > i.fa:hover{color:#DA644E;}
     font-size: 14px;
 }
 
+.font-awesome-icon-large {
+    display: inline-block;font-size: 113px;
+}
+
 /* Branding
 ================================= */
 
