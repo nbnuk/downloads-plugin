@@ -49,6 +49,7 @@ class DownloadParams implements Validateable{
     String layers //appended to extra
     String layersServiceUrl = ""
     String customHeader = ""
+    Boolean mintDoi = true
 
     @Override
     public String toString() {

@@ -20,7 +20,7 @@ import org.springframework.web.servlet.ModelAndView
  * Download controller
  */
 class DownloadController {
-    def customiseService, authService, downloadService, biocacheService, utilityService
+    def customiseService, authService, downloadService, biocacheService, utilityService, doiService
 
     static defaultAction = "options1"
 
@@ -144,6 +144,30 @@ class DownloadController {
         }
 
         returnModel
+    }
+
+    def myDownloads() {
+        String userId = authService?.getUserId()
+
+        try {
+            def result = doiService.listDownloadsDoi(userId, params?.sort?:"dateMinted", params?.order?:"ASC", params?.int('offset'), params?.int('max'))
+            render view: 'myDownloads', model: [dois: result, totalRecords: result.totalCount]
+        } catch (DoiServiceException e) {
+            log.error ("Error while retrieving mydownloads", e)
+            render view: '../error', model: [exception: e]
+        }
+    }
+
+    def doi() {
+        String userId = authService?.getUserId()
+
+        try {
+            Doi doi = doiService.getDoi(params?.doi)
+            render view: 'doi', model: [doi: doi] //[doi: new JsonBuilder(doi) as Map] // model: [doi: doi]
+        } catch (DoiServiceException e) {
+            log.error ("Error while retrieving mydownloads", e)
+            render view: '../error', model: [exception: e]
+        }
     }
 
     def saveUserPrefs() {
