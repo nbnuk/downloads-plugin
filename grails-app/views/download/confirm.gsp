@@ -99,6 +99,7 @@
                             </g:if>
                             <g:elseif test="${isFieldGuide && downloadUrl}">
                                 <button id="fieldguideBtn" class="btn btn-lg btn-success btn-block"><g:message code="download.confirm.newWindow" default="View the field guide (new window)"/></button>
+
                             </g:elseif>
                             <g:elseif test="${isChecklist && downloadUrl}">
                                 <g:message code="download.confirm.browser" default="Check your downloads folder or your browser's downloads window."/>
@@ -181,6 +182,7 @@
         if (json.status) {
             if (json.statusUrl && maxTries > tries) {
                 tries++;
+
                 $('#queueStatus').html("Download is <span>" + json.status +"</span>");
                 $('.progress').addClass('progress-striped');
 
@@ -199,7 +201,7 @@
             } else if (json.status == "inQueue" || json.status == "running") {
                 $('#queueStatus').html(""); //ignore
             } else {
-                $('#queueStatus').html("There was a problem getting the status: <code>" + json.status + "</code>");
+                $('#queueStatus').html("There was a problem getting the status: <code>" + json.message + "</code> (" + json.status + ")");
                 $('.progress').removeClass('progress-striped');
             }
         }
