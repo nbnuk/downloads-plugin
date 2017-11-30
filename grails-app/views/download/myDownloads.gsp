@@ -5,8 +5,8 @@
     <meta name="layout" content="${grailsApplication.config.skin.layout}"/>
     <meta name="fluidLayout" content="false"/>
     <title><g:message code="download.page.title"/></title>
-    <asset:javascript src="ala/downloads.js" />
-    <asset:stylesheet src="ala/downloads.css" />
+    <asset:javascript src="downloads.js" />
+    <asset:stylesheet src="downloads.css" />
 </head>
 
 <body>

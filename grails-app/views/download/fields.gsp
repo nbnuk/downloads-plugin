@@ -24,7 +24,7 @@
     <meta name="layout" content="${grailsApplication.config.skin.layout}"/>
     <meta name="fluidLayout" content="false"/>
     <title><g:message code="downloads.fields.heading" default="Occurrence Record Fields"/></title>
-    <asset:javascript src="ala/downloads.js" />
+    <asset:javascript src="downloads.js" />
     <asset:stylesheet src="downloads.css" />
 </head>
 <body class="content">

@@ -28,7 +28,7 @@
     <meta name="breadcrumb" content="${message(code: "download.breadcumb.title")}"/>
     <title><g:message code="download.page.title"/></title>
 
-    <asset:javascript src="ala/downloads.js" />
+    <asset:javascript src="downloads.js" />
     <asset:stylesheet src="downloads.css" />
 
     <style type="text/css">
