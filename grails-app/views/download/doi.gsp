@@ -4,28 +4,38 @@
 <head>
     <meta name="layout" content="${grailsApplication.config.skin.layout}"/>
     <meta name="fluidLayout" content="false"/>
+    <meta name="breadcrumbParent" content="${request.contextPath ?: '/'},${message(code: "download.occurrence.records")}"/>
+    <meta name="breadcrumb" content="Download ${doi.doi}"/>
     <title><g:message code="download.doilanding.pageTitle"  args="[doi.doi]"/></title>
     <asset:javascript src="downloads.js" />
     <asset:stylesheet src="downloads.css" />
 </head>
 <body>
 <div class="container">
+<div class="row">
+    <div class="col-md-12" align="center">
+        <h3>
+            <a href="${grailsApplication.config.doiService.doiResolverUrl}${doi.doi}" type="button" class="doi"><span>DOI</span><span>${doi.doi}</span></a>
+        </h3>
+    </div>
+    <div class="col-md-12 text-right">
+        <a href="${grailsApplication?.config.doiService.baseUrl}/doi/${URLEncoder.encode(doi.doi, 'UTF-8')}/download" class="btn btn-primary"><i class="glyphicon glyphicon-download-alt"></i>&nbsp; Download file</a>
+    </div>
+    <div class="col-md-12"><b>Record count:</b> ${doi?.applicationMetadata?.recordCount}</div>
+    <div class="col-md-12"><b>Title:</b> ${doi.title}</div>
+    <div class="col-md-12"><b>Description:</b> ${doi.description}</div>
+    <div class="col-md-12"><b>Licence:</b> ${doi.licence}</div>
+    <div class="col-md-12"><b>Authors:</b> ${doi.authors}</div>
+    <div class="col-md-12"><b>Date Created:</b> ${doi.dateCreated}</div>
+    <div class="col-md-12"><b>Date Minted:</b> ${doi.dateCreated}</div>
+    <div class="col-md-12"><b>Search URL:</b><a href="${doi.applicationMetadata?.searchUrl}"> ${URLDecoder.decode(doi.applicationMetadata?.searchUrl, 'UTF-8')}</a></div>
+    <div class="col-md-12"><b>File:</b> <a href="${grailsApplication?.config.doiService.baseUrl}/doi/${URLEncoder.encode(doi.doi, 'UTF-8')}/download"> ${doi.filename}</a></div><br>
 
-    <div class="row row-m-b" align="center"><h3><a href="${g.createLink(controller: 'download', action: 'doi')}?doi=${doi.doi}" type="button" class="btn btn-info">DOI ${doi.doi}</a></h3></div>
 
-    <div class="row row-m-b"><b>Occurrences:</b> ${doi?.applicationMetadata?.recordCount}</div>
-    <div class="row row-m-b"><b>Title:</b> ${doi.title}</div>
-    <div class="row row-m-b"><b>Description:</b> ${doi.description}</div>
-    <div class="row row-m-b"><b>Licence:</b> ${doi.licence}</div>
-    <div class="row row-m-b"><b>Authors:</b> ${doi.authors}</div>
-    <div class="row row-m-b"><b>Date Created:</b> ${doi.dateCreated}</div>
-    <div class="row row-m-b"><b>Date Minted:</b> ${doi.dateCreated}</div>
-    <div class="row row-m-b"><b>SearchUrl:</b><a href="${doi.applicationMetadata?.searchUrl}"> ${URLDecoder.decode(doi.applicationMetadata?.searchUrl, 'UTF-8')}</a></div>
-    <div class="row row-m-b"><b>File:</b> <a href="${grailsApplication?.config.doiService.baseUrl}/doi/${URLEncoder.encode(doi.doi, 'UTF-8')}/download"> ${doi.filename}</a></div><br>
-
+</div>
     <div class="row">
-        Datasets:
-        <div class="fwtable">
+        <div class="fwtable col-md-12">
+            <h3>Datasets</h3>
             <table class="table table-bordered table-striped table-responsive">
                 <thead>
                 <tr>

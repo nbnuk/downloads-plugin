@@ -33,13 +33,13 @@
     margin-top: 0;
     color: #333;
 }
-body p, body li, body ul {
-    color: #637073;
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 1.6em;
-}
-body h1, body h2, body h3, body h4, body h5 { font-weight:bold; color:#5f5d60;}
+/*body p, body li, body ul {*/
+    /*color: #637073;*/
+    /*font-size: 14px;*/
+    /*font-weight: 400;*/
+    /*line-height: 1.6em;*/
+/*}*/
+/*body h1, body h2, body h3, body h4, body h5 { font-weight:bold; color:#5f5d60;}*/
 
 .download-select {display: inline-block;font-size: 14px; padding-right: 10px;}
 .no-of-questions {vertical-align: top;margin-right: 10px;}
@@ -178,6 +178,47 @@ a > i.fa:hover{color:#DA644E;}
 
 .font-awesome-icon-large {
     display: inline-block;font-size: 113px;
+}
+
+.table > tbody > tr > td {
+    font-weight: normal;
+}
+
+/* DOI - taken from GBIF */
+.doi {
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 4px 6px;
+}
+.doi span:first-of-type {
+    -webkit-transition: all .3s ease;
+    transition: all .3s ease;
+    background: #09c;
+    padding: 4px 6px;
+    border-radius: 5px 0 0 5px;
+    color: #fff;
+    border-right-width: 0;
+    border-color: #09c;
+}
+.doi span:last-of-type {
+    color: #333;
+    background: #fff;
+    text-decoration: none;
+    padding: 4px 6px;
+    border-radius: 0 5px 5px 0;
+    border-left-width: 0;
+}
+.doi span {
+    border: 1px solid #adadad;
+}
+.doi:hover span:first-of-type {
+    background: #004d66;
+    border-color: #004d66;
+}
+.doi:hover span:last-of-type {
+    background: #f9f9f9;
 }
 
 /* Branding
