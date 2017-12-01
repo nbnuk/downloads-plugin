@@ -13,6 +13,9 @@
 
 package au.org.ala.downloads.plugin
 
+import org.apache.http.client.utils.URLEncodedUtils
+import org.apache.http.NameValuePair
+
 class DownloadsTagLib {
 
     def downloadService
@@ -169,5 +172,31 @@ class DownloadsTagLib {
         }
 
         out << html
+    }
+
+    /**
+     * Format search query
+     *
+     * @attr searchUrl REQUIRED
+     */
+    def formatSearchQuery = { attrs, body ->
+        def searchUrl = attrs.searchUrl
+        def content = ""
+        log.debug "searchUrl = ${searchUrl}"
+
+        if (searchUrl) {
+            List<NameValuePair> params =  URLEncodedUtils.parse(new URI(searchUrl), "UTF-8")
+            content += "<ul class='searchQueryParams'>"
+
+            for (NameValuePair param : params) {
+                log.debug "param = ${param.name} || ${param.value}"
+                content += "<li>${g.message code:"doi.param.name.${param.name}", default:"${param.name}"}: "
+                content += "${g.message code:"doi.param.value.${param.value}", default:"${param.value}"}</li>"
+            }
+
+            content += "</ul>"
+        }
+
+        out << content
     }
 }

@@ -4,7 +4,7 @@
 <head>
     <meta name="layout" content="${grailsApplication.config.skin.layout}"/>
     <meta name="fluidLayout" content="false"/>
-    <meta name="breadcrumbParent" content="${request.contextPath ?: '/'},${message(code: "download.occurrence.records")}"/>
+    <meta name="breadcrumbParent" content="${g.createLink(action:'myDownloads')},${message(code: "download.mydownloads.pageTitle")}"/>
     <meta name="breadcrumb" content="Download ${doi.doi}"/>
     <title><g:message code="download.doilanding.pageTitle"  args="[doi.doi]"/></title>
     <asset:javascript src="downloads.js" />
@@ -22,15 +22,15 @@
         <a href="${grailsApplication?.config.doiService.baseUrl}/doi/${URLEncoder.encode(doi.doi, 'UTF-8')}/download" class="btn btn-primary"><i class="glyphicon glyphicon-download-alt"></i>&nbsp; Download file</a>
     </div>
     <div class="col-md-12"><b>Record count:</b> ${doi?.applicationMetadata?.recordCount}</div>
-    <div class="col-md-12"><b>Title:</b> ${doi.title}</div>
-    <div class="col-md-12"><b>Description:</b> ${doi.description}</div>
+    %{--<div class="col-md-12"><b>Title:</b> ${doi.title}</div>--}%
+    %{--<div class="col-md-12"><b>Description:</b> ${doi.description}</div>--}%
+    <div class="col-md-12"><b>Search URL:</b><a href="${doi.applicationMetadata?.searchUrl}"> ${URLDecoder.decode(doi.applicationMetadata?.searchUrl, 'UTF-8')}</a></div>
+    <div class="col-md-12"><b>Search query:</b> <downloads:formatSearchQuery searchUrl="${doi.applicationMetadata?.searchUrl}" /> </div>
+    <div class="col-md-12"><b>File:</b> <a href="${grailsApplication?.config.doiService.baseUrl}/doi/${URLEncoder.encode(doi.doi, 'UTF-8')}/download"> ${doi.filename}</a></div><br>
     <div class="col-md-12"><b>Licence:</b> ${doi.licence}</div>
     <div class="col-md-12"><b>Authors:</b> ${doi.authors}</div>
     <div class="col-md-12"><b>Date Created:</b> ${doi.dateCreated}</div>
-    <div class="col-md-12"><b>Date Minted:</b> ${doi.dateCreated}</div>
-    <div class="col-md-12"><b>Search URL:</b><a href="${doi.applicationMetadata?.searchUrl}"> ${URLDecoder.decode(doi.applicationMetadata?.searchUrl, 'UTF-8')}</a></div>
-    <div class="col-md-12"><b>File:</b> <a href="${grailsApplication?.config.doiService.baseUrl}/doi/${URLEncoder.encode(doi.doi, 'UTF-8')}/download"> ${doi.filename}</a></div><br>
-
+    %{--<div class="col-md-12"><b>Date Minted:</b> ${doi.dateCreated}</div>--}%
 
 </div>
     <div class="row">

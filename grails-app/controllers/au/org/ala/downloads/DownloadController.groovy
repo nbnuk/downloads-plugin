@@ -165,7 +165,7 @@ class DownloadController {
             Doi doi = doiService.getDoi(params?.doi)
             render view: 'doi', model: [doi: doi] //[doi: new JsonBuilder(doi) as Map] // model: [doi: doi]
         } catch (DoiServiceException e) {
-            log.error ("Error while retrieving mydownloads", e)
+            log.error ("Error while retrieving DOI ${params?.doi}", e)
             render view: '../error', model: [exception: e]
         }
     }

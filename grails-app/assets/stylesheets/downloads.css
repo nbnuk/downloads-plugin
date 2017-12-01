@@ -65,6 +65,10 @@
 a > i.fa{color:#9A9A9A;}
 a > i.fa:hover{color:#DA644E;}
 
+#main-content ul {
+    list-style: disc;
+}
+
 /*.btn-white {*/
     /*color: #333333;*/
     /*text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);*/
@@ -192,12 +196,16 @@ a > i.fa:hover{color:#DA644E;}
     font-weight: 500;
     padding: 4px 6px;
 }
+.doi-sm {
+    font-size: 13px;
+    white-space:nowrap;
+}
 .doi span:first-of-type {
     -webkit-transition: all .3s ease;
     transition: all .3s ease;
     background: #09c;
     padding: 4px 6px;
-    border-radius: 5px 0 0 5px;
+    /*border-radius: 5px 0 0 5px;*/
     color: #fff;
     border-right-width: 0;
     border-color: #09c;
@@ -207,7 +215,7 @@ a > i.fa:hover{color:#DA644E;}
     background: #fff;
     text-decoration: none;
     padding: 4px 6px;
-    border-radius: 0 5px 5px 0;
+    /*border-radius: 0 5px 5px 0;*/
     border-left-width: 0;
 }
 .doi span {
@@ -220,6 +228,12 @@ a > i.fa:hover{color:#DA644E;}
 .doi:hover span:last-of-type {
     background: #f9f9f9;
 }
+
+.searchQueryParams {
+    margin-top: 4px;
+    margin-bottom: 8px;
+}
+
 
 /* Branding
 ================================= */
