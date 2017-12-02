@@ -219,8 +219,6 @@ class DownloadController {
                     it.values().join(" ").find(/${val}/) // search in any property
                 }
             }
-
-
         }
 
         if (params.dwc) {
