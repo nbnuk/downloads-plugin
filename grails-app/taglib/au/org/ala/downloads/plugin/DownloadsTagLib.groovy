@@ -186,15 +186,14 @@ class DownloadsTagLib {
 
         if (searchUrl) {
             List<NameValuePair> params =  URLEncodedUtils.parse(new URI(searchUrl), "UTF-8")
-            content += "<ul class='searchQueryParams'>"
+            content += "<dl class='dl-horizontal searchQueryParams'>"
 
             for (NameValuePair param : params) {
-                log.debug "param = ${param.name} || ${param.value}"
-                content += "<li>${g.message code:"doi.param.name.${param.name}", default:"${param.name}"}: "
-                content += "${g.message code:"doi.param.value.${param.value}", default:"${param.value}"}</li>"
+                content += "<dt>${g.message code:"doi.param.name.${param.name}", default:"${param.name}"}</dt>"
+                content += "<dd>${g.message code:"doi.param.value.${param.value}", default:"${param.value}"}</dd>"
             }
 
-            content += "</ul>"
+            content += "</dl>"
         }
 
         out << content

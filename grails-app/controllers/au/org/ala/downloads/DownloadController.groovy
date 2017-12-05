@@ -148,25 +148,38 @@ class DownloadController {
 
     def myDownloads() {
         String userId = authService?.getUserId()
+        Integer max = params.max = params.int('params.max') ?: 10
+        Integer offset = params.offset = params.int('params.offset') ?: 0
+        String order = params.order = params.order?.toLowerCase() ?: "desc"
+        String sort = params.sort = params.sort ?: "dateCreated"
+        log.debug "myDownloads params = ${params}"
 
-        try {
-            def result = doiService.listDownloadsDoi(userId, params?.sort?:"dateMinted", params?.order?:"ASC", params?.int('offset'), params?.int('max'))
-            render view: 'myDownloads', model: [dois: result, totalRecords: result.totalCount]
-        } catch (DoiServiceException e) {
-            log.error ("Error while retrieving mydownloads", e)
-            render view: '../error', model: [exception: e]
+        if (userId) {
+            try {
+                def result = doiService.listDownloadsDoi(userId, sort, order, offset, max)
+                render view: 'myDownloads', model: [dois: result, totalRecords: result.totalCount]
+            } catch (DoiServiceException e) {
+                log.error ("Error while retrieving mydownloads", e)
+                render view: '../error', model: [exception: e]
+            }
+        } else {
+            render(status: "401", text: "No UserId provided - check user is logged in and page is protected by AUTH")
         }
     }
 
     def doi() {
         String userId = authService?.getUserId()
 
-        try {
-            Doi doi = doiService.getDoi(params?.doi)
-            render view: 'doi', model: [doi: doi] //[doi: new JsonBuilder(doi) as Map] // model: [doi: doi]
-        } catch (DoiServiceException e) {
-            log.error ("Error while retrieving DOI ${params?.doi}", e)
-            render view: '../error', model: [exception: e]
+        if (userId) {
+            try {
+                Doi doi = doiService.getDoi(params?.doi)
+                render view: 'doi', model: [doi: doi] //[doi: new JsonBuilder(doi) as Map] // model: [doi: doi]
+            } catch (DoiServiceException e) {
+                log.error ("Error while retrieving DOI ${params?.doi}", e)
+                render view: '../error', model: [exception: e]
+            }
+        } else {
+            render(status: "401", text: "No UserId provided - check user is logged in and page is protected by AUTH")
         }
     }
 

@@ -195,10 +195,12 @@ a > i.fa:hover{color:#DA644E;}
     font-size: 16px;
     font-weight: 500;
     padding: 4px 6px;
+    white-space:nowrap;
+    white-space:nowrap;
 }
 .doi-sm {
     font-size: 13px;
-    white-space:nowrap;
+    padding: 2px 0;
 }
 .doi span:first-of-type {
     -webkit-transition: all .3s ease;
@@ -229,11 +231,44 @@ a > i.fa:hover{color:#DA644E;}
     background: #f9f9f9;
 }
 
-.searchQueryParams {
-    margin-top: 4px;
-    margin-bottom: 8px;
+#doiTitle {
+    text-align: center;
 }
 
+#doiTitle h2 {
+    font-size: 18px;
+}
+
+.dl-horizontal.searchQueryParams  {
+    margin-top: 4px;
+    margin-bottom: 6px;
+}
+.dl-horizontal dt {
+    margin:0;
+}
+.dl-horizontal dt:after {
+    content: ":";
+}
+
+@media (min-width: 768px) {
+    .dl-horizontal dt {
+        width: 20%;
+    }
+    .dl-horizontal dd {
+        margin-left: 22%;
+    }
+    .dl-horizontal dt:after {
+        content: "";
+    }
+}
+
+td > .dl-horizontal.searchQueryParams  {
+    margin: 0;
+}
+
+.no-wrap {
+    white-space: nowrap;
+}
 
 /* Branding
 ================================= */

@@ -52,7 +52,7 @@ class DoiService {
         doiClient = retrofit.create(DoiClient)
     }
 
-    def listDownloadsDoi(String userId, String sortColumn = "dateMinted", String order = "DESC", Integer offset = 0, Integer max = 10) {
+    def listDownloadsDoi(String userId, String sortColumn = "dateMinted", String order = "desc", Integer offset = 0, Integer max = 10) {
         def response = doiClient.list(max, offset, sortColumn, order, userId).execute()
         if (response.isSuccessful()) {
             def totalCount = response.headers()['X-Total-Count']?.toInteger() ?: 0
