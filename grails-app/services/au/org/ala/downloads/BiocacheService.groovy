@@ -164,7 +164,8 @@ class BiocacheService {
 
         try {
             // DwC fields canonical version found at https://raw.githubusercontent.com/tdwg/dwc/master/downloads/SimpleDwCCSVheaderUTF8.txt
-            dwcFieldsOrdered = grailsResourceLocator.findResourceForURI('classpath:SimpleDwCCSVheaderUTF8.txt').getFile().text.replaceAll("\"","").split(",")
+//            dwcFieldsOrdered = grailsResourceLocator.findResourceForURI('classpath:SimpleDwCCSVheaderUTF8.txt'). getFile().text.replaceAll("\"","").split(",")
+            dwcFieldsOrdered = grailsResourceLocator.findResourceForURI('classpath:SimpleDwCCSVheaderUTF8.txt').getInputStream().text.replaceAll("\"","").split(",")
             log.debug "dwcFieldsOrdered = ${dwcFieldsOrdered}"
         } catch (Exception ex) {
             log.error "Failed to load SimpleDwCCSVheaderUTF8.txt file - ${ex.message}", ex
