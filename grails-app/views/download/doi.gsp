@@ -26,7 +26,13 @@
     <div class="col-md-8 col-sm-12"><b>Search query:</b> <downloads:formatSearchQuery searchUrl="${doi.applicationMetadata?.searchUrl}" /> </div>
     %{--<div class="col-md-12"><b>Title:</b> ${doi.title}</div>--}%
     %{--<div class="col-md-12"><b>Description:</b> ${doi.description}</div>--}%
+<<<<<<< HEAD
     <div class="col-md-12"><b>Search URL:</b><a href="${doi.applicationMetadata?.searchUrl}"> ${URLDecoder.decode(doi.applicationMetadata?.searchUrl, 'UTF-8')}</a></div>
+=======
+    <div class="col-md-12"><b>Search URL:</b><a href="${doi.applicationMetadata?.searchUrl}"> ${URLDecoder.decode(doi.applicationMetadata?.queryTitle?.encodeAsRaw(), 'UTF-8')}</a></div>
+    <div class="col-md-12"><b>Search query:</b> <downloads:formatSearchQuery searchUrl="${doi.applicationMetadata?.searchUrl}" /> </div>
+    <div class="col-md-12"><b>File:</b> <a href="${grailsApplication?.config.doiService.baseUrl}/doi/${URLEncoder.encode(doi.doi, 'UTF-8')}/download"> ${doi.filename}</a></div><br>
+>>>>>>> origin/bs3-with-grails3
     <div class="col-md-12"><b>Licence:</b> ${doi.licence}</div>
     <div class="col-md-12"><b>Authors:</b> ${doi.authors}</div>
     <div class="col-md-12"><b>Date Created:</b> <g:formatDate date="${doi.dateCreated}" format="yyyy-MM-dd h:mm a"/></div>
