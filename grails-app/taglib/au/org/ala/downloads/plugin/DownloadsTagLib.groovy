@@ -178,19 +178,22 @@ class DownloadsTagLib {
      * Format search query
      *
      * @attr searchUrl REQUIRED
+     * @attr queryTitle
      */
     def formatSearchQuery = { attrs, body ->
         def searchUrl = attrs.searchUrl
+        def queryTitle = attrs.queryTitle
         def content = ""
-        log.debug "searchUrl = ${searchUrl}"
+        log.debug "searchUrl = ${searchUrl} || queryTitle = ${queryTitle}"
 
         if (searchUrl) {
             List<NameValuePair> params =  URLEncodedUtils.parse(new URI(searchUrl), "UTF-8")
             content += "<dl class='dl-horizontal searchQueryParams'>"
 
             for (NameValuePair param : params) {
+                String paramValue = (param.name == "q" && queryTitle) ? queryTitle : param.value
                 content += "<dt>${g.message code:"doi.param.name.${param.name}", default:"${param.name}"}</dt>"
-                content += "<dd>${g.message code:"doi.param.value.${param.value}", default:"${param.value}"}</dd>"
+                content += "<dd>${g.message code:"doi.param.value.${paramValue}", default:"${paramValue}"}</dd>"
             }
 
             content += "</dl>"
