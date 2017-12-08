@@ -191,9 +191,21 @@ class DownloadsTagLib {
             content += "<dl class='dl-horizontal searchQueryParams'>"
 
             for (NameValuePair param : params) {
-                String paramValue = (param.name == "q" && queryTitle) ? queryTitle : param.value
+                String paramValue = ((param.name == "q" && queryTitle) ? queryTitle : param.value)
+                paramValue = paramValue.replaceAll(/ (AND|OR) /," <span class=\"label label-default\">\$1</span> ")
                 content += "<dt>${g.message code:"doi.param.name.${param.name}", default:"${param.name}"}</dt>"
-                content += "<dd>${g.message code:"doi.param.value.${paramValue}", default:"${paramValue}"}</dd>"
+                List fieldItems = paramValue.tokenize(':')
+                log.debug "fieldItems = ${fieldItems.size()}"
+                if (fieldItems.size() == 2) {
+                    // Attempt to substitute i18n labels where possible
+                    content += "<dd>${g.message code:"facet.${fieldItems[0]}", default:"${fieldItems[0]}"}:"
+                    log.debug "i18n: \"facet.${fieldItems[0]}\" || ${g.message(code:"facet.${fieldItems[0]}")}"
+                    content += "${g.message code:"${fieldItems[0]}.${fieldItems[1]}", default:"${fieldItems[1]}"}</dd>"
+                } else {
+                    content += "<dd>${g.message code:"doi.param.value.${paramValue}", default:"${paramValue}"}</dd>"
+
+                }
+
             }
 
             content += "</dl>"

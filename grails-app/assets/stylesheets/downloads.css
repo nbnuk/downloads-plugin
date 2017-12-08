@@ -266,6 +266,12 @@ td > .dl-horizontal.searchQueryParams  {
     margin: 0;
 }
 
+.searchQueryParams .label {
+    padding: .2em .6em;
+    background-color: #999;
+}
+
+
 .no-wrap {
     white-space: nowrap;
 }
