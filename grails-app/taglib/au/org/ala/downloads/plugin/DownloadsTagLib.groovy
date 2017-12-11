@@ -188,22 +188,22 @@ class DownloadsTagLib {
 
         if (searchUrl) {
             List<NameValuePair> params =  URLEncodedUtils.parse(new URI(searchUrl), "UTF-8")
-            content += "<dl class='dl-horizontal searchQueryParams'>"
+            content += "<ul class='searchQueryParams'>"
 
             for (NameValuePair param : params) {
                 String paramValue = ((param.name == "q" && queryTitle) ? queryTitle : param.value)
-                paramValue = paramValue.replaceAll(/ (AND|OR) /," <span class=\"label label-default\">\$1</span> ")
-                content += "<dt>${g.message code:"doi.param.name.${param.name}", default:"${param.name}"}</dt>"
+                paramValue = paramValue.replaceAll(/ (AND|OR) /," <span class=\"boolean-op\">\$1</span> ")
+                content += "<li><strong>${g.message code:"doi.param.name.${param.name}", default:"${param.name}"}:</strong>&nbsp;"
                 List fieldItems = paramValue.tokenize(':')
                 log.debug "fieldItems = ${fieldItems.size()}"
-                if (fieldItems.size() == 2) {
+                if (fieldItems.size() == 2 && paramValue != "*:*") {
                     // Attempt to substitute i18n labels where possible
-                    content += "<dd>${g.message code:"facet.${fieldItems[0]}", default:"${fieldItems[0]}"}:"
-                    log.debug "i18n: \"facet.${fieldItems[0]}\" || ${g.message(code:"facet.${fieldItems[0]}")}"
-                    content += "${g.message code:"${fieldItems[0]}.${fieldItems[1]}", default:"${fieldItems[1]}"}</dd>"
+                    content += "${g.message code:"facet.${fieldItems[0]}", default:"${fieldItems[0]}"}:"
+                    log.debug "if: i18n: \"facet.${fieldItems[0]}\" || ${g.message(code:"facet.${fieldItems[0]}")}"
+                    content += "${g.message code:"${fieldItems[0]}.${fieldItems[1]}", default:"${fieldItems[1]}"}</li>"
                 } else {
-                    content += "<dd>${g.message code:"doi.param.value.${paramValue}", default:"${paramValue}"}</dd>"
-
+                    content += "${g.message code:"doi.param.value.${paramValue}", default:"${paramValue}"}</li>"
+                    log.debug "else: i18n: \"doi.param.value.${paramValue}\" || ${g.message(code:"doi.param.value.${paramValue}")}"
                 }
 
             }

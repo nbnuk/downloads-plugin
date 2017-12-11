@@ -239,38 +239,25 @@ a > i.fa:hover{color:#DA644E;}
     font-size: 18px;
 }
 
-.dl-horizontal.searchQueryParams  {
+ul.searchQueryParams  {
     margin-top: 4px;
     margin-bottom: 6px;
-}
-.dl-horizontal dt {
-    margin:0;
-}
-.dl-horizontal dt:after {
-    content: ":";
+    padding-left: 25px;
 }
 
-@media (min-width: 768px) {
-    .dl-horizontal dt {
-        width: 20%;
-    }
-    .dl-horizontal dd {
-        margin-left: 22%;
-    }
-    .dl-horizontal dt:after {
-        content: "";
-    }
-}
-
-td > .dl-horizontal.searchQueryParams  {
+td > ul.searchQueryParams  {
     margin: 0;
 }
 
-.searchQueryParams .label {
-    padding: .2em .6em;
-    background-color: #999;
+.boolean-op {
+    font-size: 85%;
+    opacity: 0.9;
 }
 
+.queryName {
+    font-size: 85%;
+    color: #777;
+}
 
 .no-wrap {
     white-space: nowrap;
