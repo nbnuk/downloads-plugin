@@ -14,9 +14,8 @@
 <div class="container">
 <div class="row">
     <div class="col-md-12" id="doiTitle">
-        <h2>
-            Download: <a href="${grailsApplication.config.doiService.doiResolverUrl}${doi.doi}" type="button" class="doi"><span>DOI</span><span>${doi.doi}</span></a>
-        </h2>
+        <h2><a href="${grailsApplication.config.doiService.doiResolverUrl}${doi.doi}" type="button" class="doi"><span>DOI</span><span>${doi.doi}</span></a></h2>
+        <h3>Occurrence records download on <g:formatDate date="${doi.dateCreated}" format="yyyy-MM-dd"/></h3>
     </div>
     <div class="col-md-12 text-right">
         <a href="${grailsApplication?.config.doiService.baseUrl}/doi/${URLEncoder.encode(doi.doi, 'UTF-8')}/download" class="btn btn-primary"><i class="glyphicon glyphicon-download-alt"></i>&nbsp; Download file</a>
@@ -28,6 +27,7 @@
     <div class="col-md-12"><b>Licence:</b> ${doi.licence}</div>
     <div class="col-md-12"><b>Authors:</b> ${doi.authors}</div>
     <div class="col-md-12"><b>Date Created:</b> <g:formatDate date="${doi.dateCreated}" format="yyyy-MM-dd h:mm a"/></div>
+    <div class="col-md-12"><b>Citation URL:</b> <a href="${grailsApplication.config.doiService.doiResolverUrl}${doi.doi}">${grailsApplication.config.doiService.doiResolverUrl}${doi.doi}</a></div><br>
 
 </div>
     <div class="row">
