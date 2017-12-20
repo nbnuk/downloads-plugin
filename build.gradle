@@ -54,8 +54,8 @@ dependencies {
     testRuntime "net.sourceforge.htmlunit:htmlunit:2.18"
 
     // Grails plugins
-//    compile 'org.grails.plugins:cache:4.0.0'
-    compile 'org.grails.plugins:cache-ehcache:3.0.0.M1'
+    //compile 'org.grails.plugins:cache:4.0.0'
+    //compile 'org.grails.plugins:cache-ehcache:3.0.0.M1'
     runtime 'org.grails.plugins:ala-ws-plugin:2.0-SNAPSHOT'
     compile 'com.squareup.okhttp3:logging-interceptor:3.6.0'
     compile 'com.squareup.retrofit2:retrofit:2.2.0'
