@@ -11,7 +11,7 @@ class Doi {
     String title
     String authors
     String description
-    String licence
+    List<String> licence
     Date dateMinted
     Provider provider
     String filename

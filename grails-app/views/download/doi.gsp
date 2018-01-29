@@ -23,8 +23,16 @@
     <div class="col-md-12"><b>File:</b> <a href="${grailsApplication?.config.doiService.baseUrl}/doi/${URLEncoder.encode(doi.doi, 'UTF-8')}/download"> ${doi.filename?:'download file not found'}</a></div><br>
     <div class="col-md-12"><b>Record count:</b> <g:formatNumber number="${doi.applicationMetadata?.recordCount}" type="number" /></div>
     <div class="col-md-8 col-sm-12"><b>Search query:</b> <downloads:formatSearchQuery searchUrl="${doi.applicationMetadata?.searchUrl}" /> </div>
-    <div class="col-md-12"><b>Search URL:</b><a href="${doi.applicationMetadata?.searchUrl}"> ${URLDecoder.decode(doi.applicationMetadata?.searchUrl, 'UTF-8')}</a></div>
-    <div class="col-md-12"><b>Licence:</b> ${doi.licence}</div>
+    <div class="col-md-12"><b>Search URL:</b><a href="${doi.applicationMetadata?.searchUrl}"> ${URLDecoder.decode(doi.applicationMetadata?.queryTitle?.encodeAsRaw(), 'UTF-8')}</a></div>
+    <div class="col-md-12"><b>Licence:</b>
+        <g:if test="${doi.licence}">
+            <ul>
+                <g:each in="${doi.licence}" var="licence" >
+                    <li>${licence}</li>
+                </g:each>
+            </ul>
+        </g:if>
+    </div>
     <div class="col-md-12"><b>Authors:</b> ${doi.authors}</div>
     <div class="col-md-12"><b>Date Created:</b> <g:formatDate date="${doi.dateCreated}" format="yyyy-MM-dd h:mm a"/></div>
     <div class="col-md-12"><b>Citation URL:</b> <a href="${grailsApplication.config.doiService.doiResolverUrl}${doi.doi}">${grailsApplication.config.doiService.doiResolverUrl}${doi.doi}</a></div><br>
@@ -38,7 +46,7 @@
                 <tr>
                     <th>Name</th>
                     <th>Licence</th>
-                    <th style="text-align: center">Count</th>
+                    <th style="text-align: center">Record count</th>
                 </tr>
                 </thead>
                 <tbody>
