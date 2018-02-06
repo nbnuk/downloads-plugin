@@ -18,9 +18,9 @@
         <h3>Occurrence records download on <g:formatDate date="${doi.dateCreated}" format="yyyy-MM-dd"/></h3>
     </div>
     <div class="col-md-12 text-right">
-        <a href="${grailsApplication?.config.doiService.baseUrl}/doi/${URLEncoder.encode(doi.doi, 'UTF-8')}/download" class="btn btn-primary"><i class="glyphicon glyphicon-download-alt"></i>&nbsp; Download file</a>
+        <a href="${grailsApplication?.config.doiService.baseUrl}/doi/${URLEncoder.encode(doi.uuid, 'UTF-8')}/download" class="btn btn-primary"><i class="glyphicon glyphicon-download-alt"></i>&nbsp; Download file</a>
     </div>
-    <div class="col-md-12"><b>File:</b> <a href="${grailsApplication?.config.doiService.baseUrl}/doi/${URLEncoder.encode(doi.doi, 'UTF-8')}/download"> ${doi.filename?:'download file not found'}</a></div><br>
+    <div class="col-md-12"><b>File:</b> <a href="${grailsApplication?.config.doiService.baseUrl}/doi/${URLEncoder.encode(doi.uuid, 'UTF-8')}/download"> ${doi.filename?:'download file not found'}</a></div><br>
     <div class="col-md-12"><b>Record count:</b> <g:formatNumber number="${doi.applicationMetadata?.recordCount}" type="number" /></div>
     <div class="col-md-8 col-sm-12"><b>Search query:</b> <downloads:formatSearchQuery searchUrl="${doi.applicationMetadata?.searchUrl}" /> </div>
     <div class="col-md-12"><b>Search URL:</b><a href="${doi.applicationMetadata?.searchUrl}"> ${URLDecoder.decode(doi.applicationMetadata?.queryTitle?.encodeAsRaw(), 'UTF-8')}</a></div>

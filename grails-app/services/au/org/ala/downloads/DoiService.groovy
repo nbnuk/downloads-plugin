@@ -48,7 +48,7 @@ class DoiService {
 
         def moshi = new Moshi.Builder().add(Date, new Rfc3339DateJsonAdapter().nullSafe()).build()
 
-        def retrofit = new Retrofit.Builder().baseUrl(doiServiceBaseUrl).client(client).addConverterFactory(MoshiConverterFactory.create(moshi)).build()
+        def retrofit = new Retrofit.Builder().baseUrl(doiServiceBaseUrl+"/api/").client(client).addConverterFactory(MoshiConverterFactory.create(moshi)).build()
         doiClient = retrofit.create(DoiClient)
     }
 

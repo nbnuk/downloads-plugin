@@ -89,5 +89,5 @@ downloads.dwcSchemaUrl = "https://raw.githubusercontent.com/tdwg/dwc/master/xsd/
 downloads.termsOfUseUrl = "http://www.ala.org.au/about-the-atlas/terms-of-use/#TOUusingcontent"
 downloads.defaultDownloadFormat = "dwc"
 
-doiService.baseUrl = "http://doi.ala.org.au/api/"
+doiService.baseUrl = "http://doi.ala.org.au"
 doiService.doiResolverUrl = "https://doi.org/"

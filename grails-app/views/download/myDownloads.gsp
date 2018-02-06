@@ -68,7 +68,7 @@
                            <td>
                                <a href="${g.createLink(controller: 'download', action: 'doi')}?doi=${doi.doi}" type="button" class="doi doi-sm"><span>DOI</span><span>${doi.doi}</span></a>
                                <br>
-                               Download file: <a href="${grailsApplication?.config.doiService.baseUrl}/doi/${URLEncoder.encode(doi.doi, 'UTF-8')}/download"> ${doi.filename}</a>
+                               Download file: <a href="${grailsApplication?.config.doiService.baseUrl}/doi/${URLEncoder.encode(doi.uuid, 'UTF-8')}/download"> ${doi.filename}</a>
                            </td>
                            <td><span class="no-wrap"><g:formatDate date="${doi.dateMinted}" format="yyyy-MM-dd"/></span>
                                <span class="no-wrap"><g:formatDate date="${doi.dateMinted}" format="h:mm a"/></span></td>
