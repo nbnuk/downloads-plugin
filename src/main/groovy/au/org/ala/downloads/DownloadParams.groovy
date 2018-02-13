@@ -46,6 +46,10 @@ class DownloadParams implements Validateable{
     String qa = "none" // can be empty (get default qa fields), "includeall" (get empty fields so same columns every time), "none",  a comma separated fields or "all"
     String fileType = "csv"
 
+    String searchUrl
+    String doiDisplayUrl
+    String hubName
+
     String layers //appended to extra
     String layersServiceUrl = ""
     String customHeader = ""

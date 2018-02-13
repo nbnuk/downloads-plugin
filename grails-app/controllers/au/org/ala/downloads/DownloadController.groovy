@@ -14,6 +14,9 @@
 package au.org.ala.downloads
 
 import grails.converters.JSON
+import grails.core.GrailsApplication
+import grails.web.mapping.LinkGenerator
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.servlet.ModelAndView
 
 /**
@@ -21,6 +24,11 @@ import org.springframework.web.servlet.ModelAndView
  */
 class DownloadController {
     def customiseService, authService, downloadService, biocacheService, utilityService, doiService
+
+    GrailsApplication grailsApplication
+
+    @Autowired
+    LinkGenerator linkGenerator
 
     static defaultAction = "options1"
 
@@ -99,6 +107,13 @@ class DownloadController {
             ])
         } else if (downloadParams.downloadType == DownloadType.RECORDS.type) {
             // Records download -> confirm
+
+            // targetUri already contains the context path but linkGenerator does not know about it
+            // hence we have to manually trim it.
+            downloadParams.searchUrl = linkGenerator.link(uri: downloadParams.targetUri.replace(linkGenerator.contextPath,""), absolute:true) + downloadParams.searchParams
+            downloadParams.doiDisplayUrl = linkGenerator.link(controller: 'download', action: 'doi', params:[doi:''], absolute:true)
+            downloadParams.hubName = grailsApplication.config?.info?.app?.description
+
             def json = downloadService.triggerDownload(downloadParams)
             log.debug "json = ${json}"
             chain (action:'confirm', model: [
