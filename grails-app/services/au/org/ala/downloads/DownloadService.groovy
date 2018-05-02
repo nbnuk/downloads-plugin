@@ -51,7 +51,7 @@ class DownloadService {
                 triggerOfflineDownload(downloadParams)
             } else if (downloadParams.downloadFormat == DownloadFormat.CUSTOM.format) {
                 // Custom download
-                List customFields = ["uuid"] // always inlcude record ID
+                List<String> customFields = [grailsApplication.config.downloads.uidField]
                 downloadParams.customClasses.each {
                     log.debug "classs = ${it}"
 

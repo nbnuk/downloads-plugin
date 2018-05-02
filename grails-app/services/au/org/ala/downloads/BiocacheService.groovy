@@ -110,8 +110,9 @@ class BiocacheService {
             fields.addAll(fieldsMap.get(it))
         }
 
-        // order fields in DwC order with UUID as first field
-        'uuid,' + orderFieldsByDwC(fields).join(",") // comma-separated string
+
+        grailsApplication.config.downloads.uidField + ',' + orderFieldsByDwC(fields).join(",") // comma-separated string
+
     }
 
     /**
