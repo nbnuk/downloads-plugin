@@ -98,4 +98,19 @@ class UtilityService {
         // get the requested items for pagination
         results.subList(offset,toIndex)
     }
+
+    /**
+     * Get the Boolean version of a config variable even if the original is in a String form
+     *
+     * @param value
+     * @return
+     */
+    Boolean getBooleanValue(def value) {
+        if (value.class == java.lang.Boolean) {
+            // catch Boolean but not boolean - 'true.toBoolean() == false' !!!
+            return value
+        } else {
+            return (value as String).toBoolean()
+        }
+    }
 }

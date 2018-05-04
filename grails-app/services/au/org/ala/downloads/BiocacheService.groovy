@@ -14,10 +14,11 @@ class BiocacheService {
     def grailsApplication
     def grailsResourceLocator
     def webService
+    def utilityService
     def thisService // placeholder
 
     /**
-     * Init method - inttialise fields after Spring has instantiated this singleton
+     * Init method - initialise fields after Spring has instantiated this singleton
      *
      * @return
      */
@@ -103,16 +104,15 @@ class BiocacheService {
     @Cacheable('longTermCache')
     String getDwCFields() {
         List fields = []
-        Map fieldsMap = thisService.getFieldsMap() // caching maintained
+        Boolean includeRaw = utilityService.getBooleanValue(grailsApplication.config.includeRawDwcFields?:true)
+        Map fieldsMap = thisService.getFieldsMap(includeRaw) // caching maintained
 
         fieldsMap.keySet().each {
             log.debug "getDwCFields - ${it} = ${fieldsMap.get(it)}"
             fields.addAll(fieldsMap.get(it))
         }
 
-
         grailsApplication.config.downloads.uidField + ',' + orderFieldsByDwC(fields).join(",") // comma-separated string
-
     }
 
     /**
@@ -165,7 +165,6 @@ class BiocacheService {
 
         try {
             // DwC fields canonical version found at https://raw.githubusercontent.com/tdwg/dwc/master/downloads/SimpleDwCCSVheaderUTF8.txt
-//            dwcFieldsOrdered = grailsResourceLocator.findResourceForURI('classpath:SimpleDwCCSVheaderUTF8.txt'). getFile().text.replaceAll("\"","").split(",")
             dwcFieldsOrdered = grailsResourceLocator.findResourceForURI('classpath:SimpleDwCCSVheaderUTF8.txt').getInputStream().text.replaceAll("\"","").split(",")
             log.debug "dwcFieldsOrdered = ${dwcFieldsOrdered}"
         } catch (Exception ex) {

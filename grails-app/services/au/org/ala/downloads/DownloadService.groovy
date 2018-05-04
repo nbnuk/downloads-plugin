@@ -23,7 +23,7 @@ import java.text.SimpleDateFormat
  */
 class DownloadService {
     def grailsApplication
-    def webService
+    def webService   // via ala-ws-plugin
     def biocacheService
 
     /**
@@ -91,10 +91,25 @@ class DownloadService {
         }
     }
 
+    /**
+     * Send the occurrences download request to biocache-service
+     *
+     * @param downloadParams
+     * @return
+     * @throws Exception
+     */
     Map triggerOfflineDownload(DownloadParams downloadParams) throws Exception {
         String url = grailsApplication.config.downloads.indexedDownloadUrl + downloadParams.biocacheDownloadParamString()
-        log.debug "Doing GET on ${url}"
-        Map resp = webService.get(url)
+        Map resp
+
+        if (url.length() < 8000) {
+            log.debug "Doing GET on ${url}"
+            resp = webService.get(url)
+        } else {
+            log.debug "Doing POST on ${url} - URL size = ${url.length()}"
+            resp = webService.post(url)
+        }
+
 
         if (resp?.resp) {
             resp.resp.put("requestUrl", url)
@@ -104,8 +119,14 @@ class DownloadService {
         }
     }
 
+    /**
+     * Get the list of reason codes from logger system
+     * TODO: provide option to read this from a config file
+     *
+     * @return
+     */
     @Cacheable('longTermCache')
-    def List getLoggerReasons() {
+    List getLoggerReasons() {
         def url = "${grailsApplication.config.logger.baseUrl}/logger/reasons"
         try {
             webService.get(url).resp.findAll { !it.deprecated } // skip deprecated reason codes
@@ -114,8 +135,14 @@ class DownloadService {
         }
     }
 
+    /**
+     * Get the list of reason sources from logger system
+     * TODO: provide option to read this from a config file
+     *
+     * @return
+     */
     @Cacheable('longTermCache')
-    def List getLoggerSources() {
+    List getLoggerSources() {
         def url = "${grailsApplication.config.logger.baseUrl}/logger/sources"
         try {
             webService.get(url).resp
@@ -124,6 +151,12 @@ class DownloadService {
         }
     }
 
+    /**
+     * Prepare the field guide download request to be sent to the field-guide server
+     *
+     * @param params
+     * @return
+     */
     def triggerFieldGuideDownload(String params) {
         String url = grailsApplication.config.downloads.fieldguideDownloadUrl + '/generate/offline'
 
@@ -142,6 +175,12 @@ class DownloadService {
         }
     }
 
+    /**
+     * Run the field guide download via POST
+     * 
+     * @param params
+     * @return
+     */
     private fieldGuideRequest(String params) {
         String flimit = params.replaceAll("^.*maxSpecies=|[^0-9]+.*","")
         String requestParams = params.replaceAll("pageSize=[0-9]+|flimit=[0-9]+|facets=[a-zA-Z_]+", "") +

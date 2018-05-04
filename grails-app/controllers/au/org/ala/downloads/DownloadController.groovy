@@ -21,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView
 
 /**
  * Download controller
+ * TODO: use more meaningful method names in this controller!
  */
 class DownloadController {
     def customiseService, authService, downloadService, biocacheService, utilityService, doiService
@@ -33,7 +34,7 @@ class DownloadController {
     static defaultAction = "options1"
 
     /**
-     * Initial download screen with options
+     * Initial download screen with options.
      *
      * @param downloadParams
      * @return
@@ -66,7 +67,7 @@ class DownloadController {
 
     /**
      * Action after initial download screen.
-     * Either redirects user to customise screen or confirmation page & triggers download
+     * Either redirects user to customise screen or to confirmation page & triggers download
      *
      * @param downloadParams
      * @return
@@ -113,7 +114,7 @@ class DownloadController {
             downloadParams.searchUrl = linkGenerator.link(uri: downloadParams.targetUri.replace(linkGenerator.contextPath,""), absolute:true) + downloadParams.searchParams
             downloadParams.doiDisplayUrl = linkGenerator.link(controller: 'download', action: 'doi', params:[doi:''], absolute:true)
             downloadParams.hubName = grailsApplication.config?.info?.app?.description
-
+            // perform the download
             def json = downloadService.triggerDownload(downloadParams)
             log.debug "json = ${json}"
             chain (action:'confirm', model: [
@@ -145,6 +146,12 @@ class DownloadController {
         }
     }
 
+    /**
+     * Confirmation page
+     *
+     * @param downloadParams
+     * @return
+     */
     def confirm (DownloadParams downloadParams) {
 
         Map returnModel = [isChained: true]
@@ -161,6 +168,11 @@ class DownloadController {
         returnModel
     }
 
+    /**
+     * Paginated list of downloads for logged-in user
+     *
+     * @return
+     */
     def myDownloads() {
         String userId = authService?.getUserId()
         Integer max = params.max = params.int('params.max') ?: 10
@@ -182,6 +194,11 @@ class DownloadController {
         }
     }
 
+    /**
+     * View a download via it's DOI identifier (lookup)
+     *
+     * @return
+     */
     def doi() {
         String userId = authService?.getUserId()
 
@@ -198,6 +215,11 @@ class DownloadController {
         }
     }
 
+    /**
+     * Remember the user's options for customise download page
+     *
+     * @return
+     */
     def saveUserPrefs() {
         List fields = params.list("fields")
 
@@ -211,6 +233,12 @@ class DownloadController {
 
     }
 
+    /**
+     * Display the description attribute for a download field (via it's ID)
+     *
+     * @param id
+     * @return
+     */
     def getDescription(String id) {
         if (id) {
             String description = biocacheService.getDwCDescriptionForField(id)
@@ -226,6 +254,12 @@ class DownloadController {
         }
     }
 
+    /**
+     * Provides a human-readable version of the Biocache /ws/index/fields JSON data.
+     * Allows filtering and paginating of fields.
+     *
+     * @return
+     */
     def fields() {
         List fields = biocacheService.getAllFields()
         params.max = params.max ?: 10
