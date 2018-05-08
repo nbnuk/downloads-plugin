@@ -107,7 +107,7 @@ class DownloadService {
             resp = webService.get(url)
         } else {
             log.debug "Doing POST on ${url} - URL size = ${url.length()}"
-            resp = webService.post(url)
+            resp = webService.post(url, null)
         }
 
 
