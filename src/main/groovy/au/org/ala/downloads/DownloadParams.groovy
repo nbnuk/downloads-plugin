@@ -13,7 +13,6 @@
 package au.org.ala.downloads
 
 import grails.converters.JSON
-import grails.validation.Validateable
 import groovy.util.logging.Slf4j
 import org.apache.commons.lang.StringUtils
 import org.grails.web.util.WebUtils
@@ -24,7 +23,7 @@ import org.grails.web.util.WebUtils
  * @author "Nick dos Remedios <Nick.dosRemedios@csiro.au>"
  */
 @Slf4j
-class DownloadParams implements Validateable{
+class DownloadParams {
     String searchParams // q, fq and qc params as query string, URI encoded when sent from browser
     String targetUri // path to page calling the download form (so we can return to that page after download complete)
     String downloadType // records, checklist or field guide TODO put in an Enum?
@@ -43,7 +42,8 @@ class DownloadParams implements Validateable{
     String email
     Boolean dwcHeaders = true
     Boolean includeMisc = false // Miscellaneous fields
-    String qa = "none" // can be empty (get default qa fields), "includeall" (get empty fields so same columns every time), "none",  a comma separated fields or "all"
+    String qa = "none"
+    // can be empty (get default qa fields), "includeall" (get empty fields so same columns every time), "none",  a comma separated fields or "all"
     String fileType = "csv"
 
     String searchUrl
@@ -69,7 +69,7 @@ class DownloadParams implements Validateable{
 
     private Map mapForPropsWithExcludeList(List excludes = []) {
         Map paramsMap = [:]
-        List excludeParams = ["mapForPropsWithExcludeList","class","constraints","errors","ValidationErrors","action","controller","layers"]
+        List excludeParams = ["mapForPropsWithExcludeList", "class", "constraints", "errors", "ValidationErrors", "action", "controller", "layers"]
 
         if (excludes) {
             excludeParams.addAll(excludes)
@@ -95,9 +95,18 @@ class DownloadParams implements Validateable{
      * @return
      */
     public String biocacheDownloadParamString() {
-        Map paramsMap = mapForPropsWithExcludeList(["searchParams","targetUri","downloadType","downloadFormat","customClasses"])
+        Map paramsMap = mapForPropsWithExcludeList(["searchParams", "targetUri", "downloadType", "downloadFormat", "customClasses"])
         // space chars are removed via replaceChars, as they cause an URI exception
-        String queryString = WebUtils.toQueryString(paramsMap) + "&" + StringUtils.removeStart(StringUtils.replaceChars(searchParams, " ", "+"),"?")
+        String queryString = WebUtils.toQueryString(paramsMap) + "&" + StringUtils.removeStart(StringUtils.replaceChars(searchParams, " ", "+"), "?")
         queryString
+    }
+
+    /**
+     * Produce a params Map for use with POST
+     *
+     * @return Map
+     */
+    Map biocacheDownloadParamsMap() {
+        mapForPropsWithExcludeList(["searchParams", "targetUri", "downloadType", "downloadFormat", "customClasses"])
     }
 }
