@@ -110,8 +110,6 @@ class DownloadService {
             def msg = "Download GET requests too long (> 8000 char) -> ${url}"
             log.error msg
             throw new Exception(msg)
-            log.debug "Doing POST on ${url} - URL size = ${url.length()}"
-            resp = webService.post(url, null)
         }
 
 
