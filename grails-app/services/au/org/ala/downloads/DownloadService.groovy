@@ -41,11 +41,12 @@ class DownloadService {
             // catch different formats
             if (downloadParams.downloadFormat == DownloadFormat.DWC.format) {
                 // DwC download
-                downloadParams.fields = biocacheService.getDwCFields() // was: grailsApplication.config.downloads.dwcFields
+                downloadParams.fields = biocacheService.getDwCFields()
                 triggerOfflineDownload(downloadParams)
             } else if (downloadParams.downloadFormat == DownloadFormat.LEGACY.format) {
                 // Legacy download
                 downloadParams.extra = grailsApplication.config.biocache.downloads.extra?: ""
+                downloadParams.fields = grailsApplication.config.biocache.downloads.legacy.defaultFields?: ""
                 downloadParams.dwcHeaders = false
                 log.debug "downloadParams = ${downloadParams} | ${grailsApplication.config.biocache.downloads.extra}"
                 triggerOfflineDownload(downloadParams)

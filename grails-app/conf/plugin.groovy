@@ -72,15 +72,14 @@ downloads {
 // other field mappings for classes TODO get from biocache-service
 downloads.conservationStatus = ["austConservation.p","stateConservation.p"]
 downloads.otherTraits = ["speciesGroups.p","species_subgroup"]
-downloads.environmentalLayers = ["el.p"]
-downloads.contextualLayers = ["cl.p"]
+downloads.environmentalLayers = ["el_p"]
+downloads.contextualLayers = ["cl_p"]
 //biocache.downloads.extra = "dataResourceUid,dataResourceName.p,occurrenceStatus.p"
 
 // legacy default fields taken from https://github.com/AtlasOfLivingAustralia/biocache-service/blob/master/src/main/java/au/org/ala/biocache/dto/DownloadRequestParams.java#L35
-downloads.legacy.defaultFields = "uuid,catalogNumber,taxonConceptID.p,scientificName,vernacularName,scientificName.p,taxonRank.p,vernacularName.p,kingdom.p,phylum.p,classs.p,order.p,family.p,genus.p,species.p,subspecies.p,institutionCode,collectionCode,locality,decimalLatitude,decimalLongitude,geodeticDatum,decimalLatitude.p,decimalLongitude.p,coordinatePrecision,coordinateUncertaintyInMeters.p,country.p,ibra.p,imcra.p,stateProvince.p,cl959,minimumElevationInMeters,maximumElevationInMeters,minimumDepthInMeters,maximumDepthInMeters,individualCount,recordedBy,year.p,month.p,day.p,eventDate.p,eventTime.p,basisOfRecord,basisOfRecord.p,sex,preparations,informationWithheld.p,dataGeneralizations.p,speciesHabitats.p,outlierForLayers.p,taxonomicIssue.p,geospatiallyKosher"
+downloads.legacy.defaultFields = "id,data_resource_uid,data_resource,license,catalogue_number,taxon_concept_lsid,raw_taxon_name,raw_common_name,taxon_name,rank,common_name,kingdom,phylum,class,order,family,genus,species,subspecies,institution_code,collection_code,locality,raw_latitude,raw_longitude,raw_datum,latitude,longitude,coordinate_precision,coordinate_uncertainty,country,state,cl959,min_elevation_d,max_elevation_d,min_depth_d,max_depth_d,individual_count,recorded_by,year,month,day,verbatim_event_date,basis_of_record,raw_basis_of_record,sex,preparations,information_withheld,data_generalizations,outlier_layer,taxonomic_kosher,geospatial_kosher"
 downloads.mandatoryFields = ["recordLevelTerms","occurrence"]
 downloads.excludeFields = ""
-downloads.dwcFields = "uuid,catalogue_number,taxon_concept_lsid,raw_taxon_name,raw_common_name,scientificName.p,raw_taxon,common_name,kingdom,phylum,class,order,family,genus,species,subspecies_name,institution_code,collection_code,raw_locality,decimalLatitude,decimalLongitude,decimalLatitude.p,decimalLongitude.p,coordinatePrecision,coordinate_uncertainty,country,cl1048,cl21,state,cl23,min_elevation_d,max_elevation_d_rng,min_depth_d,max_depth_d,individualCount,collector,year,month,day.p,eventDate.p,eventTime.p,raw_basis_of_record,basis_of_record,raw_sex,preparations,informationWithheld.p,dataGeneralizations.p"
 downloads.uidField = "row_key" // It was "uuid" for biocache 1.9.x
 
 downloads.fieldguide.species.max = 1000
