@@ -15,7 +15,7 @@ class BiocacheService {
     def grailsResourceLocator
     def webService
     def utilityService
-    def thisService // placeholder
+    BiocacheService thisService // placeholder
 
     /**
      * Init method - initialise fields after Spring has instantiated this singleton
