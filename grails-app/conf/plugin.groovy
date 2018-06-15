@@ -70,8 +70,8 @@ downloads {
 }
 
 // other field mappings for classes TODO get from biocache-service
-downloads.conservationStatus = ["austConservation.p","stateConservation.p"]
-downloads.otherTraits = ["speciesGroups.p","species_subgroup"]
+downloads.conservationStatus = ["aust_conservation","state_conservation"]
+downloads.otherTraits = ["species_group","species_subgroup"]
 downloads.environmentalLayers = ["el_p"]
 downloads.contextualLayers = ["cl_p"]
 //biocache.downloads.extra = "dataResourceUid,dataResourceName.p,occurrenceStatus.p"
