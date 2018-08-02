@@ -53,7 +53,7 @@ class DownloadParams {
     String layers //appended to extra
     String layersServiceUrl = ""
     String customHeader = ""
-    Boolean mintDoi = true
+    Boolean mintDoi = false
 
     @Override
     public String toString() {
