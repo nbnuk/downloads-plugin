@@ -111,6 +111,7 @@ class DownloadController {
 
             // targetUri already contains the context path but linkGenerator does not know about it
             // hence we have to manually trim it.
+            downloadParams.mintDoi = grailsApplication.config.getProperty('doi.mintDoi', Boolean, false)
             downloadParams.searchUrl = linkGenerator.link(uri: downloadParams.targetUri.replace(linkGenerator.contextPath,""), absolute:true) + downloadParams.searchParams
             downloadParams.doiDisplayUrl = linkGenerator.link(controller: 'download', action: 'doi', params:[doi:''], absolute:true)
             downloadParams.hubName = grailsApplication.config?.info?.app?.description
