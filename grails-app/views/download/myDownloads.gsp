@@ -79,8 +79,7 @@
                                %{--<td>${doi.title}</td>--}%
                                <td><g:formatNumber number="${doi.applicationMetadata?.recordCount}" type="number" /></td>
                                <td><g:formatNumber number="${doi.applicationMetadata?.datasets?.size()}" type="number" /></td>
-                               <g:set var="searchQuery" value="${URLDecoder.decode(doi?.applicationMetadata['searchUrl'], 'UTF-8')}"/>
-                               <td><a href="${searchQuery}">Re-run search</a> <downloads:formatSearchQuery searchUrl="${doi.applicationMetadata?.searchUrl}" queryTitle="${doi.applicationMetadata?.queryTitle?.encodeAsRaw()}"/></td>
+                               <td><a href="${doi?.applicationMetadata?.searchUrl}">Re-run search</a> <downloads:formatSearchQuery searchUrl="${doi?.applicationMetadata?.searchUrl}" queryTitle="${doi.applicationMetadata?.queryTitle?.encodeAsRaw()}"/></td>
                            </tr>
                         </g:each>
                     </tbody>

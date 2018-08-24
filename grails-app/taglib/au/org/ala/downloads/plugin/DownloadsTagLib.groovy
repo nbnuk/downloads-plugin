@@ -16,6 +16,8 @@ package au.org.ala.downloads.plugin
 import org.apache.http.client.utils.URLEncodedUtils
 import org.apache.http.NameValuePair
 
+import java.nio.charset.Charset
+
 class DownloadsTagLib {
 
     def downloadService
@@ -24,6 +26,10 @@ class DownloadsTagLib {
     static returnObjectForTags = ['getAllLoggerReasons','testListOutput','getLoggerReasons']
     static namespace = 'downloads'
     static defaultEncodeAs = "raw"
+
+    static final UTF8_CHARSET =  Charset.lookup("UTF-8")
+    static final SEPARATORS = "?;&".toCharArray()
+
 
     /**
      * Determine the URL prefix for biocache-service AJAX calls. Looks at the
@@ -174,6 +180,16 @@ class DownloadsTagLib {
         out << html
     }
 
+    def sanitiseRawContent = { attrs ->
+        String content = attrs.content
+        try {
+            String sanitised = org.jsoup.Jsoup.clean(content, org.jsoup.safety.Whitelist.basic())
+            out << sanitised
+        } catch (Exception e) {
+            log.error "sanitiseRawContent failed for '${content}'. " +
+                    "This will be ignored in the output to allow the calling page to display.", e
+        }
+    }
     /**
      * Format search query
      *
@@ -184,33 +200,45 @@ class DownloadsTagLib {
         def searchUrl = attrs.searchUrl
         def queryTitle = attrs.queryTitle
         def content = ""
-        log.debug "searchUrl = ${searchUrl} || queryTitle = ${queryTitle}"
 
-        if (searchUrl) {
-            List<NameValuePair> params =  URLEncodedUtils.parse(new URI(searchUrl), "UTF-8")
-            content += "<ul class='searchQueryParams'>"
-
-            for (NameValuePair param : params) {
-                String paramValue = ((param.name == "q" && queryTitle) ? queryTitle : param.value)
-                paramValue = paramValue.replaceAll(/ (AND|OR) /," <span class=\"boolean-op\">\$1</span> ")
-                content += "<li><strong>${g.message code:"doi.param.name.${param.name}", default:"${param.name}"}:</strong>&nbsp;"
-                List fieldItems = paramValue.tokenize(':')
-                log.debug "fieldItems = ${fieldItems.size()}"
-                if (fieldItems.size() == 2 && paramValue != "*:*") {
-                    // Attempt to substitute i18n labels where possible
-                    content += "${g.message code:"facet.${fieldItems[0]}", default:"${fieldItems[0]}"}:"
-                    log.debug "if: i18n: \"facet.${fieldItems[0]}\" || ${g.message(code:"facet.${fieldItems[0]}")}"
-                    content += "${g.message code:"${fieldItems[0]}.${fieldItems[1]}", default:"${fieldItems[1]}"}</li>"
-                } else {
-                    content += "${g.message code:"doi.param.value.${paramValue}", default:"${paramValue}"}</li>"
-                    log.debug "else: i18n: \"doi.param.value.${paramValue}\" || ${g.message(code:"doi.param.value.${paramValue}")}"
-                }
-
+        try {
+            if(queryTitle) {
+                queryTitle = org.jsoup.Jsoup.clean(queryTitle, org.jsoup.safety.Whitelist.basic())
             }
 
-            content += "</dl>"
-        }
+            log.debug "searchUrl = ${searchUrl} || queryTitle = ${queryTitle}"
 
-        out << content
+            if (searchUrl) {
+                List<NameValuePair> params = URLEncodedUtils.parse(searchUrl, UTF8_CHARSET, SEPARATORS)
+                content += "<ul class='searchQueryParams'>"
+
+                for (NameValuePair param : params) {
+                    if (param.name && param.value) {
+                        String paramValue = ((param.name == "q" && queryTitle) ? queryTitle : param.value)
+                        paramValue = paramValue.replaceAll(/ (AND|OR) /, " <span class=\"boolean-op\">\$1</span> ")
+                        content += "<li><strong>${g.message code: "doi.param.name.${param.name}", default: "${param.name}"}:</strong>&nbsp;"
+                        List fieldItems = paramValue.tokenize(':')
+                        log.debug "fieldItems = ${fieldItems.size()}"
+                        if (fieldItems.size() == 2 && paramValue != "*:*") {
+                            // Attempt to substitute i18n labels where possible
+                            content += "${g.message code: "facet.${fieldItems[0]}", default: "${fieldItems[0]}"}:"
+                            log.debug "if: i18n: \"facet.${fieldItems[0]}\" || ${g.message(code: "facet.${fieldItems[0]}")}"
+                            content += "${g.message code: "${fieldItems[0]}.${fieldItems[1]}", default: "${fieldItems[1]}"}</li>"
+                        } else {
+                            content += "${g.message code: "doi.param.value.${paramValue}", default: "${paramValue}"}</li>"
+                            log.debug "else: i18n: \"doi.param.value.${paramValue}\" || ${g.message(code: "doi.param.value.${paramValue}")}"
+                        }
+                    }
+
+                }
+
+                content += "</ul>"
+            }
+
+            out << content
+        } catch (Exception e) {
+            log.error "formatSearchQuery failed for searchUrl = '${searchUrl}' and queryTitle = '${queryTitle}'. " +
+                    "This will be ignored in the output to allow the calling page to display.", e
+        }
     }
 }

@@ -47,7 +47,7 @@ dependencies {
     provided "org.grails:grails-plugin-services"
     provided "org.grails:grails-plugin-domain-class"
     runtime "com.bertramlabs.plugins:asset-pipeline-grails:2.14.2"
-    compile "org.apache.httpcomponents:httpclient:4.3.3"
+    compile 'org.apache.httpcomponents:httpclient:4.5.6'
     testCompile "org.grails:grails-plugin-testing"
     testCompile "org.grails.plugins:geb"
     testRuntime "org.seleniumhq.selenium:selenium-htmlunit-driver:2.47.1"
@@ -61,6 +61,7 @@ dependencies {
     compile 'com.squareup.retrofit2:retrofit:2.2.0'
     compile 'com.squareup.retrofit2:converter-moshi:2.2.0'
     compile 'com.squareup.moshi:moshi-adapters:1.4.0'
+    compile 'org.jsoup:jsoup:1.11.3'
 }
 
 bootRun {
