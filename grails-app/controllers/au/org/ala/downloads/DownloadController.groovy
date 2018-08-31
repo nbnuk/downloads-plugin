@@ -176,10 +176,10 @@ class DownloadController {
      */
     def myDownloads() {
         String userId = authService?.getUserId()
-        Integer max = params.max = params.int('params.max') ?: 10
-        Integer offset = params.offset = params.int('params.offset') ?: 0
-        String order = params.order = params.order?.toLowerCase() ?: "desc"
-        String sort = params.sort = params.sort ?: "dateCreated"
+        Integer max = Math.min(params.int('max', 10), 100)
+        int offset = params.int('offset', 0)
+        String sort = params.get('sort', 'dateCreated')
+        String order = params.get('order', 'desc')
         log.debug "myDownloads params = ${params}"
 
         if (userId) {

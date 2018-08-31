@@ -31,11 +31,11 @@
             <div class="col-md-7" id="sort-widgets">
                 <g:message code="download.mydownloads.items.per.page" default="items per page"/>:
                 <select id="per-page" name="per-page" class="input-small" onchange="location = this.value;">
-                    <option value="${g.createLink(action:'myDownloads',params:params + [max:'5'])}" ${params.max == 5 ? 'selected': ''}>5</option>
-                    <option value="${g.createLink(action:'myDownloads',params:params + [max:'10'])}" ${params.max == 10 ? 'selected': ''}>10</option>
-                    <option value="${g.createLink(action:'myDownloads',params:params + [max:'20'])}" ${params.max == 20 ? 'selected': ''}>20</option>
-                    <option value="${g.createLink(action:'myDownloads',params:params + [max:'50'])}" ${params.max == 50 ? 'selected': ''}>50</option>
-                    <option value="${g.createLink(action:'myDownloads',params:params + [max:'100'])}" ${params.max == 100 ? 'selected': ''}>100</option>
+                    <option value="${g.createLink(action:'myDownloads',params:params + [max:'5'])}" ${params.max == '5' ? 'selected': ''}>5</option>
+                    <option value="${g.createLink(action:'myDownloads',params:params + [max:'10'])}" ${params.max == '10' ? 'selected': ''}>10</option>
+                    <option value="${g.createLink(action:'myDownloads',params:params + [max:'20'])}" ${params.max == '20' ? 'selected': ''}>20</option>
+                    <option value="${g.createLink(action:'myDownloads',params:params + [max:'50'])}" ${params.max == '50' ? 'selected': ''}>50</option>
+                    <option value="${g.createLink(action:'myDownloads',params:params + [max:'100'])}" ${params.max == '100' ? 'selected': ''}>100</option>
                 </select>&nbsp;
 
                 <g:message code="download.mydownloads.sort" default="sort"/>:
