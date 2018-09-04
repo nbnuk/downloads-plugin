@@ -175,24 +175,7 @@ class DownloadController {
      * @return
      */
     def myDownloads() {
-        String userId = authService?.getUserId()
-        Integer max = Math.min(params.int('max', 10), 100)
-        int offset = params.int('offset', 0)
-        String sort = params.get('sort', 'dateCreated')
-        String order = params.get('order', 'desc')
-        log.debug "myDownloads params = ${params}"
-
-        if (userId) {
-            try {
-                def result = doiService.listDownloadsDoi(userId, sort, order, offset, max)
-                render view: 'myDownloads', model: [dois: result, totalRecords: result.totalCount]
-            } catch (DoiServiceException e) {
-                log.error ("Error while retrieving mydownloads", e)
-                render view: '../error', model: [exception: e]
-            }
-        } else {
-            render(status: "401", text: "No UserId provided - check user is logged in and page is protected by AUTH")
-        }
+        redirect url: "${grailsApplication?.config.doiService.baseUrl}/myDownloads"
     }
 
     /**
@@ -201,19 +184,7 @@ class DownloadController {
      * @return
      */
     def doi() {
-        String userId = authService?.getUserId()
-
-        if (userId) {
-            try {
-                Doi doi = doiService.getDoi(params?.doi)
-                render view: 'doi', model: [doi: doi] //[doi: new JsonBuilder(doi) as Map] // model: [doi: doi]
-            } catch (DoiServiceException e) {
-                log.error ("Error while retrieving DOI ${params?.doi}", e)
-                render view: '../error', model: [exception: e]
-            }
-        } else {
-            render(status: "401", text: "No UserId provided - check user is logged in and page is protected by AUTH")
-        }
+        redirect url: "${grailsApplication?.config.doiService.baseUrl}/doi/${params?.doi}"
     }
 
     /**
