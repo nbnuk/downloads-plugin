@@ -253,15 +253,26 @@
                                     <form class="form-inline margin-top-1">
                                         <div class="form-group">
                                             <label for="downloadReason" class="control-label heading-xsmall"><span
-                                                    class="color--mellow-red">*</span>Industry/application</label>&nbsp;&nbsp;
+                                                    class="color--mellow-red">* </span>Industry/application</label>&nbsp;&nbsp;
                                             <select class="form-control" id="downloadReason">
                                                 <option value="" disabled selected>Select a reason ...</option>
                                                 <g:each var="it" in="${downloads.getLoggerReasons()}">
                                                     <option value="${it.id}">${it.name}</option>
                                                 </g:each>
                                             </select>
-                                            <p class="help-block"><strong>This field is mandatory.</strong> Choose the best "use type" from the drop-down menu above.
+                                            <p class="help-block" id="downloadReasonDescription"><strong>This field is mandatory.</strong> Choose the best "use type" from the drop-down menu above.
                                             </p>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="downloadConfirmLicense" class="control-label heading-xsmall"><span
+                                                    class="color--mellow-red">* </span>Accept licencing</label>
+
+                                            <!-- <div class="controls"> -->
+                                                <input type="checkbox" id="downloadConfirmLicense" name="downloadConfirmLicense" class="form-control" style="margin-left:10px" />
+                                                <p class="help-block"><strong>This field is mandatory.</strong> <g:message code="download.license.accept" />
+                                                </p>
+                                            <!-- </div> -->
                                         </div>
                                     </form>
                                 </div>
@@ -281,7 +292,7 @@
                                                 aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                         <strong>Error:</strong> Ensure that you 1) select your download <b>type</b><span
                                             id="errorFormat" class="collapse">and select a download <b>format</b>
-                                    </span>, 2) select a download <b>reason</b>
+                                    </span>, 2) select a download <b>reason</b> and accept the <b>licensing terms</b>
 
                                     </div>
                                     <!-- End Alert Information -->
@@ -296,13 +307,18 @@
         <div class="alert alert-info alert-dismissible" role="alert">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
                     aria-hidden="true">×</span></button>
-            <g:message code="download.termsofusedownload.01" />
+            By downloading this content you are agreeing to use it in accordance with the NBN Atlas
             <a href="${grailsApplication.config.downloads.termsOfUseUrl}"><g:message code="download.termsofusedownload.02" /></a>
             <g:message code="download.termsofusedownload.03" />
         </div>
     </div><!-- /.col-md-10  -->
 </div><!-- /.row-fuid  -->
 <g:javascript>
+    var reasons_lookup = {
+        <g:each var="it" in="${downloads.getLoggerReasons()}">
+        "${it.id}" : ["${it.name.replaceAll('"','')}", "${it.description.replaceAll('"','')}"],
+        </g:each>
+    };
     $( document ).ready(function() {
         // click event on download type select buttons
         $('a.select-download-type').click(function(e) {
@@ -375,6 +391,15 @@
             }
         });
 
+        $('#downloadReason').on('change', function(e) {
+            var reason = $('#downloadReason').find(":selected").val();
+            if (!reason || reasons_lookup[reason][1] == '') {
+                $('#downloadReasonDescription').html('<strong>This field is mandatory.</strong> Choose the best "use type" from the drop-down menu above.');
+            } else {
+                $('#downloadReasonDescription').html('<i>' + reasons_lookup[reason][1] + '</i>');
+            }
+        });
+
         // click event on next button
         $('#nextBtn').click(function(e) {
             e.preventDefault();
@@ -383,6 +408,7 @@
             //var format = $('#downloadFormat').find(":selected").val();
             var format = $('input[name=downloadFormat]:checked').val();
             var reason = $('#downloadReason').find(":selected").val();
+            var licenseConfirm =  $('#downloadConfirmLicense').is(':checked');
             var file = $('#file').val();
             //alert("format = " + format);
             if (type) {
@@ -405,6 +431,9 @@
                 if (!reason) {
                     $('#errorAlert').show();
                     $('#downloadReason').focus();
+                } else if (!licenseConfirm) { // NBN licence
+                    $('#errorAlert').show();
+                    $('#downloadConfirmLicense').focus();
                 } else {
                     // go to next screen
                     $('#errorAlert').hide();

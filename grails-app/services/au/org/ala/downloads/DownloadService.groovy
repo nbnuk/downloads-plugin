@@ -132,6 +132,7 @@ class DownloadService {
     List getLoggerReasons() {
         def url = "${grailsApplication.config.logger.baseUrl}/logger/reasons"
         try {
+            //log.info(webService.get(url).toString())
             webService.get(url).resp.findAll { !it.deprecated } // skip deprecated reason codes
         } catch (Exception ex) {
             log.error "Error calling logger service: ${ex.message}", ex
