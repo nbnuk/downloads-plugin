@@ -36,7 +36,7 @@
     <div class="col-md-10 col-md-offset-1">
 
         <h2 class="heading-medium"><g:message code="download.download.title"/></h2>
-        <g:set var="showLongTimeWarning" value="${totalRecords && (totalRecords > grailsApplication.config.downloads.maxRecords)}"/>
+        <g:set var="showLongTimeWarning" value="${totalRecords && (totalRecords > Long.parseLong(grailsApplication.config.downloads.maxRecords, 10))}"/>
 
         <!-- Long download warning -->
         <g:if test="${showLongTimeWarning || grailsApplication.config.downloads.staticDownloadsUrl}">
