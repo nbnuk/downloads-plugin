@@ -127,12 +127,14 @@
                                             </label>
                                             <div class="col-sm-8 radio">
                                                 <g:each in="${au.org.ala.downloads.FileType.values()}" var="ft">
+                                                    <g:if test="${!(grailsApplication.config.downloads?.excludeTypes?:'').contains(ft.type)}">
                                                     <div class="">
                                                         <label>
                                                             <input id="fileType" type="radio" name="fileType" class="" value="${ft.type}" ${(ft.ordinal() == 0)?'checked':''}/>
                                                             <g:message code="type.${ft.type}"/> <g:message code="helpicon.${ft.type}" default=""/>
                                                         </label>
                                                     </div>
+                                                    </g:if>
                                                 </g:each>
                                             </div>
                                         </div>
