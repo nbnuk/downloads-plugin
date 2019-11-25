@@ -192,7 +192,7 @@ class DownloadService {
     private fieldGuideRequest(String params) {
         String flimit = params.replaceAll("^.*maxSpecies=|[^0-9]+.*","")
         String requestParams = params.replaceAll("pageSize=[0-9]+|flimit=[0-9]+|facets=[a-zA-Z_]+", "") +
-                "&pageSize=0&flimit=" + (flimit?:grailsApplication.config.downloads.fieldguide.species.max) + "&facet=true&facets=species_guid"
+                "&pageSize=0&flimit=" + (flimit?:grailsApplication.config.downloads.fieldguide.species.max) + "&facet=true&facets=" + (grailsApplication.config.downloads?.checklistFacet?:"species_guid")
 
         def result = webService.get(grailsApplication.config.biocache.baseUrl + "/occurrences/search" + requestParams)
 
