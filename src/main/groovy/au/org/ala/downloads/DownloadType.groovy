@@ -23,7 +23,8 @@ import groovy.util.logging.Slf4j
 enum DownloadType {
     RECORDS("records"),
     CHECKLIST("checklist"),
-    FIELDGUIDE("fieldguide")
+    FIELDGUIDE("fieldguide"),
+    MAP("map")
 
     String type
 

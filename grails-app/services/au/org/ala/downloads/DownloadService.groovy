@@ -89,6 +89,10 @@ class DownloadService {
             log.info "${DownloadType.CHECKLIST.type} download triggered"
         } else if (downloadParams.downloadType == DownloadType.FIELDGUIDE.type) {
             log.info "${DownloadType.FIELDGUIDE.type} download triggered"
+        } else if (downloadParams.downloadType == DownloadType.MAP.type) {
+            log.info "${DownloadType.MAP.type} download triggered"
+            log.info "map downloadParams = ${downloadParams}"
+            triggerOfflineDownload(downloadParams)
         } else {
             def msg = "Download type not recognised: ${downloadParams.downloadType}"
             log.warn msg
@@ -104,7 +108,10 @@ class DownloadService {
      * @throws Exception
      */
     Map triggerOfflineDownload(DownloadParams downloadParams) throws Exception {
-        String url = grailsApplication.config.downloads.indexedDownloadUrl + downloadParams.biocacheDownloadParamString()
+        String url = grailsApplication.config.downloads.indexedDownloadUrl +
+                (downloadParams.downloadType != "map"?
+                        downloadParams.biocacheDownloadParamString() :
+                        downloadParams.biocachedownloadMapParamString())
         Map resp
 
         if (url.length() < 8000) {

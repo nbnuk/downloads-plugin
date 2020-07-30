@@ -138,26 +138,6 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-<div class="modal" id="noticeModal" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document" id="NBN_notice">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">NBN Trust Strategy Survey Part 2 – Have your say!</h4>
-            </div>
-            <div class="modal-body">
-                Thank you to the many people who took the time to respond in December / January.
-                We have reviewed these responses and welcome your views on the comments received.
-                There will be further opportunities throughout the year to have an input.<br/>
-                <b>The Survey Link is:</b> <a href="https://forms.gle/GsRWJZe7tgyJHYrA6" target="_new">NBN Trust Strategy Survey – Part 2</a><br/>
-                <b>The Closing Date is Sunday 22 March</b>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal"><g:message code="modal.close" default="Close"/></button>
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div>
 <g:javascript>
     $( document ).ready(function() {
         // raw download URL popup
@@ -174,7 +154,6 @@
         if (isChecklist == "true" && downloadUrl) {
             window.location.href = downloadUrl;
         }
-        $('#noticeModal').modal('show');
 
     <g:if test="${json}">
         <g:applyCodec encodeAs="none">

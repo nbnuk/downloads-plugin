@@ -86,7 +86,27 @@
                                     </div>
                                 </div>
                             </div>
-                            <g:if test="${!defaults?.downloadType || defaults?.downloadType == 'records'}">
+                            <g:if test="${defaults?.downloadType == 'map'}">
+                                <div class="col-md-7">
+                                    <h4 class="text-uppercase=heading-underlined"><g:message code="download.occurrence.map" /></h4>
+                                    <p>
+                                        <g:message code="download.occurrence.map.zip" />
+                                    </p>
+
+                                </div>
+
+                                <div class="col-md-3">
+                                    <a href="#" id="select-${au.org.ala.downloads.DownloadType.MAP.type}"
+                                       class="select-download-type btn btn-white btn-lg btn-block margin-top-1 margin-bottom-1 font-xxsmall"
+                                       type="button">
+                                        <i class="glyphicon glyphicon-ok" style="display: none;"></i><span>Select</span>
+                                    </a>
+                                </div><!-- End col-md-3 -->
+                                <hr class="visible-xs"/>
+                                </div><!-- End row -->
+                            </g:if>
+                            <g:else>
+                                <g:if test="${!defaults?.downloadType || defaults?.downloadType == 'records'}">
                                 <div class="col-md-7">
                                     <h4 class="text-uppercase=heading-underlined"><g:message code="download.occurrence.records" /></h4>
                                     <p>
@@ -217,6 +237,7 @@
                                     </div><!-- End col-md-3 -->
                                 </div><!-- End row -->
                             </g:if>
+                            </g:else>
                         </div><!-- End comment-wrapper push -->
                     %{--</div><!-- End panel -->--}%
                 </div>
@@ -235,7 +256,10 @@
                                 </div>
 
                                 <div class="col-md-10">
-                                    <p>Select your download reason and then click the "Next" button.</p>
+                                    <p>Select your download reason, tick to accept licensing and then click "Next".</p>
+                                    <g:if test="${defaults?.downloadType == 'map'}">
+                                        <p>A ZIP archive containing the map image and citation information for the mapped records will be downloaded</p>
+                                    </g:if>
                                 </div>
                             </div>
 
@@ -411,7 +435,14 @@
             var format = $('input[name=downloadFormat]:checked').val();
             var reason = $('#downloadReason').find(":selected").val();
             var licenseConfirm =  $('#downloadConfirmLicense').is(':checked');
+
             var file = $('#file').val();
+            if (file == null) {
+                <g:if test="${filename}">
+                    file = "${filename}";
+                </g:if>
+            }
+
             //alert("format = " + format);
             if (type) {
                 type = type.replace(/^select-/,''); // remove prefix
@@ -444,7 +475,11 @@
                     var layersServiceUrl = "${defaults.layersServiceUrl}";
                     var customHeader = "${defaults.customHeader}";
                     var fileType = $('input[name=fileType]:checked').val();
-                    window.location = "${g.createLink(action: 'options2')}?searchParams=${searchParams.encodeAsURL()}&targetUri=${targetUri.encodeAsURL()}&downloadType=" + type + "&reasonTypeId=" + reason + "&sourceTypeId=" + sourceTypeId + "&downloadFormat=" + format + "&file=" + file + "&layers=" + layers + "&customHeader=" + customHeader + "&fileType=" + fileType + "&layersServiceUrl=" + layersServiceUrl;
+                    if (type == 'map') fileType='map';
+                    var mapLayoutParams = encodeURIComponent("${mapLayoutParams ? mapLayoutParams : ""}");
+                    var nextStepUrl="${g.createLink(action: 'options2')}?searchParams=${searchParams.encodeAsURL()}&targetUri=${targetUri.encodeAsURL()}&downloadType=" + type + "&reasonTypeId=" + reason + "&sourceTypeId=" + sourceTypeId + "&downloadFormat=" + format + "&file=" + file + "&layers=" + layers + "&customHeader=" + customHeader + "&fileType=" + fileType + "&layersServiceUrl=" + layersServiceUrl + "${mapLayoutParams ? "&mapLayoutParams=" : ""}" + mapLayoutParams;
+                    //alert(nextStepUrl);
+                    window.location = nextStepUrl;
                 }
             } else {
                 $('#errorAlert').show();
