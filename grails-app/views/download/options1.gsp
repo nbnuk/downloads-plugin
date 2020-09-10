@@ -72,7 +72,12 @@
                                 </div>
 
                                 <div class="col-md-10">
-                                    <p><g:message code="download.select.download.type" /></p>
+                                    <g:if test="${defaults?.downloadType == 'map'}">
+                                        <p><g:message code="download.select.confirm" /></p>
+                                    </g:if>
+                                    <g:else>
+                                        <p><g:message code="download.select.download.type" /></p>
+                                    </g:else>
                                 </div>
                             </div>
                         <div class="row margin-top-1">
@@ -257,9 +262,6 @@
 
                                 <div class="col-md-10">
                                     <p>Select your download reason, tick to accept licensing and then click "Next".</p>
-                                    <g:if test="${defaults?.downloadType == 'map'}">
-                                        <p>A ZIP archive containing the map image and citation information for the mapped records will be downloaded</p>
-                                    </g:if>
                                 </div>
                             </div>
 
