@@ -138,6 +138,28 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+<div class="modal" id="noticeModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document" id="NBN_notice">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Only a few days left! NBN Trust Draft Strategy 2021 - 2025 Consultation</h4>
+            </div>
+            <div class="modal-body">
+                <p>The NBN Trust is developing its strategy for 2021-2025, we would really value your feedback on our first draft of the strategy document and key activities for the first year</p>
+
+                <p>More information is available on the <a href="https://nbn.org.uk/about-us/what-we-do/strategy/nbn-trust-strategy-review-2020/" target="_blank" rel="noopener">NBN website</a></p>
+
+                <p>Complete the survey <a href="https://docs.google.com/forms/d/e/1FAIpQLSdsPDgjvf11AKX3aZB_dVUImVJuwzI5GNPaCRNcTRJ_08lIAQ/viewform?usp=pp_url" target="_blank" rel="noopener">here</a></p>
+
+                <p><b>Closing Date is this Sunday 18 October</b></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><g:message code="modal.close" default="Close"/></button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
 <g:javascript>
     $( document ).ready(function() {
         // raw download URL popup
@@ -153,6 +175,12 @@
         var downloadUrl  = "${downloadUrl}";
         if (isChecklist == "true" && downloadUrl) {
             window.location.href = downloadUrl;
+        }
+        var d = new Date();
+        var month = d.getMonth()+1;
+        var day = d.getDate();
+        if (d.getFullYear() == 2020 && month == 10 && day < 19) {
+            $('#noticeModal').modal('show');
         }
 
     <g:if test="${json}">
