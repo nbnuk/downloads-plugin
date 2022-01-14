@@ -8,16 +8,16 @@ branches:
   - master
   - hotfix
 before_cache:
-  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
-  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+- rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+- rm -fr $HOME/.gradle/caches/*/plugin-resolution/
 cache:
   directories:
-  - $HOME/.m2
-  - $HOME/.gradle/caches/
-  - $HOME/.gradle/wrapper/
+  - "$HOME/.m2"
+  - "$HOME/.gradle/caches/"
+  - "$HOME/.gradle/wrapper/"
 after_success:
-  - '[ "${TRAVIS_PULL_REQUEST}" = "false" ] && travis_retry ./gradlew publish'
+- '[ "${TRAVIS_PULL_REQUEST}" = "false" ] && travis_retry ./gradlew publish'
 env:
   global:
-    - secure: "LMQEZzv7lmyFlM0yh4S9BDA9QGvnKSem+v085SNs6SRVUoZqH7O3955Lwis5ryhf8BX5sC/zVpo0WqMvUI8bnVbTiWEUi9z6pkm1jQ9X3w+MssfjbLNkLD/XEzhKmf0T/WzHo8o0CJP1A5jsKBW0geBVJfXCtPPsvWPHpLzryTDhdJXmnTnz1wpiSRQfHewk0pjkngtFNE0lqtrI5Q5dr26g8Jd116AJzgR66VQV1aQB7JJDTzMEnYkfPEmon6cF9Hgdn6vZGmuLDQTF+Y1T5Jorrjw9C/PFXO5POonetqElF8aCarTQZnmY/jpcWgSSu2jvdbL3g1C1TKxwBG4DwG35E87cMaDkntRyG7pVHwbG+yQPYUx6wy4rPLnZnNxT6mCmO3GLGWrNfa0xZ5x0u7yZKh2MvYtdJpyxRfXydW61PY89oFcwZ713pU5U0R9P2VXMSepR7Z/qB/9dK6znj30v7WWBV2ZcfwSElboDaAP1NkwuR8UCyK+ctQPBU4Hom4l1MtFh763B5LVA26byjajalkXZHi6KxGmz4MTIwDurE9yUcUb08Gn7PwEPMoVPs8lmSRLdfJO7dBnRiTZG5v0XMLd3ZZNNPb/AnlX0Ygp7feK1JkAAqw3LkaxPP3G29w6ZINwPmfyypdHmkCdv5sLcsmL7BXL79uXYG05G684="
-    - secure: "sgn3KVWKgIVqGUatWmtKZ7LuN2N0uJwO/4ZV5R7D73pZwRzavI8JZSvys0aW7ny3VZ4OoBkF5Qi5XrZ3nZBrYNMfMDN+f/RFyH1j3S7P14qJyUD4TR8xDBMBwBMiMygNS1jauUSZDQJj+wddl2Y0zjJR+hqeDPEuQPWIcXDpWATV8P9p87Q2UrEDrs8UERTyTQCEh8+gb13AkSFHoLNwzRO/uppox9xgOpF/5CuLeJMH4ypRJm3FGgEnvrmgQn3AUAKvKmnourui2EniUyanYjtDVm6I2o4T5onto5WzlI43W/LCQq+KaHZEZ0dxctijk8tG8wCsf5OCwW/wfx9pJYgC41EW1iol3AK+48oeb7pBMbWllnracdLlkl247ZuyT1YhpLpZh9BkKqhGzSppeaGqGl+1v3VXbwscdZ8cBeHGZYkZW45Hr/YB/SdCoUnMg2uJCmLYzmWiMBRHUh8tsCaxJ7dZoaUmDmD7XmgiMBakpLTY5SgnN4TbSFL3/ZkaRE1qfljlNwxB550PTlvYDLAr+2vY2bfjUNDSqWnJ8ryvW6shMD5PU8V9EcRdyZ0UW7Jez0MruO8DxF2sHYGgZJR7xw3Nu5i2eG3gS9lcP3VKZBYqLQPbO3t0eCO+abW19YL7gW5H5FcMWYs413+S9pqHlZnF//OSHxMlb+f1BS8="
+  - secure: GyQUyDuJg/7LyhaJQ9nva5VofzpCfzA7auPetDa6xYoevIlyzyVFcFmj1PYNUjiu64r9jKfX/WKlXaKB4rxKi11A6JkZDiba2WlOKQngl0Wo5XwpRTOI1/TBcKCm8qYyO9D/Va0KPc81DVxobFznyN/rr85En2IDkGYJTN1lyFzFhR4gk3QzMyHfFe54KAW+8FoGfZ18VsiHTclrND4IZCBau7B/oF/Lk50FLJY3sSpM9ngnMIeIpebCH3FpKpzsmWB3y0ADH53FMNIjcxuDIwMPOHnSPOPm88JNjHiFhwtTywvxicK+0/ZlrYj89XRXJOZILb6aotPB4w6HfzdpxVjGFK+evhWgCpMnPa9pwtHgMcEt3hvsQTDGpE/uHQ4gPkIpHsFTHzmF6WghX+PRSK6CpgAXdm/2JfIpvS5pPPQuVdZyQDWoWCObRoRVu3syumINP990OXUg+tF1PsDy6vGIhHGHx/Ma1k25Kzhb+aEEvERhr9mxDPlRWxD0IICu+PhzEWbN9d5HCPkYlX8oP8hYgnkJgSBHMVtW5vzqLbNo7u39FmitXjMiAzcUmtIANFGim4O7p8VX4W/A02zfgqxl1SL7ysVQ7z5RI9lkqBjHzReaHzFaRKudf7ApVFTvZOEpqi7EfREzFnGR5gzxAwfSCFU+OmOY2YK0v+TnRd0=
+  - secure: m/0lrgEag32k4ByduWF/XpVyMMcucJT6fu5MR/oXulXNoUuu25vgcUB5i5dQSPyaGicm/E1Wfree1zJjl3e/p4zv6aODi0wOVPNzhp+lcYytSS9/x6tMB1axaxNcgZc3riI0z+jBlx5iuorxUS/bLQmwNYFARUaQXnvtANBaE7Jupa7jG9fuJEqDvTGTwMoRavY18n9k2ZHG+FynpsVobgrNBNHEHYPvcNSwIkZAsdvDlYky52iBoLIb24kliXK9q6EP/+e+W+OUHe7q3DGHLEJd57/CymHkt23lYy51wtyq6E/xLDucjBXW0ChH2OAOi05XVQrbqXICVo7TzCwui2gk/Sn1Mnkdj6+B2sqBQ41sibm3OelsO77mWJOCmuOW2Ue+BMAousTW72ROx0o1jQtndtyk2wYPOQ6QS0nhSLU1K31PXMJMcHlaazPHoPdSuyVXiBQ4hE7EO5K4h0UocPRhBP3SxnkZ+GJcK4n9kKE7jufaQEqPUja7TK0u8nR/37X1i6NlH98TotM0qqKwNmrevsrUUgZ1XFbaPK0Fqk6d63x3qpcQ9nrjkx8SypuDADIH6YoFl1hP3QJwa5Vpl+MhDquPE1VtjqbkXKjhV3idsDB/n/u/70PC8HEGJwfJVXdsAWWY9baHlo2TcfTxgCiuf++PwJLQC9mDBRYxunk=

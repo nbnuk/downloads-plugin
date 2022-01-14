@@ -105,6 +105,7 @@ publishing {
     }
     publications {
         mavenJar(MavenPublication) {
+            artifactId 'downloads-plugin-nbn'
             pom.withXml {
                 def pomNode = asNode()
                 pomNode.dependencyManagement.replaceNode {}
