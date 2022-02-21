@@ -10,7 +10,7 @@ buildscript {
     }
 }
 
-version "2.0.6"
+version "2.0.6-NBN"
 group "au.org.ala.plugins.grails"
 
 apply plugin:"eclipse"
@@ -105,7 +105,6 @@ publishing {
     }
     publications {
         mavenJar(MavenPublication) {
-            artifactId 'downloads-plugin-nbn'
             pom.withXml {
                 def pomNode = asNode()
                 pomNode.dependencyManagement.replaceNode {}
