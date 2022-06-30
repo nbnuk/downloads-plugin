@@ -42,9 +42,7 @@ class DownloadController {
     def options1(DownloadParams downloadParams) {
         log.debug "biocacheDownloadParamString = ${downloadParams.biocacheDownloadParamString()}"
         log.debug "request.getHeader('referer') = ${request.getHeader('referer')}"
-        if (!downloadParams.file) {
-            downloadParams.file = DownloadType.RECORDS.type + "-" + new Date().format("yyyy-MM-dd")
-        }
+        downloadParams.file = DownloadType.RECORDS.type + "-" + new Date().format("yyyy-MM-dd")
 
         if (downloadParams.searchParams) {
             render (view:'options1', model: [
@@ -52,7 +50,6 @@ class DownloadController {
                     targetUri: downloadParams.targetUri,
                     filename: downloadParams.file,
                     totalRecords: downloadParams.totalRecords,
-                    mapLayoutParams: downloadParams.mapLayoutParams,
                     defaults: [ sourceTypeId: downloadParams.sourceTypeId,
                                 downloadType: downloadParams.downloadType,
                                 downloadFormat: downloadParams.downloadFormat,
@@ -156,7 +153,7 @@ class DownloadController {
                     isQueuedDownload: true,
                     downloadParams: downloadParams,
                     json: json // Map
-            ], params:[searchParams: downloadParams.searchParams, targetUri: downloadParams.targetUri, downloadType: downloadParams.downloadType, mapLayoutParams: downloadParams.mapLayoutParams])
+            ], params:[searchParams: downloadParams.searchParams, targetUri: downloadParams.targetUri, downloadType: downloadParams.downloadType])
 
         } else {
             log.warn"Fell through `downloadType` if-else -> downloadParams = ${downloadParams}"
