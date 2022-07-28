@@ -101,7 +101,7 @@
                                 </div>
 
                                 <div class="col-md-3">
-                                    <a href="#" id="select-${au.org.ala.downloads.DownloadType.MAP.type}"
+                                    <a href="#" id="select-${uk.org.nbn.downloads.NbnDownloadType.MAP.type}"
                                        class="select-download-type btn btn-white btn-lg btn-block margin-top-1 margin-bottom-1 font-xxsmall"
                                        type="button">
                                         <i class="glyphicon glyphicon-ok" style="display: none;"></i><span>Select</span>
