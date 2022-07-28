@@ -15,6 +15,7 @@ package au.org.ala.downloads
 
 import grails.plugin.cache.Cacheable
 import org.grails.web.util.WebUtils
+import org.springframework.beans.factory.annotation.Qualifier
 
 import java.text.SimpleDateFormat
 
@@ -41,11 +42,7 @@ class DownloadService {
             // catch different formats
             if (downloadParams.downloadFormat == DownloadFormat.DWC.format) {
                 // DwC download
-                if (grailsApplication.config.downloads?.dwcFields?:"") { //NBN: overwrite
-                    downloadParams.fields = grailsApplication.config.downloads?.dwcFields
-                } else {
-                    downloadParams.fields = biocacheService.getDwCFields()
-                }
+                downloadParams.fields = biocacheService.getDwCFields()
                 triggerOfflineDownload(downloadParams)
             } else if (downloadParams.downloadFormat == DownloadFormat.LEGACY.format) {
                 // Legacy download
@@ -89,10 +86,6 @@ class DownloadService {
             log.info "${DownloadType.CHECKLIST.type} download triggered"
         } else if (downloadParams.downloadType == DownloadType.FIELDGUIDE.type) {
             log.info "${DownloadType.FIELDGUIDE.type} download triggered"
-        } else if (downloadParams.downloadType == DownloadType.MAP.type) {
-            log.info "${DownloadType.MAP.type} download triggered"
-            log.info "map downloadParams = ${downloadParams}"
-            triggerOfflineDownload(downloadParams)
         } else {
             def msg = "Download type not recognised: ${downloadParams.downloadType}"
             log.warn msg
@@ -109,9 +102,7 @@ class DownloadService {
      */
     Map triggerOfflineDownload(DownloadParams downloadParams) throws Exception {
         String url = grailsApplication.config.downloads.indexedDownloadUrl +
-                (downloadParams.downloadType != "map"?
-                        downloadParams.biocacheDownloadParamString() :
-                        downloadParams.biocachedownloadMapParamString())
+                 downloadParams.biocacheDownloadParamString()
         Map resp
 
         if (url.length() < 8000) {
