@@ -142,19 +142,6 @@ class DownloadController {
                     json: downloadService.triggerFieldGuideDownload(downloadParams.biocacheDownloadParamString() + extraParamsString),
                     downloadUrl: grailsApplication.config.downloads.fieldguideDownloadUrl + downloadParams.biocacheDownloadParamString() + extraParamsString
             ], params:[searchParams: downloadParams.searchParams, targetUri: downloadParams.targetUri, downloadType: downloadParams.downloadType])
-        } else if (downloadParams.downloadType == DownloadType.MAP.type) {
-            def queryContext = grailsApplication.config.biocache?.queryContext?:""
-            if (queryContext > '') {
-                downloadParams.searchParams = downloadParams.searchParams + '&fq=' + URLEncoder.encode(queryContext, "UTF-8")
-            }
-            def json = downloadService.triggerDownload(downloadParams)
-            log.info "map download json = ${json}"
-            chain (action:'confirm', model: [
-                    isQueuedDownload: true,
-                    downloadParams: downloadParams,
-                    json: json // Map
-            ], params:[searchParams: downloadParams.searchParams, targetUri: downloadParams.targetUri, downloadType: downloadParams.downloadType])
-
         } else {
             log.warn"Fell through `downloadType` if-else -> downloadParams = ${downloadParams}"
         }
