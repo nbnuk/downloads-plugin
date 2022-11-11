@@ -21,7 +21,6 @@ import java.nio.charset.Charset
 class DownloadsTagLib {
 
     def downloadService
-    def doiService
     //static defaultEncodeAs = [taglib:'html']
     //static encodeAsForTags = [tagName: [taglib:'html'], otherTagName: [taglib:'none']]
     static returnObjectForTags = ['getAllLoggerReasons','testListOutput','getLoggerReasons']
