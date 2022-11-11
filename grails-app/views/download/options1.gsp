@@ -36,7 +36,7 @@
     <div class="col-md-10 col-md-offset-1">
 
         <h2 class="heading-medium"><g:message code="download.download.title"/></h2>
-        <g:set var="showLongTimeWarning" value="${totalRecords && (totalRecords > Long.parseLong(grailsApplication.config.downloads.maxRecords, 10))}"/>
+        <g:set var="showLongTimeWarning" value="${totalRecords && (totalRecords > grailsApplication.config.downloads.maxRecords)}"/>
 
         <!-- Long download warning -->
         <g:if test="${showLongTimeWarning || grailsApplication.config.downloads.staticDownloadsUrl}">
@@ -72,12 +72,7 @@
                                 </div>
 
                                 <div class="col-md-10">
-                                    <g:if test="${defaults?.downloadType == 'map'}">
-                                        <p><g:message code="download.select.confirm" /></p>
-                                    </g:if>
-                                    <g:else>
-                                        <p><g:message code="download.select.download.type" /></p>
-                                    </g:else>
+                                    <p><g:message code="download.select.download.type" /></p>
                                 </div>
                             </div>
                         <div class="row margin-top-1">
@@ -91,27 +86,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <g:if test="${defaults?.downloadType == 'map'}">
-                                <div class="col-md-7">
-                                    <h4 class="text-uppercase=heading-underlined"><g:message code="download.occurrence.map" /></h4>
-                                    <p>
-                                        <g:message code="download.occurrence.map.zip" />
-                                    </p>
-
-                                </div>
-
-                                <div class="col-md-3">
-                                    <a href="#" id="select-${uk.org.nbn.downloads.NbnDownloadType.MAP.type}"
-                                       class="select-download-type btn btn-white btn-lg btn-block margin-top-1 margin-bottom-1 font-xxsmall"
-                                       type="button">
-                                        <i class="glyphicon glyphicon-ok" style="display: none;"></i><span>Select</span>
-                                    </a>
-                                </div><!-- End col-md-3 -->
-                                <hr class="visible-xs"/>
-                                </div><!-- End row -->
-                            </g:if>
-                            <g:else>
-                                <g:if test="${!defaults?.downloadType || defaults?.downloadType == 'records'}">
+                            <g:if test="${!defaults?.downloadType || defaults?.downloadType == 'records'}">
                                 <div class="col-md-7">
                                     <h4 class="text-uppercase=heading-underlined"><g:message code="download.occurrence.records" /></h4>
                                     <p>
@@ -152,14 +127,12 @@
                                             </label>
                                             <div class="col-sm-8 radio">
                                                 <g:each in="${au.org.ala.downloads.FileType.values()}" var="ft">
-                                                    <g:if test="${!(grailsApplication.config.downloads?.excludeTypes?:'').contains(ft.type)}">
                                                     <div class="">
                                                         <label>
                                                             <input id="fileType" type="radio" name="fileType" class="" value="${ft.type}" ${(ft.ordinal() == 0)?'checked':''}/>
                                                             <g:message code="type.${ft.type}"/> <g:message code="helpicon.${ft.type}" default=""/>
                                                         </label>
                                                     </div>
-                                                    </g:if>
                                                 </g:each>
                                             </div>
                                         </div>
@@ -242,7 +215,6 @@
                                     </div><!-- End col-md-3 -->
                                 </div><!-- End row -->
                             </g:if>
-                            </g:else>
                         </div><!-- End comment-wrapper push -->
                     %{--</div><!-- End panel -->--}%
                 </div>
@@ -261,7 +233,7 @@
                                 </div>
 
                                 <div class="col-md-10">
-                                    <p>Select your download reason, tick to accept licensing and then click "Next".</p>
+                                    <p>Select your download reason and then click the "Next" button.</p>
                                 </div>
                             </div>
 
@@ -281,26 +253,15 @@
                                     <form class="form-inline margin-top-1">
                                         <div class="form-group">
                                             <label for="downloadReason" class="control-label heading-xsmall"><span
-                                                    class="color--mellow-red">* </span>Industry/application</label>&nbsp;&nbsp;
+                                                    class="color--mellow-red">*</span>Industry/application</label>&nbsp;&nbsp;
                                             <select class="form-control" id="downloadReason">
                                                 <option value="" disabled selected>Select a reason ...</option>
                                                 <g:each var="it" in="${downloads.getLoggerReasons()}">
                                                     <option value="${it.id}">${it.name}</option>
                                                 </g:each>
                                             </select>
-                                            <p class="help-block" id="downloadReasonDescription"><strong>This field is mandatory.</strong> Choose the best "use type" from the drop-down menu above.
+                                            <p class="help-block"><strong>This field is mandatory.</strong> Choose the best "use type" from the drop-down menu above.
                                             </p>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="downloadConfirmLicense" class="control-label heading-xsmall"><span
-                                                    class="color--mellow-red">* </span>Accept licencing</label>
-
-                                            <!-- <div class="controls"> -->
-                                                <input type="checkbox" id="downloadConfirmLicense" name="downloadConfirmLicense" class="form-control" style="margin-left:10px" />
-                                                <p class="help-block"><strong>This field is mandatory.</strong> <g:message code="download.license.accept" />
-                                                </p>
-                                            <!-- </div> -->
                                         </div>
                                     </form>
                                 </div>
@@ -320,7 +281,7 @@
                                                 aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                         <strong>Error:</strong> Ensure that you 1) select your download <b>type</b><span
                                             id="errorFormat" class="collapse">and select a download <b>format</b>
-                                    </span>, 2) select a download <b>reason</b> and accept the <b>licensing terms</b>
+                                    </span>, 2) select a download <b>reason</b>
 
                                     </div>
                                     <!-- End Alert Information -->
@@ -335,18 +296,13 @@
         <div class="alert alert-info alert-dismissible" role="alert">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
                     aria-hidden="true">×</span></button>
-            By downloading this content you are agreeing to use it in accordance with the NBN Atlas
+            <g:message code="download.termsofusedownload.01" />
             <a href="${grailsApplication.config.downloads.termsOfUseUrl}"><g:message code="download.termsofusedownload.02" /></a>
             <g:message code="download.termsofusedownload.03" />
         </div>
     </div><!-- /.col-md-10  -->
 </div><!-- /.row-fuid  -->
 <g:javascript>
-    var reasons_lookup = {
-        <g:each var="it" in="${downloads.getLoggerReasons()}">
-        "${it.id}" : ["${it.name.replaceAll('"','')}", "${it.description.replaceAll('"','')}"],
-        </g:each>
-    };
     $( document ).ready(function() {
         // click event on download type select buttons
         $('a.select-download-type').click(function(e) {
@@ -419,15 +375,6 @@
             }
         });
 
-        $('#downloadReason').on('change', function(e) {
-            var reason = $('#downloadReason').find(":selected").val();
-            if (!reason || reasons_lookup[reason][1] == '') {
-                $('#downloadReasonDescription').html('<strong>This field is mandatory.</strong> Choose the best "use type" from the drop-down menu above.');
-            } else {
-                $('#downloadReasonDescription').html('<i>' + reasons_lookup[reason][1] + '</i>');
-            }
-        });
-
         // click event on next button
         $('#nextBtn').click(function(e) {
             e.preventDefault();
@@ -436,15 +383,7 @@
             //var format = $('#downloadFormat').find(":selected").val();
             var format = $('input[name=downloadFormat]:checked').val();
             var reason = $('#downloadReason').find(":selected").val();
-            var licenseConfirm =  $('#downloadConfirmLicense').is(':checked');
-
             var file = $('#file').val();
-            if (file == null) {
-                <g:if test="${filename}">
-                    file = "${filename}";
-                </g:if>
-            }
-
             //alert("format = " + format);
             if (type) {
                 type = type.replace(/^select-/,''); // remove prefix
@@ -466,9 +405,6 @@
                 if (!reason) {
                     $('#errorAlert').show();
                     $('#downloadReason').focus();
-                } else if (!licenseConfirm) { // NBN licence
-                    $('#errorAlert').show();
-                    $('#downloadConfirmLicense').focus();
                 } else {
                     // go to next screen
                     $('#errorAlert').hide();
@@ -477,11 +413,7 @@
                     var layersServiceUrl = "${defaults.layersServiceUrl}";
                     var customHeader = "${defaults.customHeader}";
                     var fileType = $('input[name=fileType]:checked').val();
-                    if (type == 'map') fileType='map';
-                    var mapLayoutParams = encodeURIComponent("${mapLayoutParams ? mapLayoutParams : ""}");
-                    var nextStepUrl="${g.createLink(action: 'options2')}?searchParams=${searchParams.encodeAsURL()}&targetUri=${targetUri.encodeAsURL()}&downloadType=" + type + "&reasonTypeId=" + reason + "&sourceTypeId=" + sourceTypeId + "&downloadFormat=" + format + "&file=" + file + "&layers=" + layers + "&customHeader=" + customHeader + "&fileType=" + fileType + "&layersServiceUrl=" + layersServiceUrl + "${mapLayoutParams ? "&mapLayoutParams=" : ""}" + mapLayoutParams;
-                    //alert(nextStepUrl);
-                    window.location = nextStepUrl;
+                    window.location = "${g.createLink(action: 'options2')}?searchParams=${searchParams.encodeAsURL()}&targetUri=${targetUri.encodeAsURL()}&downloadType=" + type + "&reasonTypeId=" + reason + "&sourceTypeId=" + sourceTypeId + "&downloadFormat=" + format + "&file=" + file + "&layers=" + layers + "&customHeader=" + customHeader + "&fileType=" + fileType + "&layersServiceUrl=" + layersServiceUrl;
                 }
             } else {
                 $('#errorAlert').show();
