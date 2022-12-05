@@ -36,7 +36,7 @@
     <div class="col-md-10 col-md-offset-1">
 
         <h2 class="heading-medium"><g:message code="download.download.title"/></h2>
-        <g:set var="showLongTimeWarning" value="${totalRecords && (totalRecords > grailsApplication.config.downloads.maxRecords)}"/>
+        <g:set var="showLongTimeWarning" value="${totalRecords && (totalRecords > Long.parseLong(grailsApplication.config.downloads.maxRecords, 10))}"/>
 
         <!-- Long download warning -->
         <g:if test="${showLongTimeWarning || grailsApplication.config.downloads.staticDownloadsUrl}">
@@ -71,7 +71,12 @@
                                 </div>
 
                                 <div class="col-md-10">
-                                    <p><g:message code="download.select.download.type" /></p>
+                                    <g:if test="${defaults?.downloadType == 'map'}">
+                                        <p><g:message code="download.select.confirm" /></p>
+                                    </g:if>
+                                    <g:else>
+                                        <p><g:message code="download.select.download.type" /></p>
+                                    </g:else>
                                 </div>
                             </div>
                         <div class="row margin-top-1">
@@ -85,7 +90,28 @@
                                     </div>
                                 </div>
                             </div>
-                            <g:if test="${!defaults?.downloadType || defaults?.downloadType == 'records'}">
+                            <g:if test="${defaults?.downloadType == 'map'}">
+                                <div class="col-md-7">
+                                    <h4 class="text-uppercase=heading-underlined"><g:message code="download.occurrence.map"/></h4>
+
+                                    <p>
+                                        <g:message code="download.occurrence.map.zip"/>
+                                    </p>
+
+                                </div>
+
+                                <div class="col-md-3">
+                                    <a href="#" id="select-${au.org.ala.downloads.DownloadType.MAP.type}"
+                                       class="select-download-type btn btn-white btn-lg btn-block margin-top-1 margin-bottom-1 font-xxsmall"
+                                       type="button">
+                                        <i class="glyphicon glyphicon-ok" style="display: none;"></i><span>Select</span>
+                                    </a>
+                                </div><!-- End col-md-3 -->
+                                <hr class="visible-xs"/>
+                                </div><!-- End row -->
+                            </g:if>
+                            <g:else>
+                                <g:if test="${!defaults?.downloadType || defaults?.downloadType == 'records'}">
                                 <div class="col-md-7">
                                     <h4 class="text-uppercase=heading-underlined"><g:message code="download.occurrence.records" /></h4>
                                     <p>
@@ -130,6 +156,7 @@
                                                     <g:if test="${!((grailsApplication.config.getProperty("filetype.shapefile.disable", boolean) ||
                                                                      grailsApplication.config.getProperty("filetype.shapefile.hidden", boolean)) &&
                                                                      ft.type == au.org.ala.downloads.FileType.SHAPE.type )}">
+                                                        <g:if test="${!(grailsApplication.config.downloads?.excludeTypes?:'').contains(ft.type)}">
                                                         <div class="">
                                                             <label>
                                                                 <input id="fileType_${ft.type}" type="radio" name="fileType" class=""
@@ -138,6 +165,7 @@
                                                                         code="helpicon.${ft.type}" default=""/>
                                                             </label>
                                                         </div>
+                                                        </g:if>
                                                     </g:if>
                                                 </g:each>
                                                 <g:if test="${grailsApplication.config.getProperty("filetype.shapefile.disable", boolean) && !grailsApplication.config.getProperty("filetype.shapefile.hidden", boolean)}">
@@ -228,6 +256,7 @@
                                     </div><!-- End col-md-3 -->
                                 </div><!-- End row -->
                             </g:if>
+                            </g:else>
                         </div><!-- End comment-wrapper push -->
                     %{--</div><!-- End panel -->--}%
                 </div>
@@ -303,8 +332,18 @@
                                                     <option value="${it.id}"><g:message code="download.reason.type${it.id}" default="${it.name}"/></option>
                                                 </g:each>
                                             </select>
-                                            <p class="help-block"><strong><g:message code="download.field.mandatory"/></strong> <g:message code="download.choose.best.use.type"/>
+                                            <p class="help-block" id="downloadReasonDescription"><strong><g:message code="download.field.mandatory"/></strong> <g:message code="download.choose.best.use.type"/>
                                             </p>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="downloadConfirmLicense" class="control-label heading-xsmall"><span
+                                                    class="color--mellow-red">* </span>Accept licencing</label>
+
+                                            <!-- <div class="controls"> -->
+                                            <input type="checkbox" id="downloadConfirmLicense" name="downloadConfirmLicense" class="form-control" style="margin-left:10px" />
+                                            <p class="help-block"><strong>This field is mandatory.</strong> <g:message code="download.license.accept" />
+                                            </p>
+                                            <!-- </div> -->
                                         </div>
                                     </form>
                                 </div>
@@ -326,6 +365,7 @@
                                         <div id="errorType" class="collapse"><g:message code="download.error.please.select.type"/></div>
                                         <div id="errorEmail" class="collapse"><g:message code="download.error.please.select.email"/></div>
                                         <div id="errorReason" class="collapse"><g:message code="download.error.please.select.reason"/></div>
+                                        <div id="errorConfirmLicense" class="collapse"><g:message code="download.error.please.confirm.licence"/></div>
                                     </div>
                                     <!-- End Alert Information -->
                                 </div>
@@ -347,6 +387,11 @@
 </div><!-- /.row-fuid  -->
 <g:javascript>
     $( document ).ready(function() {
+        var reasons_lookup = {
+                <g:each var="it" in="${downloads.getLoggerReasons()}">
+                    "${it.id}" : ["${it.name.replaceAll('"','')}", "${it.description.replaceAll('"','')}"],
+                </g:each>
+        };
 
         var askForEmail = ${askForEmail};
 
@@ -413,6 +458,15 @@
             }
         });
 
+        $('#downloadReason').on('change', function(e) {
+            var reason = $('#downloadReason').find(":selected").val();
+            if (!reason || reasons_lookup[reason][1] == '') {
+                $('#downloadReasonDescription').html('<strong>This field is mandatory.</strong> Choose the best "use type" from the drop-down menu above.');
+            } else {
+                $('#downloadReasonDescription').html('<i>' + reasons_lookup[reason][1] + '</i>');
+            }
+        });
+
         // click event on next button
         $('#nextBtn').click(function(e) {
             e.preventDefault();
@@ -421,37 +475,50 @@
             var format = $('input[name=downloadFormat]:checked').val();
             var email = askForEmail ? $('input[name=downloadEmail]').val() : "";
             var reason = $('#downloadReason').find(":selected").val();
+            var licenseConfirm = $('#downloadConfirmLicense').is(':checked');
             var file = $('#file').val();
-
-            var hasAlert = false;
-            $('#errorType').hide();
-            $('#errorEmail').hide();
-            $('#errorReason').hide();
-
-            if (!type) {
-                $('#errorType').show();
-                hasAlert = true;
-            }
-            if (askForEmail && !email) {
-                $('#errorEmail').show();
-                $('#downloadEmail').focus();
-                hasAlert = true;
-            }
-            if (!reason) {
-                $('#errorReason').show();
-                $('#downloadReason').focus();
-                hasAlert = true;
+            if (file == null) {
+                <g:if test="${filename}">
+                    file = "${filename}";
+                </g:if>
             }
 
-            if (hasAlert) {
-                $('#errorAlert').show();
-            }
-            else {
-                $('#errorAlert').hide();
-                type = type.replace(/^select-/,''); // remove prefix
+    var hasAlert = false;
+    $('#errorType').hide();
+    $('#errorEmail').hide();
+    $('#errorReason').hide();
+    $('#errorConfirmLicense').hide();
 
-                // go to next screen
-                var sourceTypeId = "${downloads.getSourceId()}";
+
+    if (!type) {
+        $('#errorType').show();
+        hasAlert = true;
+    }
+    if (askForEmail && !email) {
+        $('#errorEmail').show();
+        $('#downloadEmail').focus();
+        hasAlert = true;
+    }
+    if (!reason) {
+        $('#errorReason').show();
+        $('#downloadReason').focus();
+        hasAlert = true;
+    }
+    else if (!licenseConfirm) { // NBN licence
+        $('#errorConfirmLicense').show();
+        $('#downloadConfirmLicense').focus();
+        hasAlert = true;
+    }
+
+    if (hasAlert) {
+        $('#errorAlert').show();
+    }
+    else {
+        $('#errorAlert').hide();
+        type = type.replace(/^select-/,''); // remove prefix
+
+        // go to next screen
+        var sourceTypeId = "${downloads.getSourceId()}";
                 var layers = "${defaults.layers}";
                 var layersServiceUrl = "${defaults.layersServiceUrl}";
                 var customHeader = "${defaults.customHeader}";

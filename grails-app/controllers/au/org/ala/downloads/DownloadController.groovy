@@ -42,7 +42,9 @@ class DownloadController {
         log.debug "biocacheDownloadParamString = ${downloadParams.biocacheDownloadParamString()}"
         log.debug "request.getHeader('referer') = ${request.getHeader('referer')}"
         log.debug "downloadParams = ${downloadParams.toString()}"
-        downloadParams.file = DownloadType.RECORDS.type + "-" + new Date().format("yyyy-MM-dd")
+        if (!downloadParams.file) {
+            downloadParams.file = DownloadType.RECORDS.type + "-" + new Date().format("yyyy-MM-dd")
+        }
 
         boolean askForEmail = (authService?.getEmail() == null);
 
@@ -52,6 +54,7 @@ class DownloadController {
                     targetUri: downloadParams.targetUri,
                     filename: downloadParams.file,
                     totalRecords: downloadParams.totalRecords,
+                    mapLayoutParams: downloadParams.mapLayoutParams,
                     askForEmail: askForEmail,
                     defaults: [ sourceTypeId: downloadParams.sourceTypeId,
                                 downloadType: downloadParams.downloadType,
@@ -133,7 +136,7 @@ class DownloadController {
                     downloadType: downloadParams.downloadType])
         } else if (downloadParams.downloadType == DownloadType.CHECKLIST.type) {
             // Checklist download
-            def extraParamsString = "&facets=species_guid&lookup=true&counts=true&lists=true"
+            def extraParamsString = "&facets=" + (grailsApplication.config.downloads?.checklistFacet?:"species_guid") + "&lookup=true&counts=true&lists=true"
             chain (action:'confirm', model: [
                     isQueuedDownload: false,
                     isChecklist: true,
@@ -145,7 +148,7 @@ class DownloadController {
                     downloadType: downloadParams.downloadType])
         } else if (downloadParams.downloadType == DownloadType.FIELDGUIDE.type) {
             // Field guide download
-            def extraParamsString = "&facets=species_guid"
+            def extraParamsString = "&facets=" + (grailsApplication.config.downloads?.checklistFacet?:"species_guid")
             chain (action:'confirm', model: [
                     isQueuedDownload: false,
                     isFieldGuide: true,
@@ -153,6 +156,18 @@ class DownloadController {
                     json: downloadService.triggerFieldGuideDownload(downloadParams.biocacheDownloadParamString() + extraParamsString),
                     downloadUrl: grailsApplication.config.downloads.fieldguideDownloadUrl + downloadParams.biocacheDownloadParamString() + extraParamsString
             ], params:[searchParams: downloadParams.searchParams, targetUri: downloadParams.targetUri, downloadType: downloadParams.downloadType])
+        } else if (downloadParams.downloadType == DownloadType.MAP.type) {
+            def queryContext = grailsApplication.config.biocache?.queryContext?:""
+            if (queryContext > '') {
+                downloadParams.searchParams = downloadParams.searchParams + '&fq=' + URLEncoder.encode(queryContext, "UTF-8")
+            }
+            def json = downloadService.triggerDownload(downloadParams)
+            log.info "map download json = ${json}"
+            chain (action:'confirm', model: [
+                    isQueuedDownload: true,
+                    downloadParams: downloadParams,
+                    json: json // Map
+            ], params:[searchParams: downloadParams.searchParams, targetUri: downloadParams.targetUri, downloadType: downloadParams.downloadType, mapLayoutParams: downloadParams.mapLayoutParams])
         } else {
             log.warn"Fell through `downloadType` if-else -> downloadParams = ${downloadParams}"
         }

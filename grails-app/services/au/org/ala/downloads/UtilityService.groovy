@@ -77,11 +77,11 @@ class UtilityService {
      * @return
      */
     List paginateWrapper(List results, GrailsParameterMap params) {
-        int max = params.getInt("max") ?: 10
+        int max = params.getInt("max") ?: 20
         int offset = params.getInt("offset") ?: 0
         int toIndex = ((offset + max) < results.size()) ? (offset + max) : results.size()
-        def sort = params.sort
-        def order = params.order ?: 'ASC'
+        def sort = params.sort ?: 'occurrence_date'
+        def order = params.order ?: (params.dir ?: 'DESC')
 
         if (offset > toIndex) {
             // if offset is greater than toIndex, show last page
