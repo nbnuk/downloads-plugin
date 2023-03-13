@@ -30,6 +30,8 @@ class DownloadParams {
     String downloadFormat // full-dwc, legacy, custom
     List customClasses // custom download page - list of field classes
     Long totalRecords // number of records for search
+    Long licenceCount //download has licenced records
+
     //
     // Fields for download service
     // see https://github.com/AtlasOfLivingAustralia/biocache-service/blob/master/src/main/java/au/org/ala/biocache/dto/DownloadRequestParams.java

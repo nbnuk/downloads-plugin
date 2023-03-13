@@ -19,6 +19,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" %>
+<g:set var="commercialLicenceId" value="${grailsApplication.config.commercialLicenceId ?: 18}"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -323,6 +324,9 @@
                                     </span>, 2) select a download <b>reason</b> and accept the <b>licensing terms</b>
 
                                     </div>
+                                    <div id="errorLicence" style="display:none" class="alert alert-danger " role="alert">
+                                        You must <a href="${targetUri}/${searchParams}" id="backBtnLicence">go back</a> and exclude records with a CC-BY-NC licence.
+                                    </div>
                                     <!-- End Alert Information -->
                                 </div>
                             </div><!-- End body -->
@@ -426,7 +430,16 @@
             } else {
                 $('#downloadReasonDescription').html('<i>' + reasons_lookup[reason][1] + '</i>');
             }
+            if (reason==${commercialLicenceId} && ${request.getAttribute("licenceCount").toInteger()>0}) {
+                $('#errorLicence').show();
+                $('#nextBtn').attr("disabled", true);
+             }
+             else {
+                 $('#errorLicence').hide();
+                 $('#nextBtn').removeAttr("disabled");
+             }
         });
+
 
         // click event on next button
         $('#nextBtn').click(function(e) {
