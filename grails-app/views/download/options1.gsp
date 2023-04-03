@@ -430,7 +430,7 @@
             } else {
                 $('#downloadReasonDescription').html('<i>' + reasons_lookup[reason][1] + '</i>');
             }
-            if (reason==${commercialLicenceId} && ${request.getAttribute("licenceCount").toInteger()>0}) {
+            if (reason==${commercialLicenceId} && (${request.getAttribute("licenceCount") && request.getAttribute("licenceCount").toInteger()>0})) {
                 $('#errorLicence').show();
                 $('#nextBtn').attr("disabled", true);
              }
