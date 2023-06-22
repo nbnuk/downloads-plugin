@@ -111,7 +111,7 @@ class DownloadService {
      * @throws Exception
      */
     Map triggerOfflineDownload(DownloadParams downloadParams) throws Exception {
-        String url = grailsApplication.config.downloads.indexedDownloadUrl +
+        String url = grailsApplication.config.downloads.indexedDownloadUrl  +
                 (downloadParams.downloadType != "map"?
                         downloadParams.biocacheDownloadParamString() :
                         downloadParams.biocachedownloadMapParamString())
