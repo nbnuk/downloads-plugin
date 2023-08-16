@@ -39,6 +39,8 @@ class DownloadController {
      * @return
      */
     def options1(DownloadParams downloadParams) {
+        request.setAttribute("licenceCount", downloadParams.licenceCount)
+
         log.debug "biocacheDownloadParamString = ${downloadParams.biocacheDownloadParamString()}"
         log.debug "request.getHeader('referer') = ${request.getHeader('referer')}"
         log.debug "downloadParams = ${downloadParams.toString()}"
