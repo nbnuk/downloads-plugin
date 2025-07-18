@@ -36,7 +36,7 @@ downloads {
         darwinCore = ["recordLevelTerms", "occurrence", "organism", "event", "location", "identification", "taxon", "measurementOrFact"] // "geologicalContext", "resourceRelationship"
         speciesTraits = ["conservationStatus", "otherTraits"]
         spatialIntersections = ["environmentalLayers", "contextualLayers"]
-        misc = ["qualityAssertions","miscellaneousFields"]
+        misc = ["qualityAssertions","dnaDerivedFields","miscellaneousFields"]
     }
     classMappings {
         Record = "recordLevelTerms"
@@ -69,6 +69,8 @@ downloads {
     }
 }
 
+//NBN DNA fields
+downloads.dnaDerivedFields=["dna_sequence","pcr_primer_forward","pcr_primer_name_forward","pcr_primer_name_reverse","pcr_primer_reference","pcr_primer_reverse","0000012","0000013","0000014","0000044","0000045","0000085","0000086","0000087"]
 // other field mappings for classes TODO get from biocache-service
 downloads.conservationStatus = ["aust_conservation","state_conservation"]
 downloads.otherTraits = ["species_group","species_subgroup"]
